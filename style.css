@@ -1214,25 +1214,38 @@ footer {
         position: static;
         /* Stack nicely in flow */
         width: 100%;
-        background-color: rgba(0, 0, 0, 0.2);
-        /* Slightly darker for contrast */
-        box-shadow: none;
-        border-top: none;
+        background-color: #122b25 !important;
+        /* Darker shade for contrast */
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
         display: none;
-        /* Hidden by default, JS needs to toggle this */
         opacity: 1;
         visibility: visible;
         transform: none;
+        margin: 0;
+        padding: 0;
     }
 
     .nav-links .dropdown:hover .dropdown-menu {
         display: flex;
-        /* Show on hover/click */
+    }
+
+    .dropdown-menu li {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     }
 
     .dropdown-menu li a {
-        color: rgba(255, 255, 255, 0.8) !important;
-        padding-left: 0;
+        color: rgba(255, 255, 255, 0.7) !important;
+        padding-left: 2rem;
+        background-color: transparent !important;
+        /* Prevent white bg leak */
+        font-size: 0.9rem;
+    }
+
+    .dropdown-menu li a:hover {
+        color: var(--color-accent) !important;
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        padding-left: 2.5rem;
     }
 
     .hamburger {

@@ -274,13 +274,25 @@
 }
 
 @media (max-width: 480px) {
+    .magnolia-chat-widget {
+        bottom: 20px;
+        right: 20px;
+    }
+
     .magnolia-window {
-        width: 100vw;
-        height: 100vh;
+        width: 340px;
+        /* Fixed reasonable width */
+        max-width: 90vw;
+        /* Safety for very small screens */
+        height: 60vh;
+        /* Not full screen, allow seeing behind */
+        max-height: 500px;
         margin: 0;
-        bottom: 0;
+        bottom: 75px;
+        /* Position above the avatar trigger */
         right: 0;
-        border-radius: 0;
-        position: fixed;
+        border-radius: 20px;
+        /* Keep nice corners */
+        position: absolute;
     }
 }
