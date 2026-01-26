@@ -130,6 +130,16 @@ section[id] {
     scroll-margin-top: 120px;
 }
 
+/* Ensure anchor links don't hide behind fixed/sticky header */
+section[id] {
+    scroll-margin-top: 120px;
+}
+
+/* Ensure anchor links don't hide behind fixed/sticky header */
+section[id] {
+    scroll-margin-top: 120px;
+}
+
 .section-header {
     text-align: center;
     margin-bottom: 4rem;
@@ -1214,6 +1224,7 @@ footer {
 }
 
 /* Responsive */
+/* Responsive */
 @media (max-width: 1024px) {
     .nav-links {
         display: none;
@@ -1228,6 +1239,8 @@ footer {
         padding: 1rem 0;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         border-top: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 1000;
+        /* Ensure it stays on top */
     }
 
     /* Mobile Menu Items Styling */
@@ -1283,6 +1296,8 @@ footer {
     .dropdown.active .dropdown-menu {
         display: flex;
         flex-direction: column;
+        background-color: rgba(0, 0, 0, 0.2) !important;
+        /* Slightly darker for contrast */
     }
 
     .dropdown-menu li {
@@ -1308,6 +1323,8 @@ footer {
     .hamburger {
         display: block;
         padding-right: 1rem;
+        cursor: pointer;
+        color: white;
     }
 }
 

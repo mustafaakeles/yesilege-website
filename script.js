@@ -268,20 +268,12 @@ document.addEventListener('DOMContentLoaded', () => {
             gsap.to(navLinks, { opacity: 0, y: -20, duration: 0.3, onComplete: () => navLinks.style.display = 'none' });
         } else {
             navLinks.style.display = 'flex';
-            navLinks.style.flexDirection = 'column';
-            navLinks.style.position = 'absolute';
-            navLinks.style.top = '100%';
-            navLinks.style.left = '0';
-            navLinks.style.width = '100%';
-            navLinks.style.left = '0';
-            navLinks.style.width = '100%';
-            navLinks.style.background = '#1a3c34'; /* Match Primary Dark properly */
-            navLinks.style.padding = '1rem 0';
-            navLinks.style.zIndex = '999';
+            // Other styles are handled by CSS class .nav-links in media query
+            // Just ensure initial state for animation is set
 
             // Clean inline text colors to let CSS handle hover states
             navLinks.querySelectorAll('a').forEach(a => {
-                a.style.color = 'white';
+                a.style.color = ''; // Remove inline white so CSS takes over
             });
 
             gsap.fromTo(navLinks, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3 });
