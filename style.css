@@ -762,8 +762,8 @@ ul {
 .card-img {
     height: 220px;
     width: 100%;
-    background-size: cover;
-    background-position: center;
+    object-fit: cover;
+    display: block;
 }
 
 /* Images are handled via inline styles in HTML for flexibility */
