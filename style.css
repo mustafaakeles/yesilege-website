@@ -250,7 +250,6 @@ ul {
     color: white;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: inline-flex;
-    display: inline-flex;
     align-items: center;
     flex-shrink: 0;
 }
@@ -259,8 +258,8 @@ ul {
     color: var(--color-accent);
     font-weight: 400;
     /* Lighter weight for elegance */
-    font-style: italic;
-    /* Signature style */
+    font-style: normal;
+    /* Removed italic as per request */
     margin-left: 2px;
 }
 
@@ -1092,6 +1091,12 @@ footer {
     color: white;
     display: block;
     margin-bottom: 1.5rem;
+}
+
+.logo-footer .highlight {
+    color: var(--color-accent);
+    font-weight: 400;
+    font-style: normal;
 }
 
 .footer-brand p {
