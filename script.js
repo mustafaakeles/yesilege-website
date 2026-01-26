@@ -21,12 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
             preloader.style.display = 'none'; // Completely remove
         }
         document.body.style.overflow = ''; // Enable scroll immediately
+
+        // INSTANTLY REVEAL ELEMENTS (Since CSS hides them by default now)
+        gsap.set([".logo", ".nav-links li", ".hero h1", ".hero p", ".hero-btns a", ".scroll-down"], {
+            opacity: 1,
+            y: 0,
+            overwrite: true
+        });
+
         // Show Hero Content Immediately
         const heroContent = document.querySelector('.hero-content');
         if (heroContent) heroContent.style.opacity = '1';
 
-        // Trigger animations immediately (without delay)
-        startHeroAnimations();
+        // Trigger animations immediately (without delay) - Logic handled by set above, but function can run safely
     } else {
         // First Visit: Run Optimized Animation
         window.scrollTo(0, 0);
@@ -96,48 +103,51 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof startHeroAnimations === 'function') startHeroAnimations();
     }
 
-    // 3. Hero Animations (Intro) - Wrapped in function
+    // 3. Hero Animations (Intro) - Modified to .to() because CSS sets initial hidden state
     function startHeroAnimations() {
         if (animationsStarted) return;
         animationsStarted = true;
 
         const tl = gsap.timeline();
 
-        tl.from(".logo", {
-            y: -30,
-            opacity: 0,
+        // Reveal Logo & Nav
+        tl.to(".logo", {
+            y: 0,
+            opacity: 1,
             duration: 1,
             ease: "power3.out"
         })
-            .from(".nav-links li", {
-                y: -20,
-                opacity: 0,
+            .to(".nav-links li", {
+                y: 0,
+                opacity: 1,
                 duration: 0.8,
                 stagger: 0.1,
                 ease: "power3.out"
             }, "-=0.5")
-            .from(".hero h1", {
-                y: 100,
-                opacity: 0,
+
+            // Reveal Hero Content
+            .to(".hero h1", {
+                y: 0,
+                opacity: 1,
                 duration: 1.2,
                 ease: "power4.out"
             }, "-=0.8")
-            .from(".hero p", {
-                y: 50,
-                opacity: 0,
+            .to(".hero p", {
+                y: 0,
+                opacity: 0.9, // Match CSS opacity logic if needed, or 1
                 duration: 1,
                 ease: "power3.out"
             }, "-=0.8")
-            .from(".hero-btns a", {
-                y: 30,
-                opacity: 0,
+            .to(".hero-btns a", {
+                y: 0,
+                opacity: 1,
                 duration: 0.8,
                 stagger: 0.2,
                 ease: "power3.out"
             }, "-=0.6")
-            .from(".scroll-down", {
-                opacity: 0,
-                y: -10,
+            .to(".scroll-down", {
+                opacity: 0.8,
+                y: 0,
                 duration: 1,
                 ease: "power2.out"
             }, "-=0.4");
