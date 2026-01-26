@@ -1171,10 +1171,73 @@ footer {
 @media (max-width: 1024px) {
     .nav-links {
         display: none;
+        /* Default hidden on mobile, toggled via JS */
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--color-primary);
+        /* Dark background for professional look */
+        padding: 1rem 0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Mobile Menu Items Styling */
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-links li:last-child {
+        border-bottom: none;
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 1rem;
+        color: white !important;
+        /* Force white text on dark menu */
+        font-size: 1rem;
+    }
+
+    .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: var(--color-accent) !important;
+    }
+
+    /* Dropdown adjustments for mobile */
+    .dropdown-menu {
+        position: static;
+        /* Stack nicely in flow */
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.2);
+        /* Slightly darker for contrast */
+        box-shadow: none;
+        border-top: none;
+        display: none;
+        /* Hidden by default, JS needs to toggle this */
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .nav-links .dropdown:hover .dropdown-menu {
+        display: flex;
+        /* Show on hover/click */
+    }
+
+    .dropdown-menu li a {
+        color: rgba(255, 255, 255, 0.8) !important;
+        padding-left: 0;
     }
 
     .hamburger {
         display: block;
+        padding-right: 1rem;
     }
 }
 

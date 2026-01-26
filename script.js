@@ -267,15 +267,15 @@ document.addEventListener('DOMContentLoaded', () => {
             navLinks.style.top = '100%';
             navLinks.style.left = '0';
             navLinks.style.width = '100%';
-            navLinks.style.background = 'white';
-            navLinks.style.padding = '2rem';
+            navLinks.style.left = '0';
+            navLinks.style.width = '100%';
+            navLinks.style.background = '#1a3c34'; /* Match Primary Dark properly */
+            navLinks.style.padding = '1rem 0';
+            navLinks.style.zIndex = '999';
 
-            // Force Link Colors for Mobile
+            // Clean inline text colors to let CSS handle hover states
             navLinks.querySelectorAll('a').forEach(a => {
-                a.style.color = '#1a3c34';
-                if (a.classList.contains('btn-primary')) {
-                    a.style.color = 'white';
-                }
+                a.style.color = 'white';
             });
 
             gsap.fromTo(navLinks, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3 });
