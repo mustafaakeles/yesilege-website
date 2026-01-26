@@ -766,25 +766,7 @@ ul {
     background-position: center;
 }
 
-.service-card:nth-child(1) .card-img {
-    background-image: url('https://images.unsplash.com/photo-1581574919402-527863b4b5ce?q=80&w=800');
-    /* Landscape Architecture Blueprint/Plan */
-}
-
-.service-card:nth-child(2) .card-img {
-    background-image: url('https://images.unsplash.com/photo-1604762524889-3e2fcc145683?q=80&w=800');
-    /* Greenhouse Production */
-}
-
-.service-card:nth-child(3) .card-img {
-    background-image: url('https://images.unsplash.com/photo-1616047006789-b7af5afb8c20?q=80&w=800');
-    /* Interior Botanical Design */
-}
-
-.service-card:nth-child(4) .card-img {
-    background-image: url('https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?q=80&w=800');
-    /* Wholesale Plants/Nursery */
-}
+/* Images are handled via inline styles in HTML for flexibility */
 
 
 .card-content {
