@@ -194,17 +194,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 7. Services Cards Stagger
-    gsap.from(".service-card", {
-        scrollTrigger: {
-            trigger: ".services-grid",
-            start: "top 80%",
-        },
-        y: 60,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out"
-    });
+    // 7. Services Cards Stagger (Fixed)
+    const serviceCards = gsap.utils.toArray(".service-card");
+    if (serviceCards.length > 0) {
+        gsap.set(serviceCards, { y: 50, opacity: 0 }); // Initial state
+
+        ScrollTrigger.batch(serviceCards, {
+            start: "top 90%",
+            onEnter: batch => gsap.to(batch, {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: "power3.out",
+                overwrite: true
+            }),
+            once: true // Animasyon sadece bir kere çalışsın (performans ve bug önleme)
+        });
+    }
 
     // 8. Navbar Background on Scroll (Throttled)
     let scrollTimeout;
