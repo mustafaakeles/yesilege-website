@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>İletişim | Yeşil Ege Peyzaj</title>
+    <meta name="description"
+        content="Yeşil Ege ile iletişime geçin. Projeleriniz için teklif alın, bitki siparişi verin veya danışmanlık hizmeti talep edin. İzmir Bayındır merkezli hizmetinizdeyiz.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mascot.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="logo">
+            <span class="logo-icon"><i class="fa-solid fa-leaf"></i></span>
+            Yeşil Ege
+        </div>
+        <div class="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Ana Sayfa</a></li>
+            <li><a href="services.html">Hizmetler</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="care.html">Bitki Bakımı</a></li>
+            <li><a href="contact.html" class="active">İletişim</a></li>
+            <li><a href="https://wa.me/905555555555" class="btn-primary desktop-btn">Teklif Al <i
+                        class="fas fa-arrow-right"></i></a></li>
+        </ul>
+    </nav>
+
+    <!-- Header / Hero Section -->
+    <header class="page-header"
+        style="background-image: url('https://images.unsplash.com/photo-1423666639041-f14d7045b5bddd?auto=format&fit=crop&q=80&w=1920');">
+        <div class="overlay-dark"></div>
+        <div class="container header-content">
+            <h1>Bize Ulaşın</h1>
+            <p>Hayalinizdeki proje için bir kahve molasına bekleriz.</p>
+        </div>
+    </header>
+
+    <!-- Contact Info & Form Section -->
+    <section class="section contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Info Column -->
+                <div class="contact-info">
+                    <span class="subtitle">İLETİŞİM BİLGİLERİ</span>
+                    <h2>Size Nasıl Yardımcı Olabiliriz?</h2>
+                    <p>Projeleriniz, bitki siparişleriniz veya bakım hizmetlerimiz hakkında detaylı bilgi almak için
+                        aşağıdaki kanallardan bize ulaşabilirsiniz.</p>
+
+                    <div class="info-items">
+                        <div class="info-item">
+                            <div class="icon-box">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="details">
+                                <h3>Adresimiz</h3>
+                                <p>Bayındır Çiçekçilik Bölgesi<br>İzmir, Türkiye</p>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="icon-box">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="details">
+                                <h3>Telefon & WhatsApp</h3>
+                                <p><a href="tel:+905555555555">+90 555 555 55 55</a></p>
+                                <p>Hafta içi: 09:00 - 18:00</p>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="icon-box">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="details">
+                                <h3>E-posta</h3>
+                                <p><a href="mailto:info@yesilege.com.tr">info@yesilege.com.tr</a></p>
+                                <p>24 saat içinde dönüş yapılır.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Media Links -->
+                    <div class="social-links-contact">
+                        <h3>Bizi Takip Edin</h3>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Column -->
+                <div class="contact-form-wrapper">
+                    <form class="contact-form">
+                        <h3>Mesaj Gönderin</h3>
+                        <div class="form-group">
+                            <label for="name">Adınız Soyadınız</label>
+                            <input type="text" id="name" name="name" placeholder="Örn: Ahmet Yılmaz" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-posta Adresiniz</label>
+                            <input type="email" id="email" name="email" placeholder="ornek@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telefon Numaranız</label>
+                            <input type="tel" id="phone" name="phone" placeholder="05XX XXX XX XX">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Konu</label>
+                            <select id="subject" name="subject">
+                                <option value="peyzaj">Peyzaj Projesi</option>
+                                <option value="bitki">Bitki Satın Alma</option>
+                                <option value="bakim">Bahçe Bakımı</option>
+                                <option value="diger">Diğer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mesajınız</label>
+                            <textarea id="message" name="message" rows="5"
+                                placeholder="Projenizden veya talebinizden kısaca bahsedin..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary w-100">Mesajı Gönder <i
+                                class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50100.864387228994!2d27.61868478465053!3d38.216664539169435!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14b96277ad22c5e5%3A0x633d02c608249033!2zQmF5xLFuZMSxciwgxLB6bWly!5e0!3m2!1str!2str!4v1708892400000!5m2!1str!2str"
+            width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <div class="logo">
+                    <span class="logo-icon"><i class="fa-solid fa-leaf"></i></span>
+                    Yeşil Ege
+                </div>
+                <p>Doğanın renklerini yaşam alanlarınıza taşıyoruz. Profesyonel peyzaj ve bitki üretiminde güvenilir
+                    adres.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Hızlı Erişim</h4>
+                <ul>
+                    <li><a href="index.html">Ana Sayfa</a></li>
+                    <li><a href="services.html">Hizmetlerimiz</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html">İletişim</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>İletişim</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Bayındır / İZMİR</p>
+                <p><i class="fas fa-phone"></i> +90 555 555 55 55</p>
+                <p><i class="fas fa-envelope"></i> info@yesilege.com.tr</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Yeşil Ege Peyzaj. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+    <script src="mascot.js"></script>
+</body>
+
+</html>
