@@ -27,9 +27,28 @@
 
     --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
 
     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Custom Scrollbar for Premium Feel */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-accent);
+    border-radius: 5px;
+    border: 2px solid var(--color-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #d4a96e;
 }
 
 * {
@@ -41,6 +60,8 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    overflow-x: hidden;
+    /* Prevent horizontal scroll */
 }
 
 body {
@@ -49,7 +70,6 @@ body {
     color: var(--color-text);
     line-height: 1.6;
     overflow-x: hidden;
-    /* Hide Scrollbar but allow scrolling */
     scrollbar-width: none;
     /* Firefox */
     -ms-overflow-style: none;
