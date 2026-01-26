@@ -37,7 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Trigger animations immediately (without delay) - Logic handled by set above, but function can run safely
     } else {
         // First Visit: Run Optimized Animation
-        window.scrollTo(0, 0);
+        // Only scroll to top if NO hash is present (allow direct linking)
+        if (!window.location.hash) {
+            window.scrollTo(0, 0);
+        }
         sessionStorage.setItem('visited', 'true');
         // Logic handled by GSAP timeline below to prevent conflicts
     }
@@ -80,7 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const preloaderTl = gsap.timeline();
 
     // Only run if preloader exists and hasn't been removed by "hasVisited" logic
-    if (document.querySelector('.preloader') && document.querySelector('.preloader').style.display !== 'none') {
+    const preloaderEl = document.querySelector('.preloader');
+    if (preloaderEl && preloaderEl.style.display !== 'none') {
         preloaderTl.to(".loader-text", {
             y: 0,
             opacity: 1,
@@ -94,13 +98,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 ease: "power2.inOut",
                 delay: 0.2, // Short pause to read text
                 onComplete: () => {
-                    if (preloader) preloader.style.display = 'none';
+                    if (preloaderEl) preloaderEl.style.display = 'none';
                     document.body.style.overflow = '';
                     startHeroAnimations();
                 }
             });
     } else {
-        // Fallback if accessed directly with visited state but timeline tries to run
+        // Fallback for pages without preloader or if already visited
+        document.body.style.overflow = '';
         if (typeof startHeroAnimations === 'function') startHeroAnimations();
     }
 

@@ -125,6 +125,11 @@ ul {
     text-transform: uppercase;
 }
 
+/* Ensure anchor links don't hide behind fixed/sticky header */
+section[id] {
+    scroll-margin-top: 120px;
+}
+
 .section-header {
     text-align: center;
     margin-bottom: 4rem;
