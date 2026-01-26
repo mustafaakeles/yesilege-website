@@ -384,30 +384,59 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.set(slides, { opacity: 0 });
     gsap.set(slides[0], { opacity: 1 });
 
-    // 12. Contact Form Handling (Simulated)
+    // 12. Contact Form Handling (Hybrid: AJAX or Simulation)
     const contactForm = document.querySelector('.contact-form form');
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = contactForm.querySelector('button');
             const originalText = btn.textContent;
 
+            // UI Loading State
             btn.textContent = 'Gönderiliyor...';
             btn.style.opacity = '0.7';
             btn.disabled = true;
 
-            setTimeout(() => {
-                btn.textContent = 'Mesajınız İletildi! ✓';
-                btn.style.backgroundColor = '#4d7c6e';
-                btn.style.opacity = '1';
-                contactForm.reset();
+            const formData = new FormData(contactForm);
+            const action = contactForm.getAttribute('action');
 
+            try {
+                if (action && action.includes('http')) {
+                    // Real Submission via AJAX
+                    const response = await fetch(action, {
+                        method: contactForm.method,
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        btn.textContent = 'Mesajınız İletildi! ✓';
+                        btn.style.backgroundColor = '#4d7c6e';
+                        contactForm.reset();
+                    } else {
+                        throw new Error('Form gönderilemedi');
+                    }
+                } else {
+                    // Fallback Simulation (if no action URL provided)
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    btn.textContent = 'Simülasyon: Mesaj Alındı! ✓';
+                    btn.style.backgroundColor = '#4d7c6e';
+                    contactForm.reset();
+                }
+            } catch (error) {
+                console.error(error);
+                btn.textContent = 'Hata Oluştu!';
+                btn.style.backgroundColor = '#d9534f';
+            } finally {
+                btn.style.opacity = '1';
                 setTimeout(() => {
                     btn.textContent = originalText;
                     btn.style.backgroundColor = '';
                     btn.disabled = false;
                 }, 3000);
-            }, 1500);
+            }
         });
     }
 });
