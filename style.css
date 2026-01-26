@@ -801,80 +801,57 @@ ul {
     gap: 0.8rem;
 }
 
-/* Gallery - Masonry Grid */
+/* Gallery - Grid Layout */
 .gallery {
     padding: 6rem 0;
+    background-color: #FAFAFA;
 }
 
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 300px;
-    /* Taller rows for better visibility */
     gap: 1.5rem;
 }
 
 .gallery-item {
     position: relative;
-    background-color: #2d4a3e;
-    /* Dark green fallback instead of gray */
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
     cursor: pointer;
-    background-size: cover;
-    background-position: center;
-    transition: transform 0.4s ease;
+    box-shadow: var(--shadow-md);
+    aspect-ratio: 4/3;
+    /* Consistent height */
+    background-color: var(--color-primary);
+    /* Loading bg */
 }
 
-/* Specific Project Images */
-.gallery-item:nth-child(1) {
-    background-image: url('https://images.unsplash.com/photo-1600596542815-40c598cd53da?q=80&w=800');
-    /* Villa */
+/* Image Styling */
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: block;
 }
 
-.gallery-item:nth-child(2) {
-    background-image: url('https://images.unsplash.com/photo-1598902168393-2761895a940f?q=80&w=800');
-    /* Stone House */
+.gallery-item:hover img {
+    transform: scale(1.1);
 }
 
-.gallery-item:nth-child(3) {
-    background-image: url('https://images.unsplash.com/photo-1628131378822-26f63445853a?q=80&w=800');
-    /* Vineyard */
-}
-
-.gallery-item:nth-child(4) {
-    background-image: url('https://images.unsplash.com/photo-1557429287-b2e26467fc2b?q=80&w=800');
-    /* Terrace */
-}
-
-.gallery-item:nth-child(5) {
-    background-image: url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=800');
-    /* Greenhouse */
-}
-
-.gallery-item:hover {
-    transform: scale(1.02);
-}
-
-
-.large {
-    grid-column: span 2;
-    grid-row: span 2;
-}
-
+/* Overlay Styling */
 .gallery-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    background: linear-gradient(to top, rgba(26, 60, 52, 0.95) 0%, rgba(26, 60, 52, 0.4) 50%, transparent 100%);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 2rem;
+    padding: 2.5rem 2rem;
     opacity: 0;
-    transition: var(--transition);
+    transition: opacity 0.4s ease;
 }
 
 .gallery-item:hover .gallery-overlay {
@@ -883,22 +860,39 @@ ul {
 
 .gallery-overlay h5 {
     color: white;
-    font-size: 1.4rem;
-    margin-bottom: 0.3rem;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
     transform: translateY(20px);
-    transition: var(--transition);
+    transition: transform 0.4s ease 0.1s;
 }
 
 .gallery-overlay p {
     color: var(--color-accent);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
     transform: translateY(20px);
-    transition: var(--transition);
+    transition: transform 0.4s ease 0.2s;
 }
 
-.gallery-item:hover h5,
-.gallery-item:hover p {
+.gallery-item:hover .gallery-overlay h5,
+.gallery-item:hover .gallery-overlay p {
     transform: translateY(0);
+}
+
+/* Responsive adjustments for gallery */
+@media (max-width: 900px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* CTA */

@@ -213,6 +213,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 7.5. Gallery Grid Animation
+    const galleryItemsAnim = gsap.utils.toArray('.gallery-item');
+    if (galleryItemsAnim.length > 0) {
+        gsap.set(galleryItemsAnim, { opacity: 0, y: 50 });
+
+        ScrollTrigger.batch(galleryItemsAnim, {
+            start: "top 85%",
+            onEnter: batch => gsap.to(batch, {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.15, // Stagger effect
+                ease: "power3.out",
+                overwrite: true
+            }),
+            once: true
+        });
+    }
+
     // 8. Navbar Background on Scroll (Throttled)
     let scrollTimeout;
     const navbar = document.getElementById('navbar');
@@ -465,15 +484,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Open Lightbox
         galleryItems.forEach(item => {
             item.addEventListener('click', () => {
-                // Computed Style'dan background-image'i al
-                const style = window.getComputedStyle(item);
-                const bgImage = style.backgroundImage;
+                // Get image source from the img tag inside the gallery item
+                const img = item.querySelector('img');
 
-                // url("...") stringini temizle
-                const src = bgImage.replace('url("', '').replace('")', '').replace('url(', '').replace(')', '');
-
-                if (src && src !== 'none') {
-                    lightboxImg.src = src;
+                if (img && img.src) {
+                    lightboxImg.src = img.src;
                     lightbox.classList.add('active');
                     document.body.style.overflow = 'hidden'; // Scroll'u engelle
                 }
