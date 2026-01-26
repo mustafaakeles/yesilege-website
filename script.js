@@ -439,4 +439,63 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // 13. Lightbox Functionality
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    if (galleryItems.length > 0) {
+        // Create Lightbox DOM
+        const lightbox = document.createElement('div');
+        lightbox.className = 'lightbox';
+        lightbox.innerHTML = `
+            <button class="lightbox-close">&times;</button>
+            <img src="" alt="Galeri Büyük Boy">
+        `;
+        document.body.appendChild(lightbox);
+
+        const lightboxImg = lightbox.querySelector('img');
+        const closeBtn = lightbox.querySelector('.lightbox-close');
+
+        // Open Lightbox
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Computed Style'dan background-image'i al
+                const style = window.getComputedStyle(item);
+                const bgImage = style.backgroundImage;
+
+                // url("...") stringini temizle
+                const src = bgImage.replace('url("', '').replace('")', '').replace('url(', '').replace(')', '');
+
+                if (src && src !== 'none') {
+                    lightboxImg.src = src;
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Scroll'u engelle
+                }
+            });
+        });
+
+        // Close Lightbox
+        const closeLightbox = () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                lightboxImg.src = '';
+            }, 300); // Transition bitince sil
+        };
+
+        closeBtn.addEventListener('click', closeLightbox);
+
+        // Close on outside click
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+    }
 });
