@@ -1613,3 +1613,37 @@ footer {
 .gallery-overlay {
     display: none !important;
 }
+
+/* ===========================
+   Codera Signature
+   =========================== */
+.codera-signature {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.5px;
+    font-weight: 300;
+}
+
+.codera-signature a {
+    color: #d4af37;
+    /* Gold */
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.codera-signature a:hover {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.footer-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
