@@ -19,6 +19,8 @@
     --color-text: #2c2c2c;
     --color-text-light: #666666;
     --color-border: #e0e0e0;
+    --color-bg-light: #f8f8f8;
+    --color-bg-dark: #111111;
 
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;

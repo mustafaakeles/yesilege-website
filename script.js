@@ -2,6 +2,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Global flag to prevent duplicate animations
+    let animationsStarted = false;
+
     // 0. Disable Scroll on Load
     document.body.style.overflow = 'hidden';
     if ('scrollRestoration' in history) {
@@ -29,10 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo(0, 0);
         sessionStorage.setItem('visited', 'true');
 
-        let animationsStarted = false;
-
         setTimeout(() => {
-            if (preloader && !animationsStarted) {
+            if (preloader) {
                 preloader.style.opacity = '0';
                 preloader.style.pointerEvents = 'none';
                 document.body.style.overflow = '';
