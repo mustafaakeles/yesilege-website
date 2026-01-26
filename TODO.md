@@ -28,6 +28,11 @@ Aşağıdaki maddeler "Dip Köşe Analiz" sonucu tespit edilen tutarsızlıklard
 - [x] **Orkide Bakımı:** Düzeltildi.
 - [ ] **Diğer Blog Yazıları:** Mobil menü ikonu (Hamburger) eksik, kullanıcı sayfada mahsur kalıyor. Scriptler eksik. **Tüm blog yazıları tek tek güncellenecek.**
 
+#### D. Acil Düzeltmeler (Kullanıcı Bildirimleri)
+- [ ] **Blog Navigasyon:** Blog sayfasındaki "Hizmetler" dropdown linkleri çalışmıyor (boş # linkler). `services.html` çapalarına yönlendirilecek.
+- [ ] **Blog AI Asistanı:** Blog sayfasında AI (Magnolia) butonu eksik. `mascot.js` ve `mascot.css` eklenecek.
+- [ ] **Blog Görselleri:** Tüm blog kartı görselleri (Unsplash URL'leri) yerel üretilen görsellerle değiştirilecek (Villa, Kış Bahçesi, Salon Bitkileri vb.).
+
 #### C. İçerik ve SEO
 - [ ] **Blog İçeriği:** Blog yazıları zenginleştirilecek (Orkide örneğindeki gibi).
 - [ ] **Meta Tagleri:** Eksik description/title kontrolü.
