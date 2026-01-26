@@ -192,28 +192,42 @@ ul {
 }
 
 /* Navigation */
+/* Navigation - Exclusive & Fixed */
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
-    padding: 0;
-    /* Remove padding here, let container handle it or specific padding */
-    transition: var(--transition);
+    padding: 1rem 0;
+    /* Consistent padding */
     background-color: var(--color-primary);
+    /* Always dark green, no transparency */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
+/* Scrolled State - Just slightly tighter if needed, or keeping it same for stability */
 .navbar.scrolled {
     padding: 0.8rem 0;
-    box-shadow: var(--shadow-md);
-    background-color: rgba(255, 255, 255, 0.98);
+    background-color: var(--color-primary);
+    /* Keep it dark! */
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Ensure links are always white since bg is always dark */
+.navbar .logo,
+.nav-links a,
 .navbar.scrolled .logo,
 .navbar.scrolled .nav-links a {
-    color: var(--color-primary);
+    color: white;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--color-accent);
 }
 
 .navbar .logo {
