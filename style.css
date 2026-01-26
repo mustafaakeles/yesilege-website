@@ -302,8 +302,15 @@ ul {
     transition: var(--transition);
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links .nav-icon:hover {
     color: var(--color-accent);
+}
+
+.nav-links .nav-icon {
+    font-size: 1.2rem;
+    color: white;
+    transition: var(--transition);
 }
 
 /* Dropdown Styling */
