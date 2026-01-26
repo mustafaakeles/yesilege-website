@@ -281,268 +281,267 @@ document.addEventListener('DOMContentLoaded', () => {
 
             gsap.fromTo(navLinks, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3 });
         }
-    }
     });
 
-// Mobile Dropdown Toggle Logic
-const dropdownToggles = document.querySelectorAll('.dropdown > a');
-dropdownToggles.forEach(toggle => {
-    toggle.addEventListener('click', (e) => {
-        // Only on mobile (check window width or hamburger visibility)
-        if (window.innerWidth <= 900) {
-            e.preventDefault(); // Stop link navigation
-            const parent = toggle.parentElement;
-            parent.classList.toggle('active');
+    // Mobile Dropdown Toggle Logic
+    const dropdownToggles = document.querySelectorAll('.dropdown > a');
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            // Only on mobile (check window width or hamburger visibility)
+            if (window.innerWidth <= 900) {
+                e.preventDefault(); // Stop link navigation
+                const parent = toggle.parentElement;
+                parent.classList.toggle('active');
 
-            // Optional: Rotate chevron
-            const icon = toggle.querySelector('i');
-            if (icon) {
-                gsap.to(icon, { rotation: parent.classList.contains('active') ? 180 : 0, duration: 0.3 });
-            }
-        }
-    });
-});
-
-// Ensure nav links reappear if resized to desktop
-window.addEventListener('resize', () => {
-    if (window.innerWidth > 900) {
-        navLinks.style.display = '';
-        navLinks.style.opacity = '';
-        navLinks.style.transform = ''; /* Clear GSAP transforms */
-        // Clear inline styles set by JS
-        navLinks.removeAttribute('style');
-    }
-});
-
-// 10. Number Counter Animation (keeping the logic but wrapping in ScrollTrigger)
-const statsSection = document.querySelector('.stats');
-if (statsSection) {
-    ScrollTrigger.create({
-        trigger: ".stats",
-        start: "top 70%",
-        once: true,
-        onEnter: () => {
-            document.querySelectorAll('.stat-item .number').forEach(el => {
-                let goal = parseInt(el.dataset.target);
-                // Reset to 0 before animating since we have default values in HTML now
-                el.textContent = '0';
-
-                // Use GSAP's object animation for smooth counting
-                let obj = { val: 0 };
-                gsap.to(obj, {
-                    val: goal,
-                    duration: 2,
-                    ease: "power2.out",
-                    onUpdate: () => {
-                        // Format number nicely (e.g. 1.000)
-                        el.textContent = Math.floor(obj.val).toLocaleString('tr-TR') + "+";
-                    }
-                });
-            });
-        }
-    });
-}
-
-// 11. Hero Background Slider
-// 11. Hero Background Slider
-const slides = document.querySelectorAll('.slide');
-const prevBtn = document.querySelector('.nav-btn.prev');
-const nextBtn = document.querySelector('.nav-btn.next');
-
-let currentSlide = 0;
-let isAnimating = false;
-let slideInterval;
-const intervalTime = 6000;
-
-function goToSlide(index, direction) {
-    if (isAnimating || index === currentSlide) return;
-    isAnimating = true;
-
-    const activeSlide = slides[currentSlide];
-    const nextSlide = slides[index];
-
-    // Determine animation direction if not provided
-    // (Optional: could add direction-based sliding, but fade is safer/classier)
-
-    // Ensure the incoming slide is visible and on top
-    nextSlide.style.zIndex = '3'; // Higher than active (2)
-    activeSlide.style.zIndex = '2';
-
-    gsap.to(activeSlide, {
-        opacity: 0,
-        duration: 1.0,
-        ease: "power2.inOut"
-    });
-
-    gsap.fromTo(nextSlide,
-        { opacity: 0, scale: 1.1 },
-        {
-            opacity: 1,
-            scale: 1,
-            duration: 1.0,
-            ease: "power2.inOut",
-            onComplete: () => {
-                activeSlide.classList.remove('active');
-                nextSlide.classList.add('active');
-
-                // Reset inline styles to let CSS class handle z-index
-                activeSlide.style.zIndex = '';
-                activeSlide.style.opacity = '';
-                nextSlide.style.zIndex = '';
-
-                isAnimating = false;
-            }
-        }
-    );
-
-    currentSlide = index;
-}
-
-function nextSlide() {
-    let newIndex = (currentSlide + 1) % slides.length;
-    goToSlide(newIndex, 'next');
-}
-
-function prevSlide() {
-    let newIndex = (currentSlide - 1 + slides.length) % slides.length;
-    goToSlide(newIndex, 'prev');
-}
-
-// Event Listeners
-if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-        resetInterval();
-        nextSlide();
-    });
-}
-
-if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
-        resetInterval();
-        prevSlide();
-    });
-}
-
-function resetInterval() {
-    clearInterval(slideInterval);
-    slideInterval = setInterval(nextSlide, intervalTime);
-}
-
-// Start Loop
-resetInterval();
-
-// Initial State ensure
-gsap.set(slides, { opacity: 0 });
-gsap.set(slides[0], { opacity: 1 });
-
-// 12. Contact Form Handling (Hybrid: AJAX or Simulation)
-const contactForm = document.querySelector('.contact-form form');
-if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = contactForm.querySelector('button');
-        const originalText = btn.textContent;
-
-        // UI Loading State
-        btn.textContent = 'Gönderiliyor...';
-        btn.style.opacity = '0.7';
-        btn.disabled = true;
-
-        const formData = new FormData(contactForm);
-        const action = contactForm.getAttribute('action');
-
-        try {
-            if (action && action.includes('http')) {
-                // Real Submission via AJAX
-                const response = await fetch(action, {
-                    method: contactForm.method,
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    btn.textContent = 'Mesajınız İletildi! ✓';
-                    btn.style.backgroundColor = '#4d7c6e';
-                    contactForm.reset();
-                } else {
-                    throw new Error('Form gönderilemedi');
+                // Optional: Rotate chevron
+                const icon = toggle.querySelector('i');
+                if (icon) {
+                    gsap.to(icon, { rotation: parent.classList.contains('active') ? 180 : 0, duration: 0.3 });
                 }
-            } else {
-                // Fallback Simulation (if no action URL provided)
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                btn.textContent = 'Simülasyon: Mesaj Alındı! ✓';
-                btn.style.backgroundColor = '#4d7c6e';
-                contactForm.reset();
-            }
-        } catch (error) {
-            console.error(error);
-            btn.textContent = 'Hata Oluştu!';
-            btn.style.backgroundColor = '#d9534f';
-        } finally {
-            btn.style.opacity = '1';
-            setTimeout(() => {
-                btn.textContent = originalText;
-                btn.style.backgroundColor = '';
-                btn.disabled = false;
-            }, 3000);
-        }
-    });
-}
-
-// 13. Lightbox Functionality
-const galleryItems = document.querySelectorAll('.gallery-item');
-if (galleryItems.length > 0) {
-    // Create Lightbox DOM
-    const lightbox = document.createElement('div');
-    lightbox.className = 'lightbox';
-    lightbox.innerHTML = `
-            <button class="lightbox-close">&times;</button>
-            <img src="" alt="Galeri Büyük Boy">
-        `;
-    document.body.appendChild(lightbox);
-
-    const lightboxImg = lightbox.querySelector('img');
-    const closeBtn = lightbox.querySelector('.lightbox-close');
-
-    // Open Lightbox
-    galleryItems.forEach(item => {
-        item.addEventListener('click', () => {
-            // Get image source from the img tag inside the gallery item
-            const img = item.querySelector('img');
-
-            if (img && img.src) {
-                lightboxImg.src = img.src;
-                lightbox.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Scroll'u engelle
             }
         });
     });
 
-    // Close Lightbox
-    const closeLightbox = () => {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-        setTimeout(() => {
-            lightboxImg.src = '';
-        }, 300); // Transition bitince sil
-    };
-
-    closeBtn.addEventListener('click', closeLightbox);
-
-    // Close on outside click
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-            closeLightbox();
+    // Ensure nav links reappear if resized to desktop
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 900) {
+            navLinks.style.display = '';
+            navLinks.style.opacity = '';
+            navLinks.style.transform = ''; /* Clear GSAP transforms */
+            // Clear inline styles set by JS
+            navLinks.removeAttribute('style');
         }
     });
 
-    // Close on Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-            closeLightbox();
-        }
-    });
-}
+    // 10. Number Counter Animation (keeping the logic but wrapping in ScrollTrigger)
+    const statsSection = document.querySelector('.stats');
+    if (statsSection) {
+        ScrollTrigger.create({
+            trigger: ".stats",
+            start: "top 70%",
+            once: true,
+            onEnter: () => {
+                document.querySelectorAll('.stat-item .number').forEach(el => {
+                    let goal = parseInt(el.dataset.target);
+                    // Reset to 0 before animating since we have default values in HTML now
+                    el.textContent = '0';
+
+                    // Use GSAP's object animation for smooth counting
+                    let obj = { val: 0 };
+                    gsap.to(obj, {
+                        val: goal,
+                        duration: 2,
+                        ease: "power2.out",
+                        onUpdate: () => {
+                            // Format number nicely (e.g. 1.000)
+                            el.textContent = Math.floor(obj.val).toLocaleString('tr-TR') + "+";
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    // 11. Hero Background Slider
+    // 11. Hero Background Slider
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.querySelector('.nav-btn.prev');
+    const nextBtn = document.querySelector('.nav-btn.next');
+
+    let currentSlide = 0;
+    let isAnimating = false;
+    let slideInterval;
+    const intervalTime = 6000;
+
+    function goToSlide(index, direction) {
+        if (isAnimating || index === currentSlide) return;
+        isAnimating = true;
+
+        const activeSlide = slides[currentSlide];
+        const nextSlide = slides[index];
+
+        // Determine animation direction if not provided
+        // (Optional: could add direction-based sliding, but fade is safer/classier)
+
+        // Ensure the incoming slide is visible and on top
+        nextSlide.style.zIndex = '3'; // Higher than active (2)
+        activeSlide.style.zIndex = '2';
+
+        gsap.to(activeSlide, {
+            opacity: 0,
+            duration: 1.0,
+            ease: "power2.inOut"
+        });
+
+        gsap.fromTo(nextSlide,
+            { opacity: 0, scale: 1.1 },
+            {
+                opacity: 1,
+                scale: 1,
+                duration: 1.0,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    activeSlide.classList.remove('active');
+                    nextSlide.classList.add('active');
+
+                    // Reset inline styles to let CSS class handle z-index
+                    activeSlide.style.zIndex = '';
+                    activeSlide.style.opacity = '';
+                    nextSlide.style.zIndex = '';
+
+                    isAnimating = false;
+                }
+            }
+        );
+
+        currentSlide = index;
+    }
+
+    function nextSlide() {
+        let newIndex = (currentSlide + 1) % slides.length;
+        goToSlide(newIndex, 'next');
+    }
+
+    function prevSlide() {
+        let newIndex = (currentSlide - 1 + slides.length) % slides.length;
+        goToSlide(newIndex, 'prev');
+    }
+
+    // Event Listeners
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            resetInterval();
+            nextSlide();
+        });
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            resetInterval();
+            prevSlide();
+        });
+    }
+
+    function resetInterval() {
+        clearInterval(slideInterval);
+        slideInterval = setInterval(nextSlide, intervalTime);
+    }
+
+    // Start Loop
+    resetInterval();
+
+    // Initial State ensure
+    gsap.set(slides, { opacity: 0 });
+    gsap.set(slides[0], { opacity: 1 });
+
+    // 12. Contact Form Handling (Hybrid: AJAX or Simulation)
+    const contactForm = document.querySelector('.contact-form form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = contactForm.querySelector('button');
+            const originalText = btn.textContent;
+
+            // UI Loading State
+            btn.textContent = 'Gönderiliyor...';
+            btn.style.opacity = '0.7';
+            btn.disabled = true;
+
+            const formData = new FormData(contactForm);
+            const action = contactForm.getAttribute('action');
+
+            try {
+                if (action && action.includes('http')) {
+                    // Real Submission via AJAX
+                    const response = await fetch(action, {
+                        method: contactForm.method,
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        btn.textContent = 'Mesajınız İletildi! ✓';
+                        btn.style.backgroundColor = '#4d7c6e';
+                        contactForm.reset();
+                    } else {
+                        throw new Error('Form gönderilemedi');
+                    }
+                } else {
+                    // Fallback Simulation (if no action URL provided)
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    btn.textContent = 'Simülasyon: Mesaj Alındı! ✓';
+                    btn.style.backgroundColor = '#4d7c6e';
+                    contactForm.reset();
+                }
+            } catch (error) {
+                console.error(error);
+                btn.textContent = 'Hata Oluştu!';
+                btn.style.backgroundColor = '#d9534f';
+            } finally {
+                btn.style.opacity = '1';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.backgroundColor = '';
+                    btn.disabled = false;
+                }, 3000);
+            }
+        });
+    }
+
+    // 13. Lightbox Functionality
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    if (galleryItems.length > 0) {
+        // Create Lightbox DOM
+        const lightbox = document.createElement('div');
+        lightbox.className = 'lightbox';
+        lightbox.innerHTML = `
+            <button class="lightbox-close">&times;</button>
+            <img src="" alt="Galeri Büyük Boy">
+        `;
+        document.body.appendChild(lightbox);
+
+        const lightboxImg = lightbox.querySelector('img');
+        const closeBtn = lightbox.querySelector('.lightbox-close');
+
+        // Open Lightbox
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Get image source from the img tag inside the gallery item
+                const img = item.querySelector('img');
+
+                if (img && img.src) {
+                    lightboxImg.src = img.src;
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Scroll'u engelle
+                }
+            });
+        });
+
+        // Close Lightbox
+        const closeLightbox = () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                lightboxImg.src = '';
+            }, 300); // Transition bitince sil
+        };
+
+        closeBtn.addEventListener('click', closeLightbox);
+
+        // Close on outside click
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+    }
 });
