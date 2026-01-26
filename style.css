@@ -198,20 +198,24 @@ ul {
 .navbar.scrolled {
     padding: 0.8rem 0;
     box-shadow: var(--shadow-md);
+    background-color: rgba(255, 255, 255, 0.98);
 }
 
 .navbar.scrolled .logo,
-.navbar .logo {
-    color: white;
-    /* Always white */
+.navbar.scrolled .nav-links a {
+    color: var(--color-primary);
 }
 
-.navbar.scrolled .nav-links a,
+.navbar .logo {
+    color: white;
+}
+
 .navbar .nav-links a {
     color: rgba(255, 255, 255, 0.9);
 }
 
-.navbar .nav-links a:hover {
+.navbar .nav-links a:hover,
+.navbar.scrolled .nav-links a:hover {
     color: var(--color-accent);
 }
 
@@ -236,7 +240,9 @@ ul {
     color: white;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: inline-flex;
+    display: inline-flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .logo .highlight {
@@ -1137,6 +1143,16 @@ footer {
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+    .nav-links {
+        display: none;
+    }
+
+    .hamburger {
+        display: block;
+    }
+}
+
 @media (max-width: 900px) {
     .feature-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1182,14 +1198,6 @@ footer {
     .stats-container {
         flex-direction: column;
         gap: 2rem;
-    }
-
-    .nav-links {
-        display: none;
-    }
-
-    .hamburger {
-        display: block;
     }
 
     .hero h1 {
