@@ -49,6 +49,16 @@ body {
     color: var(--color-text);
     line-height: 1.6;
     overflow-x: hidden;
+    /* Hide Scrollbar but allow scrolling */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+}
+
+/* Hide Scrollbar for Chrome/Safari/Webkit */
+body::-webkit-scrollbar {
+    display: none;
 }
 
 h1,

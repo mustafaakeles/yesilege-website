@@ -28,23 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Trigger animations immediately (without delay)
         startHeroAnimations();
     } else {
-        // First Visit: Run Animation
+        // First Visit: Run Optimized Animation
         window.scrollTo(0, 0);
         sessionStorage.setItem('visited', 'true');
-
-        setTimeout(() => {
-            if (preloader) {
-                preloader.style.opacity = '0';
-                preloader.style.pointerEvents = 'none';
-                document.body.style.overflow = '';
-                document.querySelector('.hero-content').style.opacity = '1';
-                startHeroAnimations();
-                // Remove from DOM after fade out to prevent clicks/overlaps
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 500);
-            }
-        }, 3500);
+        // Logic handled by GSAP timeline below to prevent conflicts
     }
 
     // 1. Smooth Scrolling with Lenis
@@ -81,26 +68,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Register GSAP Plugins
     gsap.registerPlugin(ScrollTrigger);
 
-    // Preloader Animation
+    // Optimized Preloader Animation (Fast & Smooth)
     const preloaderTl = gsap.timeline();
 
-    preloaderTl.to(".loader-text", {
-        y: 0,
-        duration: 1,
-        ease: "power4.out",
-        delay: 0.2
-    })
-        .to(".preloader", {
-            y: "-100%",
-            duration: 1.2,
-            ease: "power3.inOut",
-            delay: 0.5,
-            onComplete: () => {
-                document.body.style.overflow = ''; // Re-enable scroll
-                // Start Hero Animations after preloader is gone
-                startHeroAnimations();
-            }
-        });
+    // Only run if preloader exists and hasn't been removed by "hasVisited" logic
+    if (document.querySelector('.preloader') && document.querySelector('.preloader').style.display !== 'none') {
+        preloaderTl.to(".loader-text", {
+            y: 0,
+            opacity: 1,
+            duration: 0.5,
+            ease: "back.out(1.7)", // Subtle pop for premium feel
+            delay: 0.1
+        })
+            .to(".preloader", {
+                opacity: 0, // Fade out instead of slide up to prevent "jumping"
+                duration: 0.4,
+                ease: "power2.inOut",
+                delay: 0.2, // Short pause to read text
+                onComplete: () => {
+                    if (preloader) preloader.style.display = 'none';
+                    document.body.style.overflow = '';
+                    startHeroAnimations();
+                }
+            });
+    } else {
+        // Fallback if accessed directly with visited state but timeline tries to run
+        if (typeof startHeroAnimations === 'function') startHeroAnimations();
+    }
 
     // 3. Hero Animations (Intro) - Wrapped in function
     function startHeroAnimations() {
