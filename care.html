@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitki Bakım Rehberi | Yeşil Ege</title>
+    <meta name="description" content="Ege iklimine uygun bitkiler için mevsimsel bakım, sulama ve gübreleme ipuçları.">
+
+    <!-- Open Graph SEO -->
+    <meta property="og:title" content="Bitki Bakım Rehberi | Yeşil Ege">
+    <meta property="og:description" content="Bitkileriniz için yaşam kılavuzu.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1518531933037-91b2f5d2294c?q=80&w=1200">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/628/628283.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-header {
+            background-color: var(--color-primary);
+            padding: 8rem 0 4rem 0;
+            color: white;
+            text-align: center;
+            /* Added Background Image for Premium Look */
+            background-image: linear-gradient(rgba(26, 60, 52, 0.85), rgba(26, 60, 52, 0.85)), url('https://images.unsplash.com/photo-1518531933037-91b2f5d2294c?q=80&w=1600&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .care-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 4rem 0;
+        }
+
+        .care-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 1px solid #eee;
+        }
+
+        .care-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .care-img {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .care-content {
+            padding: 2rem;
+        }
+
+        .care-content h3 {
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        .care-content ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .care-content li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+
+        .care-content li i {
+            color: var(--color-accent);
+            font-size: 0.8rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.8rem;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation (Same as Main) -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">Yeşil<span class="highlight">Ege</span>.</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Ana Sayfa</a></li>
+                <li><a href="index.html#about">Hakkımızda</a></li>
+                <li><a href="index.html#services">Hizmetler</a></li>
+                <li><a href="care.html" class="highlight">Bitki Bakım Rehberi</a></li>
+                <li><a href="index.html#contact" class="btn-primary">İletişim</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <span class="subtitle"> UZMAN TAVSİYELERİ</span>
+            <h1>Bitkileriniz İçin Yaşam Kılavuzu</h1>
+            <p>Ege iklimine uygun bitkiler için mevsimsel bakım, sulama ve gübreleme ipuçları.</p>
+        </div>
+    </header>
+
+    <!-- Care Content -->
+    <section class="container">
+        <div class="care-grid">
+
+            <!-- Card 1 -->
+            <article class="care-card">
+                <div class="care-img"
+                    style="background-image: url('https://images.unsplash.com/photo-1459156212016-c812468e2115?q=80&w=800');">
+                </div>
+                <div class="care-content">
+                    <span class="tag">İç Mekan</span>
+                    <h3>Orkide Bakımı</h3>
+                    <p>Orkidelerin uzun ömürlü olması için doğrudan güneş ışığından kaçının. Köklerin hava almasını
+                        sağlayın.</p>
+                    <ul>
+                        <li><i class="fas fa-tint"></i> Haftada 1 kez daldırma sulama</li>
+                        <li><i class="fas fa-sun"></i> Yarı gölge, aydınlık ortam</li>
+                        <li><i class="fas fa-thermometer-half"></i> 18-25°C ideal sıcaklık</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="care-card">
+                <div class="care-img"
+                    style="background-image: url('https://images.unsplash.com/photo-1598902168393-2761895a940f?q=80&w=800');">
+                </div>
+                <div class="care-content">
+                    <span class="tag">Dış Mekan</span>
+                    <h3>Begonvil (Gelin Duvağı)</h3>
+                    <p>Ege'nin simgesi begonviller güneşi çok sever. Çiçeklenmeyi artırmak için suyu dengeli verin.</p>
+                    <ul>
+                        <li><i class="fas fa-tint"></i> Toprak kurudukça bol su</li>
+                        <li><i class="fas fa-sun"></i> Tam güneş</li>
+                        <li><i class="fas fa-cut"></i> Kış sonu sert budama</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="care-card">
+                <div class="care-img"
+                    style="background-image: url('https://images.unsplash.com/photo-1558904541-efa843a96f01?q=80&w=800&auto=format&fit=crop');">
+                </div>
+                <div class="care-content">
+                    <span class="tag">Peyzaj</span>
+                    <h3>Çim Alan Bakımı</h3>
+                    <p>Yemyeşil bir çim için düzenli biçim ve havalandırma şarttır. Mantar hastalıklarına dikkat edin.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-tint"></i> Sabah erken saatte sulama</li>
+                        <li><i class="fas fa-cut"></i> Haftada 1 kez biçim (Yazın)</li>
+                        <li><i class="fas fa-seedling"></i> Yılda 2 kez gübreleme</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Card 4 -->
+            <article class="care-card">
+                <div class="care-img"
+                    style="background-image: url('https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=800');">
+                </div>
+                <div class="care-content">
+                    <span class="tag">İç Mekan</span>
+                    <h3>Sukulent & Kaktüs</h3>
+                    <p>Az su, çok ışık prensibiyle yaşarlar. Toprağın tamamen kurumasını bekleyin.</p>
+                    <ul>
+                        <li><i class="fas fa-tint"></i> 10-14 günde bir az su</li>
+                        <li><i class="fas fa-sun"></i> Bol aydınlık, direkt güneş olabilir</li>
+                        <li><i class="fas fa-wind"></i> Havadar ortam severler</li>
+                    </ul>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="index.html" class="logo-footer">Yeşil<span class="highlight">Ege</span>.</a>
+                <p>Doğayı sanatla buluşturan profesyonel çözümler.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Yeşil Ege Peyzaj. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

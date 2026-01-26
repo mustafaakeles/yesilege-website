@@ -1,0 +1,286 @@
+/* Magnolia AI Mascot Styles */
+.magnolia-chat-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    pointer-events: none;
+    /* KEY FIX: Don't block clicks beneath invisible parts */
+}
+
+.magnolia-avatar {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #1a3c34, #4d7c6e);
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid #c59d5f;
+    position: relative;
+    pointer-events: auto;
+    /* Restore clicks */
+}
+
+.magnolia-avatar:hover {
+    transform: scale(1.1);
+}
+
+.magnolia-avatar img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Pulse animation for attention */
+.magnolia-avatar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid #c59d5f;
+    opacity: 0;
+    animation: magnoliaPulse 2s infinite;
+}
+
+@keyframes magnoliaPulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+.magnolia-window {
+    width: 350px;
+    height: 500px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform-origin: bottom right;
+    transform: scale(0);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid #eee;
+    pointer-events: auto;
+    /* Restore clicks */
+}
+
+.magnolia-window.active {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.magnolia-header {
+    background: linear-gradient(135deg, #1a3c34, #2d4a3e);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: white;
+    border-bottom: 3px solid #c59d5f;
+}
+
+.magnolia-header-avatar {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.magnolia-header-avatar img {
+    width: 25px;
+}
+
+.magnolia-info h4 {
+    color: #c59d5f;
+    font-size: 1rem;
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+}
+
+.magnolia-info p {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.magnolia-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.magnolia-close:hover {
+    opacity: 1;
+}
+
+.magnolia-chat-area {
+    flex-grow: 1;
+    padding: 20px;
+    background: #fdfbf7;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    scrollbar-width: thin;
+    scrollbar-color: #c59d5f #f0f0f0;
+}
+
+.message {
+    max-width: 80%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    position: relative;
+    animation: messageIn 0.3s ease-out;
+}
+
+@keyframes messageIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message.bot {
+    background: white;
+    color: #333;
+    border-bottom-left-radius: 2px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    align-self: flex-start;
+    border-left: 3px solid #1a3c34;
+}
+
+.message.user {
+    background: #1a3c34;
+    color: white;
+    border-bottom-right-radius: 2px;
+    align-self: flex-end;
+}
+
+.magnolia-input-area {
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+}
+
+.magnolia-input-area input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.magnolia-input-area input:focus {
+    border-color: #1a3c34;
+}
+
+.magnolia-send-btn {
+    background: #c59d5f;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.magnolia-send-btn:hover {
+    background: #b08d55;
+    transform: scale(1.05);
+}
+
+.typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 12px;
+    border-bottom-left-radius: 2px;
+    width: fit-content;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.typing-indicator span {
+    width: 6px;
+    height: 6px;
+    background: #1a3c34;
+    border-radius: 50%;
+    animation: typing 1s infinite;
+    opacity: 0.5;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@media (max-width: 480px) {
+    .magnolia-window {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        bottom: 0;
+        right: 0;
+        border-radius: 0;
+        position: fixed;
+    }
+}

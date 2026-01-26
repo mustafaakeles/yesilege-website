@@ -1,0 +1,58 @@
+/* Slider Navigation Styles */
+.slider-nav {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    z-index: 20;
+    /* Above overlay (z-index 10 usually) but below header fixed? Header is 1000 */
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+    pointer-events: none;
+    /* Let clicks pass through container */
+}
+
+.nav-btn {
+    pointer-events: auto;
+    background: rgba(255, 255, 255, 0.05);
+    /* More transparent */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 60px;
+    /* Bigger touch target */
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(3px);
+    z-index: 100;
+    /* Ensure high z-index to work */
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--color-accent);
+    /* Gold hover */
+    transform: scale(1.1);
+    border-color: var(--color-accent);
+}
+
+.nav-btn i {
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .slider-nav {
+        padding: 0 1rem;
+    }
+
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+    }
+}
