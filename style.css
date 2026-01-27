@@ -1310,15 +1310,15 @@ footer {
 
     /* Konum ikonu hizalama */
     .nav-links .nav-icon {
-        padding: 1rem 1.5rem;
-        font-size: 1.2rem;
+        padding: 0.7rem 1rem;
+        font-size: 1rem;
     }
 
     /* Dropdown Menü - Mobil */
     .dropdown-menu {
         position: static;
         width: 100%;
-        background: rgba(0, 0, 0, 0.3) !important;
+        background-color: #152e28 !important;
         box-shadow: none;
         border-top: none;
         border-radius: 0;
@@ -1333,18 +1333,17 @@ footer {
 
     .nav-links .dropdown:hover .dropdown-menu {
         display: none;
-        /* Hover devre dışı - tıklama ile açılır */
     }
 
     .dropdown.active .dropdown-menu {
         display: flex;
         flex-direction: column;
-        background: rgba(0, 0, 0, 0.25) !important;
+        background-color: #152e28 !important;
     }
 
     .dropdown-menu li {
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        background: transparent;
+        background-color: #152e28 !important;
     }
 
     .dropdown-menu li:last-child {
@@ -1352,10 +1351,10 @@ footer {
     }
 
     .dropdown-menu li a {
-        background: transparent !important;
-        color: rgba(255, 255, 255, 0.85) !important;
-        padding: 0.9rem 1.5rem 0.9rem 2.5rem !important;
-        font-size: 0.9rem;
+        background-color: #152e28 !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        padding: 0.6rem 1rem 0.6rem 1.5rem !important;
+        font-size: 0.8rem;
         text-transform: none;
         letter-spacing: 0;
     }
