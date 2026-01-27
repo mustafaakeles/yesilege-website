@@ -263,34 +263,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
 
-    hamburger.addEventListener('click', () => {
-        if (navLinks.style.display === 'flex') {
-            gsap.to(navLinks, { opacity: 0, y: -20, duration: 0.3, onComplete: () => navLinks.style.display = 'none' });
-        } else {
-            navLinks.style.display = 'flex';
-            // Other styles are handled by CSS class .nav-links in media query
-            // Just ensure initial state for animation is set
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+            if (navLinks.style.display === 'flex') {
+                // Menüyü kapat
+                gsap.to(navLinks, {
+                    opacity: 0,
+                    y: -10,
+                    duration: 0.25,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        navLinks.style.display = 'none';
+                        // Tüm dropdown'ları kapat
+                        document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
+                    }
+                });
+            } else {
+                // Menüyü aç
+                navLinks.style.display = 'flex';
+                navLinks.style.opacity = '0';
 
-            // Clean inline text colors to let CSS handle hover states
-            navLinks.querySelectorAll('a').forEach(a => {
-                a.style.color = ''; // Remove inline white so CSS takes over
-            });
+                // li elemanlarının opacity'sini zorla 1 yap (animasyondan dolayı 0 olabilir)
+                navLinks.querySelectorAll('li').forEach(li => {
+                    li.style.opacity = '1';
+                    li.style.transform = 'none';
+                });
 
-            gsap.fromTo(navLinks, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3 });
-        }
-    });
+                gsap.fromTo(navLinks,
+                    { opacity: 0, y: -10 },
+                    { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }
+                );
+            }
+        });
+
+        // Menü dışına tıklanınca kapat
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 1024) {
+                if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+                    if (navLinks.style.display === 'flex') {
+                        gsap.to(navLinks, {
+                            opacity: 0,
+                            y: -10,
+                            duration: 0.2,
+                            onComplete: () => navLinks.style.display = 'none'
+                        });
+                    }
+                }
+            }
+        });
+    }
 
     // Mobile Dropdown Toggle Logic
     const dropdownToggles = document.querySelectorAll('.dropdown > a');
     dropdownToggles.forEach(toggle => {
         toggle.addEventListener('click', (e) => {
-            // Only on mobile (check window width or hamburger visibility)
-            if (window.innerWidth <= 900) {
-                e.preventDefault(); // Stop link navigation
+            // Only on mobile (CSS breakpoint ile uyumlu)
+            if (window.innerWidth <= 1024) {
+                e.preventDefault();
                 const parent = toggle.parentElement;
                 parent.classList.toggle('active');
 
-                // Optional: Rotate chevron
+                // Chevron döndür
                 const icon = toggle.querySelector('i');
                 if (icon) {
                     gsap.to(icon, { rotation: parent.classList.contains('active') ? 180 : 0, duration: 0.3 });
@@ -299,14 +332,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Ensure nav links reappear if resized to desktop
+    // Pencere boyutu değişince nav'ı resetle
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 900) {
+        if (window.innerWidth > 1024) {
             navLinks.style.display = '';
             navLinks.style.opacity = '';
-            navLinks.style.transform = ''; /* Clear GSAP transforms */
-            // Clear inline styles set by JS
+            navLinks.style.transform = '';
             navLinks.removeAttribute('style');
+            // Dropdown'ları da kapat
+            document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
         }
     });
 
