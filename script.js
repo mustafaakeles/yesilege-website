@@ -265,34 +265,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (hamburger && navLinks) {
         hamburger.addEventListener('click', () => {
-            if (navLinks.style.display === 'flex') {
+            if (navLinks.classList.contains('mobile-open')) {
                 // Menüyü kapat
-                gsap.to(navLinks, {
-                    opacity: 0,
-                    y: -10,
-                    duration: 0.25,
-                    ease: "power2.in",
-                    onComplete: () => {
-                        navLinks.style.display = 'none';
-                        // Tüm dropdown'ları kapat
-                        document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
-                    }
-                });
+                navLinks.classList.remove('mobile-open');
+                navLinks.style.display = 'none';
+                // Tüm dropdown'ları kapat
+                document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
             } else {
                 // Menüyü aç
+                navLinks.classList.add('mobile-open');
                 navLinks.style.display = 'flex';
-                navLinks.style.opacity = '0';
 
-                // li elemanlarının opacity'sini zorla 1 yap (animasyondan dolayı 0 olabilir)
+                // li elemanlarının stillerini düzelt
                 navLinks.querySelectorAll('li').forEach(li => {
                     li.style.opacity = '1';
                     li.style.transform = 'none';
                 });
 
-                gsap.fromTo(navLinks,
-                    { opacity: 0, y: -10 },
-                    { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }
-                );
+                // a elemanlarının stillerini düzelt
+                navLinks.querySelectorAll('a').forEach(a => {
+                    a.style.opacity = '1';
+                });
             }
         });
 
