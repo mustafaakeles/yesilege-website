@@ -293,13 +293,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click', (e) => {
             if (window.innerWidth <= 1024) {
                 if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-                    if (navLinks.style.display === 'flex') {
-                        gsap.to(navLinks, {
-                            opacity: 0,
-                            y: -10,
-                            duration: 0.2,
-                            onComplete: () => navLinks.style.display = 'none'
-                        });
+                    if (navLinks.classList.contains('mobile-open')) {
+                        navLinks.classList.remove('mobile-open');
+                        navLinks.style.display = 'none';
+                        document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
                     }
                 }
             }
