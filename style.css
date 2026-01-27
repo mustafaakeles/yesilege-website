@@ -407,12 +407,20 @@ section[id] {
 .hamburger {
     display: none;
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+    transition: var(--transition);
 }
 
+.hamburger:hover {
+    color: var(--color-accent);
+}
+
+/* Hamburger her zaman beyaz kalmalı - navbar arka planı daima koyu yeşil */
 .navbar.scrolled .hamburger {
-    color: var(--color-primary);
+    color: white;
 }
 
 /* Hero Section */
@@ -1223,33 +1231,43 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Responsive */
-/* Responsive */
+/* Responsive - Mobile Menu */
 @media (max-width: 1024px) {
     .nav-links {
         display: none;
-        /* Default hidden on mobile, toggled via JS */
         flex-direction: column;
         position: absolute;
         top: 100%;
         left: 0;
         width: 100%;
-        background-color: var(--color-primary);
-        /* Dark background for professional look */
-        padding: 1rem 0;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        /* Tam opak koyu yeşil arka plan - kesinlikle şeffaf değil */
+        background: #1a3c34 !important;
+        background-color: #1a3c34 !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        opacity: 1 !important;
+        padding: 0;
+        margin: 0;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        border-top: 2px solid var(--color-accent);
         z-index: 1000;
-        /* Ensure it stays on top */
+        max-height: 80vh;
+        overflow-y: auto;
     }
 
     /* Mobile Menu Items Styling */
     .nav-links li {
         width: 100%;
-        text-align: center;
+        text-align: left;
         margin: 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background: #1a3c34;
+        /* Override any animation opacity */
+        opacity: 1 !important;
+        transform: none !important;
     }
+
 
     .nav-links li:last-child {
         border-bottom: none;
@@ -1257,32 +1275,55 @@ footer {
 
     .nav-links a {
         display: block;
-        padding: 1rem;
+        padding: 1rem 1.5rem;
         color: white !important;
-        /* Force white text on dark menu */
         font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        background: transparent;
+        transition: all 0.3s ease;
     }
 
     .nav-links a:hover {
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: rgba(255, 255, 255, 0.1);
         color: var(--color-accent) !important;
+        padding-left: 2rem;
     }
 
-    /* Fix Dropdown Mobile Style Override */
+    /* İletişim butonu mobilde özel stil */
+    .nav-links .btn-primary {
+        background: var(--color-accent) !important;
+        color: #1a3c34 !important;
+        margin: 1rem 1.5rem;
+        border-radius: 4px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .nav-links .btn-primary:hover {
+        background: #d4a96e !important;
+        padding-left: 1.5rem;
+    }
+
+    /* Konum ikonu hizalama */
+    .nav-links .nav-icon {
+        padding: 1rem 1.5rem;
+        font-size: 1.2rem;
+    }
+
+    /* Dropdown Menü - Mobil */
     .dropdown-menu {
         position: static;
         width: 100%;
-        background-color: transparent !important;
-        /* Force transparent to show dark menu bg */
+        background: rgba(0, 0, 0, 0.3) !important;
         box-shadow: none;
         border-top: none;
         border-radius: 0;
-        float: none;
         min-width: 100%;
         padding: 0;
         margin: 0;
         display: none;
-        /* JS toggles this to flex */
         opacity: 1;
         visibility: visible;
         transform: none;
@@ -1290,18 +1331,18 @@ footer {
 
     .nav-links .dropdown:hover .dropdown-menu {
         display: none;
-        /* Disable hover on mobile, rely on click */
+        /* Hover devre dışı - tıklama ile açılır */
     }
 
     .dropdown.active .dropdown-menu {
         display: flex;
         flex-direction: column;
-        background-color: rgba(0, 0, 0, 0.2) !important;
-        /* Slightly darker for contrast */
+        background: rgba(0, 0, 0, 0.25) !important;
     }
 
     .dropdown-menu li {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        background: transparent;
     }
 
     .dropdown-menu li:last-child {
@@ -1309,22 +1350,31 @@ footer {
     }
 
     .dropdown-menu li a {
-        background-color: transparent !important;
-        color: rgba(255, 255, 255, 0.7) !important;
-        /* White text */
-        padding-left: 2rem !important;
+        background: transparent !important;
+        color: rgba(255, 255, 255, 0.85) !important;
+        padding: 0.9rem 1.5rem 0.9rem 2.5rem !important;
+        font-size: 0.9rem;
+        text-transform: none;
+        letter-spacing: 0;
     }
 
     .dropdown-menu li a:hover {
         color: var(--color-accent) !important;
-        background-color: rgba(255, 255, 255, 0.05) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        padding-left: 3rem !important;
     }
 
+    /* Hamburger butonu */
     .hamburger {
-        display: block;
-        padding-right: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        margin-right: 0.5rem;
         cursor: pointer;
         color: white;
+        font-size: 1.5rem;
+        z-index: 1001;
     }
 }
 
