@@ -1238,21 +1238,24 @@ footer {
         flex-direction: column;
         position: absolute;
         top: 100%;
-        left: 0;
-        width: 100%;
-        /* Tam opak koyu yeşil arka plan - kesinlikle şeffaf değil */
+        right: 1rem;
+        left: auto;
+        width: auto;
+        min-width: 220px;
+        max-width: 280px;
+        /* Kompakt dropdown menü */
         background: #1a3c34 !important;
-        background-color: #1a3c34 !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
         opacity: 1 !important;
-        padding: 0;
+        padding: 0.5rem 0;
         margin: 0;
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        border-top: 2px solid var(--color-accent);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         z-index: 1000;
-        max-height: 80vh;
-        overflow-y: auto;
+        max-height: none;
+        overflow: visible;
     }
 
     /* Mobile Menu Items Styling */
@@ -1261,9 +1264,8 @@ footer {
         text-align: left;
         margin: 0;
         padding: 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        background: #1a3c34;
-        /* Override any animation opacity */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        background: transparent;
         opacity: 1 !important;
         transform: none !important;
     }
