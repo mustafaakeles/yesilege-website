@@ -1259,6 +1259,14 @@ footer {
         overflow: visible;
     }
 
+    /* Menü açık olduğunda - mobile-open class */
+    .nav-links.mobile-open {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        background-color: #1a3c34 !important;
+    }
+
     /* Mobile Menu Items Styling */
     .nav-links li {
         width: 100%;
