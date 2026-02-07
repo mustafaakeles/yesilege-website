@@ -601,6 +601,10 @@ section[id] {
     }
 }
 
+.loader-logo {
+    animation: pulse 2s infinite;
+}
+
 /* Scroll Down Indicator */
 .scroll-down {
     position: absolute;

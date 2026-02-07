@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Only run if preloader exists and hasn't been removed by "hasVisited" logic
     const preloaderEl = document.querySelector('.preloader');
     if (preloaderEl && preloaderEl.style.display !== 'none') {
-        preloaderTl.to(".loader-text", {
+        preloaderTl.to(".loader-logo", {
             y: 0,
             opacity: 1,
             duration: 0.5,
