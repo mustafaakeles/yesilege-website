@@ -60,4 +60,34 @@
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
+    <url>
+        <loc>https://yesilege.com.tr/contact.html</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://yesilege.com.tr/blog-yazilari/kucuk-balkon-fikirleri.html</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://yesilege.com.tr/blog-yazilari/evcil-hayvan-dostu-bitkiler.html</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://yesilege.com.tr/blog-yazilari/evde-kompost-yapimi.html</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://yesilege.com.tr/blog-yazilari/ofis-bitkileri.html</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
 </urlset>

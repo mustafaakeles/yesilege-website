@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bitki Bakım Rehberi | Yeşil Ege</title>
+    <link rel="canonical" href="https://yesilege.com.tr/care.html">
     <meta name="description" content="Ege iklimine uygun bitkiler için mevsimsel bakım, sulama ve gübreleme ipuçları.">
 
     <!-- Open Graph SEO -->
@@ -13,7 +14,7 @@
     <meta property="og:image" content="https://images.unsplash.com/photo-1518531933037-91b2f5d2294c?q=80&w=1200">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/628/628283.png">
+    <link rel="icon" type="image/png" href="images/favicon.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,21 +25,11 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mascot.css">
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .page-header {
-            background-color: var(--color-primary);
-            padding: 8rem 0 4rem 0;
-            color: white;
-            text-align: center;
-            /* Added Background Image for Premium Look */
-            background-image: linear-gradient(rgba(26, 60, 52, 0.85), rgba(26, 60, 52, 0.85)), url('https://images.unsplash.com/photo-1518531933037-91b2f5d2294c?q=80&w=1600&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-        }
-
         .care-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -111,7 +102,7 @@
     <nav class="navbar" id="navbar">
         <div class="container nav-content">
             <a href="index.html" class="logo">
-                <img src="images/logo.png" alt="Yeşil Ege">
+                <img src="images/logo1.png" alt="Yeşil Ege">
             </a>
             <ul class="nav-links">
                 <li><a href="index.html">Ana Sayfa</a></li>
@@ -130,8 +121,8 @@
                 </li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="index.html#about">Hakkımızda</a></li>
-                <li><a href="care.html" style="color: var(--color-accent);">Bitki Bakım Rehberi</a></li>
-                <li><a href="index.html#contact" class="btn-primary">İletişim</a></li>
+                <li><a href="index.html#gallery">Projeler</a></li>
+                <li><a href="contact.html" class="btn-primary">İletişim</a></li>
             </ul>
             <div class="hamburger">
                 <i class="fas fa-bars"></i>
@@ -140,7 +131,8 @@
     </nav>
 
     <!-- Page Header -->
-    <header class="page-header">
+    <header class="page-header"
+        style="background-image: linear-gradient(rgba(26, 60, 52, 0.85), rgba(26, 60, 52, 0.85)), url('https://images.unsplash.com/photo-1518531933037-91b2f5d2294c?q=80&w=1600&auto=format&fit=crop');">
         <div class="container">
             <span class="subtitle"> UZMAN TAVSİYELERİ</span>
             <h1>Bitkileriniz İçin Yaşam Kılavuzu</h1>
@@ -230,7 +222,7 @@
         <div class="container footer-content">
             <div class="footer-brand">
                 <a href="index.html" class="logo-footer">
-                    <img src="images/logo.png" alt="Yeşil Ege" style="height: 50px; width: auto;">
+                    <img src="images/logo1.png" alt="Yeşil Ege" style="height: 50px; width: auto;">
                 </a>
                 <p>Doğayı sanatla buluşturan profesyonel çözümler.</p>
             </div>
@@ -245,7 +237,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 Yeşil Ege Peyzaj. Tüm hakları saklıdır.</p>
+            <p>&copy; 2026 Yeşil Ege Peyzaj. Tüm hakları saklıdır.</p>
             <div class="codera-signature">
                 Software & Design by <a href="https://www.codera.com.tr" target="_blank" rel="noopener">CODERA</a>
             </div>
@@ -256,6 +248,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="script.js"></script>
+    <script src="mascot.js"></script>
 </body>
 
 </html>

@@ -14,6 +14,8 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
         rel="stylesheet">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../images/favicon.png">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -71,11 +73,28 @@
 
     <nav class="navbar" id="navbar" style="background-color: var(--color-primary);">
         <div class="container nav-content">
-            <a href="../index.html" class="logo">Yeşil<span class="highlight">Ege</span>.</a>
+            <a href="../index.html" class="logo">
+                <img src="../images/logo1.png" alt="Yeşil Ege">
+            </a>
             <ul class="nav-links">
                 <li><a href="../index.html">Ana Sayfa</a></li>
-                <li><a href="../blog.html">Blog'a Dön</a></li>
-                <li><a href="../index.html#contact" class="btn-primary">İletişim</a></li>
+                <li class="dropdown">
+                    <a href="../services.html">Hizmetler & Ürünler <i class="fas fa-chevron-down"
+                            style="font-size: 0.7em;"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../services.html#garden-materials">Bahçe Malzemeleri</a></li>
+                        <li><a href="../services.html#indoor-plants">İç Mekan Süs Bitkileri</a></li>
+                        <li><a href="../services.html#outdoor-plants">Dış Mekan Süs Bitkileri</a></li>
+                        <li><a href="../services.html#cactus">Kaktüs ve Sukulentler</a></li>
+                        <li><a href="../services.html#pots">Saksı Grupları</a></li>
+                        <li><a href="../services.html#landscape">Peyzaj Tasarım</a></li>
+                        <li><a href="../services.html#project">Proje Uygulama</a></li>
+                    </ul>
+                </li>
+                <li><a href="../blog.html">Blog</a></li>
+                <li><a href="../index.html#about">Hakkımızda</a></li>
+                <li><a href="../index.html#gallery">Projeler</a></li>
+                <li><a href="../contact.html" class="btn-primary">İletişim</a></li>
             </ul>
             <div class="hamburger">
                 <i class="fas fa-bars"></i>
@@ -144,11 +163,13 @@
     <footer>
         <div class="container footer-content">
             <div class="footer-brand">
-                <a href="../index.html" class="logo-footer">Yeşil<span class="highlight">Ege</span>.</a>
+                <a href="../index.html" class="logo-footer">
+                    <img src="../images/logo1.png" alt="Yeşil Ege" style="height: 50px; width: auto;">
+                </a>
                 <p>Doğayı sanatla buluşturan profesyonel çözümler.</p>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Yeşil Ege Peyzaj. Tüm hakları saklıdır.</p>
+                <p>&copy; 2026 Yeşil Ege Peyzaj. Tüm hakları saklıdır.</p>
                 <div class="codera-signature">
                     Software & Design by <a href="http://www.codera.com.tr" target="_blank" rel="noopener">CODERA</a>
                 </div>

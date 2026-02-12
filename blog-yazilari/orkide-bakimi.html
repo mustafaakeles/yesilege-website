@@ -5,15 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orkide Bakımı: 5 Altın Kural | Yeşil Ege Blog</title>
+    <meta name="description"
+        content="Orkide bakımının 5 altın kuralı. Sulama, ışık, saksı seçimi ve çiçeklendirme teknikleri hakkında detaylı rehber.">
     <!-- Fonts & Styles -->
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
         rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../images/favicon.png">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .blog-detail-header {
-            background-image: url('https://images.unsplash.com/photo-1459156212016-c812468e2115?q=80&w=1600');
+            background-image: url('../images/orchid_care_blooming.png');
             background-size: cover;
             background-position: center;
             height: 60vh;
@@ -65,17 +69,67 @@
             font-weight: 600;
             text-decoration: underline;
         }
+
+        img.content-img {
+            width: 100%;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e9);
+            border-left: 4px solid var(--color-accent);
+            padding: 1.5rem 2rem;
+            border-radius: 0 12px 12px 0;
+            margin: 2rem 0;
+            font-size: 1rem;
+        }
+
+        .tip-box strong {
+            color: var(--color-primary);
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #f9a825;
+            padding: 1.5rem 2rem;
+            border-radius: 0 12px 12px 0;
+            margin: 2rem 0;
+        }
+
+        .warning-box strong {
+            color: #e65100;
+        }
     </style>
 </head>
 
 <body>
     <nav class="navbar" id="navbar" style="background-color: var(--color-primary);">
         <div class="container nav-content">
-            <a href="../index.html" class="logo">Yeşil<span class="highlight">Ege</span>.</a>
+            <a href="../index.html" class="logo">
+                <img src="../images/logo1.png" alt="Yeşil Ege">
+            </a>
             <ul class="nav-links">
                 <li><a href="../index.html">Ana Sayfa</a></li>
-                <li><a href="../blog.html">Blog'a Dön</a></li>
-                <li><a href="../index.html#contact" class="btn-primary">İletişim</a></li>
+                <li class="dropdown">
+                    <a href="../services.html">Hizmetler & Ürünler <i class="fas fa-chevron-down"
+                            style="font-size: 0.7em;"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../services.html#garden-materials">Bahçe Malzemeleri</a></li>
+                        <li><a href="../services.html#indoor-plants">İç Mekan Süs Bitkileri</a></li>
+                        <li><a href="../services.html#outdoor-plants">Dış Mekan Süs Bitkileri</a></li>
+                        <li><a href="../services.html#cactus">Kaktüs ve Sukulentler</a></li>
+                        <li><a href="../services.html#pots">Saksı Grupları</a></li>
+                        <li><a href="../services.html#landscape">Peyzaj Tasarım</a></li>
+                        <li><a href="../services.html#project">Proje Uygulama</a></li>
+                    </ul>
+                </li>
+                <li><a href="../blog.html">Blog</a></li>
+                <li><a href="../index.html#about">Hakkımızda</a></li>
+                <li><a href="../index.html#gallery">Projeler</a></li>
+                <li><a href="../contact.html" class="btn-primary">İletişim</a></li>
             </ul>
             <div class="hamburger">
                 <i class="fas fa-bars"></i>
@@ -86,49 +140,129 @@
         <div class="blog-overlay"></div>
         <div class="header-content">
             <div class="article-meta">26 Ocak 2026 • Bakım</div>
-            <h1 style="font-size: 3rem; margin-bottom: 1rem;">Orkide Bakımı</h1>
-            <p style="font-size: 1.2rem;">Zarafeti yaşatmanın incelikleri.</p>
+            <h1 style="font-size: 3rem; margin-bottom: 1rem;">Orkide Bakımı: 5 Altın Kural</h1>
+            <p style="font-size: 1.2rem;">Zarafeti yaşatmanın incelikleri ve çiçeklendirme sırları.</p>
         </div>
     </header>
     <article class="article-content">
         <p class="lead" style="font-size: 1.3rem; font-weight: 500; color: var(--color-accent);">
             Orkideler, narin görünüşlerinin aksine oldukça dayanıklı bitkilerdir. Doğru ortamı bulduklarında yıllarca
-            çiçek açabilirler.
+            çiçek açabilirler. Phalaenopsis (Kelebek Orkide) en popüler tür olup, evde bakımı en kolay olan orkide
+            çeşididir. İşte orkidenizi mutlu etmek için bilmeniz gereken 5 altın kural.
         </p>
+
         <h2>1. Işık Faktörü</h2>
         <p>
-            Orkideler ışığı sever ama güneşe dokunmayı sevmez. Tül perde arkasından gelen süzülmüş sabah güneşi onlar
-            için en iyi vitamin takviyesidir.
+            Orkideler ışığı sever ama doğrudan güneşe maruz kalmayı sevmez. Tül perde arkasından gelen süzülmüş sabah
+            güneşi onlar için en iyi vitamin takviyesidir. Doğu veya kuzeybatı cepheli pencereler idealdir.
         </p>
+        <p>
+            <strong>Yapraklara dikkat edin:</strong> Yapraklar koyu yeşilse yeterli ışık almıyor demektir. Açık yeşil ve
+            biraz sarımsı tonlardaysa ışık idealdir. Yapraklarda mor ya da kırmızımsı lekeler varsa, aşırı güneş aldığı
+            anlamına gelir — bitkiyi hemen daha gölge bir yere taşıyın.
+        </p>
+
+        <div class="tip-box">
+            <strong><i class="fas fa-lightbulb"></i> Profesyonel İpucu:</strong> Kış aylarında güneş yeterli
+            olmayabilir.
+            Bitki büyüme lambası (grow light) ile 12-14 saat ışık sağlayabilirsiniz. Bu, çiçeklenmeyi de teşvik eder.
+        </div>
+
         <h2>2. Daldırma Yöntemi ile Sulama</h2>
         <p>
             Orkidenizi üstten sulamak yerine, haftada bir kez saksısıyla birlikte su dolu bir kaba daldırın. 15-20
-            dakika bekletip süzülmesini sağlayın. Bu yöntem köklerin suya doymasını sağlar. Kökler grileşmişse su
-            istiyor, yeşilse toktur.
+            dakika bekletip süzülmesini sağlayın. Bu yöntem köklerin suya doymasını sağlar ve klor gibi zararlı
+            maddelerin buharlaşmasına yardımcı olur.
         </p>
-        <img src="https://images.unsplash.com/photo-1459156212016-c812468e2115?q=80&w=800" alt="Orkide"
-            style="width: 100%; border-radius: 12px; margin: 2rem 0;">
+        <p>
+            <strong>Kök rengi rehberinizdir:</strong> Kökler grileşmişse ve kuru görünüyorsa su istiyor demektir.
+            Parlak yeşil renkteyse tok, sulamaya gerek yoktur. Aşırı sulama kaynaklı sorunlar, kurumayla ilgili
+            sorunlardan çok daha sık görülür — şüpheye düştüğünüzde sulamayı bir gün erteleyin.
+        </p>
+
+        <img src="https://images.unsplash.com/photo-1566633806327-68bc62f86f32?q=80&w=800"
+            alt="Orkide kökleri ve sulama" class="content-img">
+
+        <div class="warning-box">
+            <strong><i class="fas fa-exclamation-triangle"></i> Dikkat:</strong> Orkidenin yaprakları arasına kesinlikle
+            su bırakmayın. Yaprak kovuğunda biriken su, çürüme (crown rot) hastalığına neden olur ve bitkiyi
+            öldürebilir. Sulama sonrası yaprakları kuru bir bezle silin.
+        </div>
+
         <h2>3. Şeffaf Saksı Kuralı</h2>
         <p>
-            için çok önemlidir. Ayrıca köklerin rengini görüp sulama zamanını anlamanızı kolaylaştırır.
+            Orkideler mutlaka şeffaf, delikli saksılarda yetiştirilmelidir. Bunun bilimsel bir nedeni var: orkide
+            kökleri fotosentez yaparak enerji üretir. Karanlık saksılar bu süreci engeller ve köklerin sağlığını
+            olumsuz etkiler.
         </p>
+        <p>
+            Ayrıca şeffaf saksı, köklerin rengini görüp sulama zamanını anlamanızı kolaylaştırır. Saksı değişimi
+            yaparken, mevcut saksıdan yalnızca 1-2 cm daha büyük bir saksı seçin — orkideler sıkı ortamları sever.
+            Toprak olarak ise kesinlikle normal bitki toprağı kullanmayın; orkide kabuğu (çam kabuğu) veya sphagnum
+            yosunu tercih edin.
+        </p>
+
+        <img src="https://images.unsplash.com/photo-1567331711402-509c12c41959?q=80&w=800" alt="Şeffaf saksıda orkide"
+            class="content-img">
+
         <h2>4. Nem ve Isı Dengesi</h2>
         <p>
             Orkideler tropikal bitkilerdir ve %50-70 arası nem severler. Ev ortamında bunu sağlamak için saksının
             altına çakıl taşları ve su dolu bir tepsi koyabilirsiniz (saksı suya değmemeli). Ayrıca yapraklarına
-            kireçsiz su fısfıslamak da onları mutlu eder. Sıcaklık olarak gündüz 20-25°C, gece ise 16-18°C idealdir.
-            Gece-gündüz sıcaklık farkı çiçeklenmeyi teşvik eder.
+            kireçsiz su fısfıslamak da onları mutlu eder.
         </p>
+        <p>
+            Sıcaklık olarak gündüz 20-25°C, gece ise 16-18°C idealdir. Gece-gündüz sıcaklık farkı (en az 5°C)
+            çiçeklenmeyi teşvik eder. Sonbahar aylarında pencereyi hafifçe aralık bırakmak bu sıcaklık farkını doğal
+            yoldan sağlayabilir. Ancak orkideyi soğuk cereyanından mutlaka koruyun.
+        </p>
+
+        <h2>5. Çiçeklendirme ve Budama</h2>
+        <p>
+            Orkidenizin çiçekleri döküldüğünde dalı hemen kesmeyin. Dalın üzerinde küçük, uyku halindeki "göz"
+            denilen tomurcuklar bulunur. Solmuş çiçek dalını, sağlıklı bir gözün 1 cm üzerinden kesin — bu noktadan
+            yeni bir dal ve çiçekler gelebilir.
+        </p>
+        <p>
+            Dal tamamen sararmış ve kurumuşsa, o zaman dibinden kesin. Budama işlemleri sırasında makası kesinlikle
+            alkol veya çakmak aleviyle sterilize edin — bu, mantar hastalıklarının önlenmesi için kritiktir.
+        </p>
+
+        <div class="tip-box">
+            <strong><i class="fas fa-leaf"></i> Gübre Takviyesi:</strong> Çiçeklenme döneminde (genellikle ilkbahar ve
+            sonbahar) haftada bir orkide gübresi verin. Normal zamanlarda ise ayda bir yeterlidir. "Azar azar, sık sık"
+            prensibi altın kuraldır — gübrenin yoğunluğunu azaltıp daha sık verin. Kışın gübreyi tamamen kesin.
+        </div>
+
+        <h2>Orkide Hastalıkları ve Çözümleri</h2>
+        <p>
+            Sağlıklı bir orkide yetiştirmenin bir parçası da olası sorunları erken fark etmektir:
+        </p>
+        <ul>
+            <li><strong>Sararan yapraklar:</strong> Alt yaprakların sarılması normaldir (yaşlanma). Ancak tüm yapraklar
+                sarıyorsa, aşırı sulama veya yetersiz ışık söz konusudur.</li>
+            <li><strong>Yumuşayan ve siyahlaşan kökler:</strong> Kök çürümesi belirtisi. Saksıdan çıkarın, çürük
+                kökleri sterilize makasla kesin, yaraya tarçın tozu sürün ve yeni kabuğa dikin.</li>
+            <li><strong>Yapraklarda beyaz pamuksu lekeler:</strong> Un biti (mealybug) istilası. Alkolle ıslatılmış
+                pamukla silin veya neem yağı solüsyonu uygulayın.</li>
+            <li><strong>Yaprak uçlarının kararması:</strong> Genellikle düşük nem veya aşırı gübre kaynaklıdır.</li>
+        </ul>
+
         <a href="../blog.html" class="back-link"><i class="fas fa-arrow-left"></i> Tüm Yazılara Dön</a>
     </article>
     <footer>
         <div class="container footer-content">
             <div class="footer-brand">
-                <a href="../index.html" class="logo-footer">Yeşil<span class="highlight">Ege</span>.</a>
+                <a href="../index.html" class="logo-footer">
+                    <img src="../images/logo1.png" alt="Yeşil Ege" style="height: 50px; width: auto;">
+                </a>
                 <p>Doğayı sanatla buluşturan profesyonel çözümler.</p>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Yeşil Ege Peyzaj.</p>
+                <p>&copy; 2026 Yeşil Ege Peyzaj. Tüm hakları saklıdır.</p>
+                <div class="codera-signature">
+                    Software & Design by <a href="https://www.codera.com.tr" target="_blank" rel="noopener">CODERA</a>
+                </div>
             </div>
         </div>
     </footer>

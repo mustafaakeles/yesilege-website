@@ -130,16 +130,6 @@ section[id] {
     scroll-margin-top: 120px;
 }
 
-/* Ensure anchor links don't hide behind fixed/sticky header */
-section[id] {
-    scroll-margin-top: 120px;
-}
-
-/* Ensure anchor links don't hide behind fixed/sticky header */
-section[id] {
-    scroll-margin-top: 120px;
-}
-
 .section-header {
     text-align: center;
     margin-bottom: 4rem;
@@ -241,6 +231,7 @@ section[id] {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    overflow: visible;
 }
 
 /* Scrolled State - Just slightly tighter if needed, or keeping it same for stability */
@@ -282,43 +273,34 @@ section[id] {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 90px;
-    /* Reduced from 120px */
+    height: 100px;
     transition: height 0.3s ease;
 }
 
 .navbar.scrolled .nav-content {
-    height: 70px;
+    height: 80px;
 }
 
 .logo {
     display: flex;
     align-items: center;
     color: white;
-    /* Fallback */
     text-decoration: none;
     flex-shrink: 0;
-    /* Retained from original for flex behavior */
-    font-family: 'Playfair Display', serif;
-    /* Retained for text-based logo fallback */
-    font-size: 2.4rem;
-    /* Retained for text-based logo fallback */
-    font-weight: 700;
-    /* Retained for text-based logo fallback */
-    letter-spacing: -0.5px;
-    /* Retained for text-based logo fallback */
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    /* Retained for text-based logo fallback */
 }
 
 .logo img {
-    height: 70px;
+    height: 240px;
     width: auto;
+    margin-top: -70px;
+    margin-bottom: -70px;
     transition: all 0.3s ease;
 }
 
 .navbar.scrolled .logo img {
-    height: 50px;
+    height: 160px;
+    margin-top: -40px;
+    margin-bottom: -40px;
 }
 
 .logo .highlight {
@@ -554,7 +536,7 @@ section[id] {
     background-size: cover;
     background-position: center;
     will-change: opacity, transform;
-    z-index: 9999;
+    z-index: 99999;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1189,6 +1171,11 @@ footer {
     margin-bottom: 1.5rem;
 }
 
+.logo-footer img {
+    height: 120px !important;
+    width: auto !important;
+}
+
 .logo-footer .highlight {
     color: var(--color-accent);
     font-weight: 400;
@@ -1544,20 +1531,7 @@ footer {
     }
 }
 
-/* Final Polish: Preloader Fix */
-.preloader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--color-primary);
-    z-index: 99999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.8s ease-in-out;
-}
+
 
 .loader-text {
     font-family: var(--font-heading);
@@ -1655,6 +1629,56 @@ footer {
 
 .lightbox-close:hover {
     color: var(--color-accent);
+}
+
+/* ===========================
+   Page Header (Generic)
+   =========================== */
+.page-header {
+    height: 50vh;
+    min-height: 400px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    margin-top: 80px;
+    /* Navbar height compensation */
+}
+
+.page-header .header-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 1rem;
+    max-width: 800px;
+}
+
+.page-header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.page-header .subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        height: 40vh;
+        min-height: 300px;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+    }
 }
 
 /* ===========================
@@ -1873,9 +1897,41 @@ footer {
     transform: scale(1.05);
 }
 
-/* Hide text overlay as requested */
+/* Gallery Overlay - Minimal Style */
 .gallery-overlay {
-    display: none !important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* display: none kaldırıldı */
+    background: linear-gradient(to top, rgba(26, 60, 52, 0.9), transparent);
+    padding: 2rem 1.5rem 1rem;
+    color: white;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    pointer-events: none;
+    /* Hover sırasında görsel tıklanabilir kalsın */
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gallery-overlay h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    color: var(--color-accent);
+}
+
+.gallery-overlay p {
+    font-size: 0.9rem;
+    opacity: 0.9;
 }
 
 /* ===========================
@@ -1953,5 +2009,341 @@ footer {
     * {
         animation-duration: 0.1s !important;
         transition-duration: 0.1s !important;
+    }
+}
+
+/* ===========================
+   Blog Grid & Cards Styling
+   =========================== */
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2rem;
+}
+
+.blog-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.blog-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.blog-img {
+    height: 240px;
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+}
+
+.blog-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.blog-card:hover .blog-img img {
+    transform: scale(1.1);
+}
+
+.blog-img::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.blog-card:hover .blog-img::after {
+    opacity: 1;
+}
+
+.blog-category {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.blog-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.blog-meta {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.blog-content h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-primary);
+    line-height: 1.3;
+}
+
+.blog-content p {
+    font-size: 0.95rem;
+    color: var(--color-text-light);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    flex-grow: 1;
+}
+
+.read-btn {
+    align-self: flex-start;
+    color: var(--color-accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: gap 0.3s;
+}
+
+.read-btn i {
+    font-size: 0.8em;
+}
+
+.read-btn:hover {
+    gap: 0.8rem;
+}
+
+/* ===========================
+   Magnolia AI Mascot Styling
+   =========================== */
+.magnolia-chat-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 10000;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.magnolia-chat-widget * {
+    box-sizing: border-box;
+}
+
+/* Avatar Trigger Button */
+.magnolia-avatar {
+    width: 65px;
+    height: 65px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 3px solid #d4af37;
+    position: relative;
+    z-index: 10001;
+}
+
+.magnolia-avatar img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.magnolia-avatar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+}
+
+/* Chat Window */
+.magnolia-window {
+    position: absolute;
+    bottom: 85px;
+    right: 0;
+    width: 360px;
+    max-width: 90vw;
+    height: 550px;
+    max-height: 80vh;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    transform-origin: bottom right;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.magnolia-window.active {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+    animation: magnoliaPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.magnolia-header {
+    background: linear-gradient(135deg, #1a3c34 0%, #2c5e52 100%);
+    color: white;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.magnolia-header-avatar {
+    background: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+}
+
+.magnolia-header-avatar img {
+    width: 25px;
+}
+
+.magnolia-info h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.magnolia-info p {
+    margin: 0;
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.magnolia-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+/* Chat Area */
+.magnolia-chat-area {
+    flex: 1;
+    padding: 1.25rem;
+    overflow-y: auto;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message {
+    max-width: 85%;
+    padding: 1rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    position: relative;
+    word-wrap: break-word;
+}
+
+.message.bot {
+    background: white;
+    color: #333;
+    border-bottom-left-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.message.user {
+    background: var(--color-accent);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+}
+
+/* Input Area */
+.magnolia-input-area {
+    padding: 1rem;
+    border-top: 1px solid #eee;
+    background: white;
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.magnolia-input-area input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 1px solid #e1e1e1;
+    border-radius: 25px;
+    outline: none;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.magnolia-input-area input:focus {
+    border-color: var(--color-accent);
+}
+
+.magnolia-send-btn {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.magnolia-send-btn:hover {
+    background: var(--color-accent);
+}
+
+@keyframes magnoliaPopIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9) rotate(-5deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0);
     }
 }

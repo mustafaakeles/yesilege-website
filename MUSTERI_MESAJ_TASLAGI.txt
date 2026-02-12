@@ -1,0 +1,30 @@
+Merhaba,
+
+Yeşil Ege web sitesinin kurulum ve geliştirme süreçlerini tamamladık. Sitenin alan adı (domain), barındırma hizmeti (hosting) ve tüm kaynak kodlarının yasal ve teknik sahipliğini size devretmek üzereyiz.
+
+Bu işlem tamamlandığında; sitenin yıllık yenileme ücretleri, yönetimi ve tüm kontrolü tamamen size geçmiş olacak ve tarafımdaki sorumluluk sona erecektir.
+
+Devir işleminin sorunsuz yapılabilmesi için aşağıdaki 3 platformda **ücretsiz** hesap oluşturmanız ve hesap bilgilerini (şifre değil, sadece kullanıcı adı/e-posta) bana iletmeniz gerekmektedir:
+
+---
+
+**1. Alan Adı (Domain) İçin:**
+*   **Platform:** Natro (www.natro.com)
+*   **Yapmanız Gereken:** Bir hesap oluşturun (veya varsa giriş yapın).
+*   **Bana İletmeniz Gereken:** Natro **Müşteri Numaranız** (Sağ üst köşede yazar).
+
+**2. Kaynak Kodlar İçin:**
+*   **Platform:** GitHub (www.github.com)
+*   **Yapmanız Gereken:** Ücretsiz bir hesap oluşturun.
+*   **Bana İletmeniz Gereken:** Oluşturduğunuz **Kullanıcı Adı** (Username).
+
+**3. Site Yayını (Hosting) İçin:**
+*   **Platform:** Netlify (www.netlify.com)
+*   **Yapmanız Gereken:** "Sign up" diyerek ücretsiz üye olun.
+*   **Bana İletmeniz Gereken:** Kayıt olduğunuz **E-posta Adresi**.
+
+---
+
+Bu bilgileri tarafıma ilettiğinizde, tüm sistemleri hesabınıza transfer edip size teslim edeceğim.
+
+İyi çalışmalar dilerim.

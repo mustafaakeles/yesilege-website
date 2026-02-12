@@ -47,34 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Smooth Scrolling with Lenis
     // 1. Smooth Scrolling with Lenis
-    /* 
-    // DISABLED FOR PERFORMANCE
-    try {
-        if (typeof Lenis !== 'undefined') {
-            const lenis = new Lenis({
-                duration: 1.2,
-                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                direction: 'vertical',
-                gestureDirection: 'vertical',
-                smooth: true,
-                mouseMultiplier: 1,
-                smoothTouch: false,
-                touchMultiplier: 2,
-            });
-
-            function raf(time) {
-                lenis.raf(time);
-                requestAnimationFrame(raf);
-            }
-
-            requestAnimationFrame(raf);
-        } else {
-            console.warn("Lenis library not loaded. Smooth scrolling disabled.");
-        }
-    } catch (e) {
-        console.warn("Lenis initialization failed:", e);
-    }
-    */
+    /* DISABLED FOR PERFORMANCE */
+    // Native smooth scrolling enabled via CSS
+    document.documentElement.style.scrollBehavior = 'smooth';
 
     // 2. Register GSAP Plugins
     gsap.registerPlugin(ScrollTrigger);
