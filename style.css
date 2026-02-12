@@ -226,20 +226,24 @@ section[id] {
     z-index: 1000;
     padding: 1rem 0;
     /* Consistent padding */
-    background-color: var(--color-primary);
-    /* Always dark green, no transparency */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    background-color: rgba(27, 60, 53, 0.85);
+    /* Modern glassmorphism base */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: visible;
 }
 
-/* Scrolled State - Just slightly tighter if needed, or keeping it same for stability */
+/* Scrolled State - Modern & Sleek */
 .navbar.scrolled {
     padding: 0.8rem 0;
-    background-color: var(--color-primary);
-    /* Keep it dark! */
-    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+    background-color: rgba(21, 46, 40, 0.95);
+    /* Nearly opaque on scroll */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -326,6 +330,26 @@ section[id] {
     height: 100%;
     display: flex;
     align-items: center;
+}
+
+/* Modern Hover Effect - Sliding Underline */
+.nav-links>li::after {
+    content: '';
+    position: absolute;
+    bottom: 30%;
+    /* Adjust based on logo/header height alignment */
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+}
+
+.nav-links>li:hover::after,
+.nav-links>li.active::after {
+    width: 100%;
+    opacity: 1;
 }
 
 .nav-links a {
