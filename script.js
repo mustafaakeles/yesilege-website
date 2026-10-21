@@ -423,68 +423,54 @@ document.addEventListener('DOMContentLoaded', () => {
         slideInterval = setInterval(nextSlide, intervalTime);
     }
 
-    // Start Loop
-    resetInterval();
+    // Start Loop (only on pages that have a hero slider)
+    if (slides.length > 1) {
+        resetInterval();
 
-    // Initial State ensure
-    gsap.set(slides, { opacity: 0 });
-    gsap.set(slides[0], { opacity: 1 });
+        // Initial State ensure
+        gsap.set(slides, { opacity: 0 });
+        gsap.set(slides[0], { opacity: 1 });
+    }
 
-    // 12. Contact Form Handling (Hybrid: AJAX or Simulation)
-    const contactForm = document.querySelector('.contact-form form');
-    if (contactForm) {
+    // 12. Contact Form Handling (Netlify Forms via AJAX)
+    document.querySelectorAll('form[data-netlify="true"]').forEach(contactForm => {
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = contactForm.querySelector('button');
-            const originalText = btn.textContent;
+            const btn = contactForm.querySelector('button[type="submit"]');
+            const originalHTML = btn.innerHTML;
 
             // UI Loading State
             btn.textContent = 'Gönderiliyor...';
             btn.style.opacity = '0.7';
             btn.disabled = true;
 
-            const formData = new FormData(contactForm);
-            const action = contactForm.getAttribute('action');
-
             try {
-                if (action && action.includes('http')) {
-                    // Real Submission via AJAX
-                    const response = await fetch(action, {
-                        method: contactForm.method,
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    });
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(new FormData(contactForm)).toString()
+                });
 
-                    if (response.ok) {
-                        btn.textContent = 'Mesajınız İletildi! ✓';
-                        btn.style.backgroundColor = '#4d7c6e';
-                        contactForm.reset();
-                    } else {
-                        throw new Error('Form gönderilemedi');
-                    }
-                } else {
-                    // Fallback Simulation (if no action URL provided)
-                    await new Promise(resolve => setTimeout(resolve, 1500));
-                    btn.textContent = 'Simülasyon: Mesaj Alındı! ✓';
-                    btn.style.backgroundColor = '#4d7c6e';
-                    contactForm.reset();
+                if (!response.ok) {
+                    throw new Error(`Form gönderilemedi (HTTP ${response.status})`);
                 }
+                btn.textContent = 'Mesajınız İletildi! ✓';
+                btn.style.backgroundColor = '#4d7c6e';
+                contactForm.reset();
             } catch (error) {
                 console.error(error);
-                btn.textContent = 'Hata Oluştu!';
+                btn.textContent = 'Gönderilemedi, lütfen bizi arayın.';
                 btn.style.backgroundColor = '#d9534f';
             } finally {
                 btn.style.opacity = '1';
                 setTimeout(() => {
-                    btn.textContent = originalText;
+                    btn.innerHTML = originalHTML;
                     btn.style.backgroundColor = '';
                     btn.disabled = false;
-                }, 3000);
+                }, 4000);
             }
         });
-    }
+    });
 
     // 13. Lightbox Functionality
     const galleryItems = document.querySelectorAll('.gallery-item');

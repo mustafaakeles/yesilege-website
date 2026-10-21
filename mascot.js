@@ -151,7 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lowerText.includes('soldu') || lowerText.includes('öldü') || lowerText.includes('kurudu')) {
             return "Bunu duyduğuma üzüldüm. 😔 Bitkinin toprağını kontrol ettiniz mi? Çok ıslaksa kök çürümesi, çok kuruysa susuzluk olabilir. Ayrıca yer değişikliği de strese sokmuş olabilir.";
         }
-        if (lowerText.includes('böcek') || lowerText.includes('bit')) {
+        // "bit" tek kelime olarak aranır; aksi halde "bitki" de eşleşir
+        if (lowerText.includes('böcek') || /(^|[^a-zçğıöşü])bit(i|ler|leri|lenmiş)?($|[^a-zçğıöşü])/.test(lowerText)) {
             return "Böcekler can sıkıcıdır. Yaprakların altına baktınız mı? Genelde arap sabunlu su karışımı ile yaprakları silmek doğal ve etkili bir ilk müdahaledir. Sorun devam ederse neem yağı kullanabilirsiniz. 🐞";
         }
         if (lowerText.includes('sarı') || lowerText.includes('sarardı')) {

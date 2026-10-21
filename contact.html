@@ -129,7 +129,10 @@
 
                 <!-- Form Column -->
                 <div class="contact-form-wrapper">
-                    <form class="contact-form">
+                    <form class="contact-form" name="iletisim" method="POST" data-netlify="true"
+                        netlify-honeypot="bot-field">
+                        <input type="hidden" name="form-name" value="iletisim">
+                        <p hidden><label>Bu alanı boş bırakın: <input name="bot-field"></label></p>
                         <h3>Mesaj Gönderin</h3>
                         <div class="form-group">
                             <label for="name">Adınız Soyadınız</label>
@@ -168,8 +171,8 @@
     <!-- Map Section -->
     <section class="map-section">
         <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3131.791590497524!2d27.64968807656686!3d38.28394497186178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14b963a704e67303%3A0x4a49216062f6890!2zS2FyYXZlbGlsZXIsIEthesSxbSBEaXGlayBDZC4gTm86MjMxLCAzNTg0NyBCYXnEsW5kxLFyL8Swem1pcg!5e0!3m2!1str!2str!4v1707738000000!5m2!1str!2str"
-            width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+            src="https://www.google.com/maps/embed?origin=mfe&amp;pb=!1m3!2m1!1s38.1923646,27.5408019!6i16!3m1!1str!5m1!1str"
+            title="Yeşil Ege konumu" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"></iframe>
     </section>
 

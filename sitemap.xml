@@ -90,4 +90,28 @@
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
+    <url>
+        <loc>https://yesilege.com.tr/blog-yazilari/bitki-cogaltma-rehberi.html</loc>
+        <lastmod>2026-02-13</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://yesilege.com.tr/blog-yazilari/mutfak-bahceciligi.html</loc>
+        <lastmod>2026-02-13</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://yesilege.com.tr/blog-yazilari/tatilde-bitki-bakimi.html</loc>
+        <lastmod>2026-02-13</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://yesilege.com.tr/blog-yazilari/teraryum-yapimi.html</loc>
+        <lastmod>2026-02-13</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
 </urlset>

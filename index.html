@@ -423,7 +423,10 @@
                 </div>
 
                 <div class="contact-form">
-                    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" id="contactForm">
+                    <form name="iletisim-anasayfa" method="POST" data-netlify="true" netlify-honeypot="bot-field"
+                        id="contactForm">
+                        <input type="hidden" name="form-name" value="iletisim-anasayfa">
+                        <p hidden><label>Bu alanı boş bırakın: <input name="bot-field"></label></p>
                         <div class="form-group">
                             <input type="text" name="name" placeholder="Adınız Soyadınız" required>
                         </div>
