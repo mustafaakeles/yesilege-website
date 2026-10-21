@@ -12,13 +12,54 @@
     <meta property="og:title" content="Yeşil Ege | Peyzaj ve Çiçek Üretimi">
     <meta property="og:description"
         content="Ege'nin en seçkin villaları ve özel mülkleri için premium peyzaj tasarımı ve bitki üretimi.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1558904541-efa843a96f01?q=80&w=1200">
-    <meta property="og:url" content="https://yesilege.com.tr">
+    <meta property="og:image" content="https://yesilege.com.tr/images/anton-lammert-JEPpEhHEfbM-unsplash.jpg">
+    <meta property="og:url" content="https://yesilege.com.tr/">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Yeşil Ege">
+    <meta property="og:locale" content="tr_TR">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://yesilege.com.tr/">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": "https://yesilege.com.tr/#business",
+        "name": "Yeşil Ege Peyzaj",
+        "description": "Bayındır/İzmir merkezli peyzaj tasarımı, uygulama, bahçe bakımı ve süs bitkisi üretimi.",
+        "url": "https://yesilege.com.tr/",
+        "logo": "https://yesilege.com.tr/images/logo1.png",
+        "image": "https://yesilege.com.tr/images/anton-lammert-JEPpEhHEfbM-unsplash.jpg",
+        "telephone": ["+905350805951", "+905323247288"],
+        "email": "info@yesilege.com.tr",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Karaveliler, Kazım Dirik Cd. No: 225",
+            "addressLocality": "Bayındır",
+            "addressRegion": "İzmir",
+            "postalCode": "35847",
+            "addressCountry": "TR"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 38.1923646,
+            "longitude": 27.5408019
+        },
+        "hasMap": "https://maps.app.goo.gl/BhpF9Gh1Xto5Y9368",
+        "areaServed": "İzmir",
+        "sameAs": [
+            "https://www.instagram.com/yesilegepeyzaj/",
+            "https://linkedin.com/company/yesilege-peyzaj"
+        ]
+    }
+    </script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicon.png">
+
+    <!-- First hero slide (LCP image) -->
+    <link rel="preload" as="image" href="images/anton-lammert-JEPpEhHEfbM-unsplash.webp">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -90,34 +131,34 @@
         <!-- Background Slider Container - Landscaping Focus -->
         <div class="hero-slider">
             <!-- 1. Local Image -->
-            <div class="slide active" style="background-image: url('images/anton-lammert-JEPpEhHEfbM-unsplash.jpg');">
+            <div class="slide active" style="background-image: url('images/anton-lammert-JEPpEhHEfbM-unsplash.webp');">
             </div>
             <!-- 2. Local Image -->
-            <div class="slide" style="background-image: url('images/connie-garrad-VGtMvqHDpFw-unsplash.jpg');">
+            <div class="slide" data-bg="images/connie-garrad-VGtMvqHDpFw-unsplash.webp">
             </div>
             <!-- 3. Local Image -->
-            <div class="slide" style="background-image: url('images/joey-genovese-ktd2fT6R-QM-unsplash.jpg');">
+            <div class="slide" data-bg="images/joey-genovese-ktd2fT6R-QM-unsplash.webp">
             </div>
             <!-- 4. Local Image -->
-            <div class="slide" style="background-image: url('images/john-fornander-tVzyDSV84w8-unsplash.jpg');">
+            <div class="slide" data-bg="images/john-fornander-tVzyDSV84w8-unsplash.webp">
             </div>
             <!-- 5. Local Image -->
-            <div class="slide" style="background-image: url('images/frames-for-your-heart-2d4lAQAlbDA-unsplash.jpg');">
+            <div class="slide" data-bg="images/frames-for-your-heart-2d4lAQAlbDA-unsplash.webp">
             </div>
             <!-- 6. Local Image -->
-            <div class="slide" style="background-image: url('images/tania-melnyczuk-E4Ryf8GKWbs-unsplash.jpg');">
+            <div class="slide" data-bg="images/tania-melnyczuk-E4Ryf8GKWbs-unsplash.webp">
             </div>
             <!-- 7. Local Image -->
-            <div class="slide" style="background-image: url('images/villa-194671_1280.jpg');">
+            <div class="slide" data-bg="images/villa-194671_1280.webp">
             </div>
             <!-- 8. Local Image -->
-            <div class="slide" style="background-image: url('images/chris-lee-70l1tDAI6rM-unsplash.jpg');">
+            <div class="slide" data-bg="images/chris-lee-70l1tDAI6rM-unsplash.webp">
             </div>
             <!-- 9. Local Image -->
-            <div class="slide" style="background-image: url('images/dominik-miTaCGn2y84-unsplash.jpg');">
+            <div class="slide" data-bg="images/dominik-miTaCGn2y84-unsplash.webp">
             </div>
             <!-- 10. Local Image -->
-            <div class="slide" style="background-image: url('images/usalandscaping.jpg');">
+            <div class="slide" data-bg="images/usalandscaping.webp">
             </div>
         </div>
 
@@ -125,8 +166,8 @@
 
         <!-- Slider Navigation (Placed after overlay to ensure clickability) -->
         <div class="slider-nav">
-            <button class="nav-btn prev"><i class="fas fa-chevron-left"></i></button>
-            <button class="nav-btn next"><i class="fas fa-chevron-right"></i></button>
+            <button class="nav-btn prev" aria-label="Önceki görsel"><i class="fas fa-chevron-left"></i></button>
+            <button class="nav-btn next" aria-label="Sonraki görsel"><i class="fas fa-chevron-right"></i></button>
         </div>
 
         <div class="hero-content">
@@ -181,7 +222,7 @@
                     <div class="img-wrapper">
                         <!-- Placeholder for visual style -->
                         <!-- Premium Local Image -->
-                        <img src="images/chris-lee-70l1tDAI6rM-unsplash.jpg" alt="Hakkımızda" class="placeholder-img"
+                        <img src="images/chris-lee-70l1tDAI6rM-unsplash.webp" alt="Hakkımızda" class="placeholder-img"
                             loading="lazy">
                         <div class="floating-card glass">
                             <h4>Deneyim</h4>
@@ -236,7 +277,7 @@
             <div class="services-grid">
                 <!-- 1. Peyzaj Projelendirme -->
                 <article class="service-card">
-                    <img src="images/landscape_architecture_project_3d_render.png" alt="Peyzaj Projelendirme"
+                    <img src="images/landscape_architecture_project_3d_render.webp" alt="Peyzaj Projelendirme"
                         class="card-img">
                     <div class="card-content">
                         <h3>Peyzaj Projelendirme</h3>
@@ -275,7 +316,7 @@
 
                 <!-- 4. Bahçe Bakım Hizmetleri -->
                 <article class="service-card">
-                    <img src="images/bahcebakimhizmeti.jpeg" alt="Bahçe Bakım" class="card-img">
+                    <img src="images/bahcebakimhizmeti.webp" alt="Bahçe Bakım" class="card-img">
                     <div class="card-content">
                         <h3>Bahçe Bakım Hizmetleri</h3>
                         <p>Bahçeniz 4 mevsim canlı kalsın. Periyodik çim biçme, budama, gübreleme ve ilaçlama hizmetleri
@@ -286,7 +327,7 @@
 
                 <!-- 5. Otomatik Sulama -->
                 <article class="service-card">
-                    <img src="images/bahcesulamasistemi.jpg" alt="Otomatik Sulama" class="card-img">
+                    <img src="images/bahcesulamasistemi.webp" alt="Otomatik Sulama" class="card-img">
                     <div class="card-content">
                         <h3>Otomatik Sulama</h3>
                         <p>Su tasarrufu ve verimlilik sağlayan akıllı sulama sistemleri projelendirme ve montajı.
@@ -298,7 +339,7 @@
 
                 <!-- 6. Toptan Satış -->
                 <article class="service-card">
-                    <img src="images/perakendesatis.jpg" alt="Toptan Satış" class="card-img">
+                    <img src="images/perakendesatis.webp" alt="Toptan Satış" class="card-img">
                     <div class="card-content">
                         <h3>Toptan & Perakende</h3>
                         <p>Sektör profesyonelleri için güvenilir çözüm ortağı. Türkiye'nin her yerine tır bazlı lojistik
@@ -321,7 +362,7 @@
             <div class="gallery-grid">
                 <!-- Item 1 -->
                 <div class="gallery-item">
-                    <img src="images/v4.jpg" alt="Özel Villa Peyzajı" loading="lazy">
+                    <img src="images/v4.webp" alt="Özel Villa Peyzajı" loading="lazy">
                     <div class="gallery-overlay">
                         <h5>Lüks Villa Bahçesi</h5>
                         <p>Özel Tasarım & Uygulama</p>
@@ -329,7 +370,7 @@
                 </div>
                 <!-- Item 2 -->
                 <div class="gallery-item">
-                    <img src="images/v5.jpg" alt="Modern Havuz Başı" loading="lazy">
+                    <img src="images/v5.webp" alt="Modern Havuz Başı" loading="lazy">
                     <div class="gallery-overlay">
                         <h5>Modern Havuz Başı</h5>
                         <p>Sert Zemin & Bitkilendirme</p>
@@ -345,7 +386,7 @@
                 </div>
                 <!-- Item 4 -->
                 <div class="gallery-item">
-                    <img src="images/villas1.jpg" alt="Villa Giriş Düzenlemesi" loading="lazy">
+                    <img src="images/villas1.webp" alt="Villa Giriş Düzenlemesi" loading="lazy">
                     <div class="gallery-overlay">
                         <h5>Villa Girişi</h5>
                         <p>Prestijli Karşılama</p>
@@ -353,7 +394,7 @@
                 </div>
                 <!-- Item 5 -->
                 <div class="gallery-item">
-                    <img src="images/villas2.jpg" alt="Geniş Bahçe Alanı" loading="lazy">
+                    <img src="images/villas2.webp" alt="Geniş Bahçe Alanı" loading="lazy">
                     <div class="gallery-overlay">
                         <h5>Geniş Çim Alanlar</h5>
                         <p>Rulo Çim & Sulama</p>
@@ -361,7 +402,7 @@
                 </div>
                 <!-- Item 6 -->
                 <div class="gallery-item">
-                    <img src="images/villas3.jpg" alt="Detaylı Bitki Uygulaması" loading="lazy">
+                    <img src="images/villas3.webp" alt="Detaylı Bitki Uygulaması" loading="lazy">
                     <div class="gallery-overlay">
                         <h5>Konsept Tasarım</h5>
                         <p>Anahtar Teslim Proje</p>
@@ -473,10 +514,15 @@
             <div class="footer-newsletter">
                 <h4>Bülten</h4>
                 <p>Kampanyalardan haberdar olun.</p>
-                <div class="input-group">
-                    <input type="email" placeholder="E-posta adresiniz">
-                    <button><i class="fas fa-arrow-right"></i></button>
-                </div>
+                <form class="input-group" name="bulten" method="POST" data-netlify="true"
+                    netlify-honeypot="bot-field">
+                    <input type="hidden" name="form-name" value="bulten">
+                    <p hidden><label>Bu alanı boş bırakın: <input name="bot-field"></label></p>
+                    <input type="email" name="email" placeholder="E-posta adresiniz" aria-label="E-posta adresiniz"
+                        required>
+                    <button type="submit" aria-label="Bültene abone ol"><i class="fas fa-arrow-right"></i></button>
+                </form>
+                <p class="form-status" aria-live="polite"></p>
             </div>
         </div>
         <div class="footer-bottom">

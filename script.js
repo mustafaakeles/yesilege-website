@@ -239,6 +239,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelector('.nav-links');
 
     if (hamburger && navLinks) {
+        // Accessibility: the hamburger is a <div> on every page, so expose it as a button here
+        hamburger.setAttribute('role', 'button');
+        hamburger.setAttribute('tabindex', '0');
+        hamburger.setAttribute('aria-label', 'Menüyü aç/kapat');
+        hamburger.setAttribute('aria-expanded', 'false');
+        hamburger.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                hamburger.click();
+            }
+        });
+        new MutationObserver(() => {
+            hamburger.setAttribute('aria-expanded', String(navLinks.classList.contains('mobile-open')));
+        }).observe(navLinks, { attributes: true, attributeFilter: ['class'] });
+
         hamburger.addEventListener('click', () => {
             if (navLinks.classList.contains('mobile-open')) {
                 // Menüyü kapat
@@ -349,9 +364,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let slideInterval;
     const intervalTime = 6000;
 
+    // Slides other than the first carry their image in data-bg and load on demand
+    function loadSlide(index) {
+        const slide = slides[index];
+        if (slide && slide.dataset.bg) {
+            slide.style.backgroundImage = `url('${slide.dataset.bg}')`;
+            delete slide.dataset.bg;
+        }
+    }
+
     function goToSlide(index, direction) {
         if (isAnimating || index === currentSlide) return;
         isAnimating = true;
+        loadSlide(index);
+        loadSlide((index + 1) % slides.length); // preload the one after
 
         const activeSlide = slides[currentSlide];
         const nextSlide = slides[index];
@@ -425,6 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Start Loop (only on pages that have a hero slider)
     if (slides.length > 1) {
+        window.addEventListener('load', () => loadSlide(1));
         resetInterval();
 
         // Initial State ensure
@@ -432,15 +459,31 @@ document.addEventListener('DOMContentLoaded', () => {
         gsap.set(slides[0], { opacity: 1 });
     }
 
-    // 12. Contact Form Handling (Netlify Forms via AJAX)
+    // 12. Form Handling (Netlify Forms via AJAX)
+    // Compact forms (newsletter) report into a sibling .form-status instead of the button label.
     document.querySelectorAll('form[data-netlify="true"]').forEach(contactForm => {
+        const isNewsletter = contactForm.getAttribute('name') === 'bulten';
+        const status = contactForm.nextElementSibling?.classList.contains('form-status')
+            ? contactForm.nextElementSibling : null;
+        const messages = isNewsletter
+            ? { success: 'Bültene kaydoldunuz! ✓', error: 'Kayıt yapılamadı, lütfen tekrar deneyin.' }
+            : { success: 'Mesajınız İletildi! ✓', error: 'Gönderilemedi, lütfen bizi arayın.' };
+
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = contactForm.querySelector('button[type="submit"]');
             const originalHTML = btn.innerHTML;
+            const show = (text, color) => {
+                if (status) {
+                    status.textContent = text;
+                } else {
+                    btn.textContent = text;
+                    btn.style.backgroundColor = color;
+                }
+            };
 
             // UI Loading State
-            btn.textContent = 'Gönderiliyor...';
+            show('Gönderiliyor...', '');
             btn.style.opacity = '0.7';
             btn.disabled = true;
 
@@ -454,19 +497,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!response.ok) {
                     throw new Error(`Form gönderilemedi (HTTP ${response.status})`);
                 }
-                btn.textContent = 'Mesajınız İletildi! ✓';
-                btn.style.backgroundColor = '#4d7c6e';
+                show(messages.success, '#4d7c6e');
                 contactForm.reset();
             } catch (error) {
                 console.error(error);
-                btn.textContent = 'Gönderilemedi, lütfen bizi arayın.';
-                btn.style.backgroundColor = '#d9534f';
+                show(messages.error, '#d9534f');
             } finally {
                 btn.style.opacity = '1';
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
                     btn.style.backgroundColor = '';
                     btn.disabled = false;
+                    if (status) status.textContent = '';
                 }, 4000);
             }
         });
