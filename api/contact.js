@@ -2,6 +2,9 @@
 // Gerekli ortam değişkenleri: RESEND_API_KEY, CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL
 
 import { validateSubmission, buildEmail } from './_lib/contact.js';
+import { sendEmail } from './_lib/resend.js';
+
+export { sendEmail };
 
 const MAX_BODY_BYTES = 20_000;
 
@@ -13,29 +16,6 @@ function readConfig(env) {
     };
     const missing = Object.entries(config).filter(([, v]) => !v).map(([k]) => k);
     return { config, missing };
-}
-
-export async function sendEmail({ apiKey, to, from }, email, replyTo, fetchImpl = fetch) {
-    const response = await fetchImpl('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            from,
-            to: to.split(',').map(s => s.trim()).filter(Boolean),
-            reply_to: replyTo,
-            subject: email.subject,
-            text: email.text,
-            html: email.html
-        })
-    });
-
-    if (!response.ok) {
-        const detail = await response.text().catch(() => '');
-        throw new Error(`Resend HTTP ${response.status}: ${detail.slice(0, 300)}`);
-    }
 }
 
 export function createHandler({ env = process.env, fetchImpl = fetch } = {}) {
