@@ -8,8 +8,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# style.css / script.js / mascot.* / motion.* / screens.* değiştiğinde artırın: tarayıcı önbelleğindeki eski dosyaları geçersiz kılar
-ASSET_VERSION = "20261022h"
+# style.css / script.js / mascot.* / motion.* / screens.* / doctor.* değiştiğinde artırın: tarayıcı önbelleğindeki eski dosyaları geçersiz kılar
+ASSET_VERSION = "20261022i"
 
 SERVICES = [
     ("garden-materials", "Bahçe Malzemeleri"),
@@ -25,6 +25,7 @@ NAV_ITEMS = [
     ("index.html", "Ana Sayfa"),
     ("services.html", "Hizmetler & Ürünler"),
     ("care.html", "Bakım Rehberi"),
+    ("bitki-doktoru.html", "Bitki Doktoru"),
     ("blog.html", "Blog"),
     ("index.html#projeler", "Projeler"),
     ("contact.html", "İletişim"),
@@ -42,7 +43,7 @@ def nav_html(prefix: str, active: str) -> str:
             )
             items.append(
                 f'                <li class="dropdown">\n'
-                f'                    <a href="{prefix}services.html" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false"{current}>{label.replace("&", "&amp;")} <i class="fas fa-chevron-down" aria-hidden="true"></i></a>\n'
+                f'                    <a href="{prefix}services.html" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false"{current}>Hizmetler<span class="nav-extra"> &amp; Ürünler</span> <i class="fas fa-chevron-down" aria-hidden="true"></i></a>\n'
                 f'                    <ul class="dropdown-menu">\n{sub}\n                    </ul>\n'
                 f'                </li>'
             )
@@ -98,6 +99,7 @@ def footer_html(prefix: str, with_newsletter: bool) -> str:
                     <li><a href="{prefix}services.html">Hizmetler &amp; Ürünler</a></li>
                     <li><a href="{prefix}index.html#projeler">Projeler</a></li>
                     <li><a href="{prefix}care.html">Bitki Bakım Rehberi</a></li>
+                    <li><a href="{prefix}bitki-doktoru.html">Bitki Doktoru</a></li>
                     <li><a href="{prefix}blog.html">Blog</a></li>
                     <li><a href="{prefix}index.html#sss">Sıkça Sorulanlar</a></li>
                 </ul>
@@ -113,7 +115,7 @@ def footer_html(prefix: str, with_newsletter: bool) -> str:
             </div>{newsletter}
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Yeşil Ege Peyzaj. Tüm hakları saklıdır.</p>
+            <p>&copy; 2026 Yeşil Ege Peyzaj. Tüm hakları saklıdır. · <a href="{prefix}kvkk.html">KVKK Aydınlatma Metni</a></p>
             <div class="codera-signature">
                 Software &amp; Design by <a href="https://www.codera.com.tr" target="_blank" rel="noopener">CODERA</a>
             </div>
@@ -174,9 +176,9 @@ def process(path: Path) -> bool:
         text = text.replace("<main", '<main id="main"', 1)
 
     # Betikleri ertele, CSS/JS adreslerine sürüm ekle (önbellek kırma)
-    text = re.sub(r'<script src="((?:\.\./)?(?:script|mascot|screens)\.js)(?:\?v=\w+)?"( defer)?></script>',
+    text = re.sub(r'<script src="((?:\.\./)?(?:script|mascot|screens|doctor)\.js)(?:\?v=\w+)?"( defer)?></script>',
                   rf'<script src="\1?v={ASSET_VERSION}" defer></script>', text)
-    text = re.sub(r'href="((?:\.\./)?(?:style|mascot|motion|screens)\.css)(?:\?v=\w+)?"', rf'href="\1?v={ASSET_VERSION}"', text)
+    text = re.sub(r'href="((?:\.\./)?(?:style|mascot|motion|screens|doctor)\.css)(?:\?v=\w+)?"', rf'href="\1?v={ASSET_VERSION}"', text)
     text = re.sub(r'<script src="((?:\.\./)?motion\.js)(?:\?v=\w+)?"></script>', rf'<script src="\1?v={ASSET_VERSION}"></script>', text)
 
     # Motion katmanı: style.css'in hemen ardından, <head> içinde senkron (ilk boyamadan önce html sınıflarını kurar)
