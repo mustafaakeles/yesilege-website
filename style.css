@@ -50,7 +50,9 @@
     --shadow-md: 0 12px 32px rgba(18, 38, 31, 0.10);
     --shadow-lg: 0 24px 60px rgba(18, 38, 31, 0.16);
 
-    --container: 1200px;
+    /* Geniş ekranlarda kenar boşlukları büyümesin: içerik 1600px'e kadar yayılır */
+    --container: 1600px;
+    --gutter: clamp(20px, 3vw, 48px);
     --nav-h: 76px;
     --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
     --transition: all 0.25s var(--ease);
@@ -166,7 +168,7 @@ p {
     width: 100%;
     max-width: var(--container);
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 var(--gutter);
 }
 
 .text-center {
@@ -542,7 +544,7 @@ p {
     width: 100%;
     max-width: var(--container);
     margin: 0 auto;
-    padding: 0 clamp(24px, 4vw, 48px) clamp(48px, 7vw, 88px);
+    padding: 0 var(--gutter) clamp(48px, 7vw, 88px);
 }
 
 .hero-eyebrow {
@@ -681,6 +683,8 @@ p {
 .about-image img {
     width: 100%;
     aspect-ratio: 4 / 5;
+    /* Geniş kapsayıcıda dikey görsel ekranı taşmasın */
+    max-height: min(720px, 82vh);
     object-fit: cover;
     border-radius: var(--radius-lg);
 }
@@ -856,7 +860,7 @@ p {
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 240px;
+    grid-auto-rows: clamp(220px, 16vw, 300px);
     gap: 16px;
 }
 
@@ -1165,7 +1169,8 @@ p {
     color: #e8d3ad;
 }
 
-.info-item span,
+/* Yalnızca bilgi satırı etiketi (başlık animasyonunun kelime span'leri etkilenmesin) */
+.info-item > div > span,
 .info-item h3 {
     display: block;
     font-family: var(--font-body);
@@ -1210,22 +1215,11 @@ p {
     color: var(--forest-800);
 }
 
-.social-links-contact h3 {
-    margin-top: 1.5rem;
-    font-size: 1rem;
-}
-
-.contact-form,
-.contact-form-wrapper {
+.contact-form {
     background: var(--white);
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     padding: clamp(1.75rem, 4vw, 3rem);
-}
-
-.contact-form-wrapper .contact-form {
-    padding: 0;
-    border: 0;
 }
 
 .contact-form h3 {
@@ -1289,18 +1283,192 @@ p {
     width: 100%;
 }
 
-.map-section {
-    padding: 0 0 clamp(4rem, 8vw, 6rem);
+/* İletişim sayfası: hızlı eylemler, teklif adımları, kanallar, yol tarifi */
+.quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1.5rem;
 }
 
-.map-section iframe {
+.contact-info > h2 {
+    font-size: clamp(1.9rem, 3vw, 2.5rem);
+    margin-bottom: 0.75rem;
+}
+
+.quote-steps {
+    list-style: none;
+    counter-reset: qs;
+    display: grid;
+    gap: 18px;
+    margin: 2rem 0;
+}
+
+.quote-steps li {
+    position: relative;
+    padding-left: 52px;
+    counter-increment: qs;
+}
+
+.quote-steps li::before {
+    content: counter(qs);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e8d3ad;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.quote-steps strong {
+    display: block;
+    color: var(--white);
+}
+
+.quote-steps span {
+    font-size: 0.93rem;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.quote-urgent {
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.quote-urgent a {
+    color: #e8d3ad;
+    font-weight: 600;
+}
+
+.contact-form label small {
+    font-weight: 400;
+    color: var(--ink-soft);
+}
+
+.reach {
+    background: var(--sand-100);
+}
+
+.reach-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.reach-card {
+    display: grid;
+    gap: 4px;
+    padding: 28px 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--white);
+    color: var(--ink-soft);
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+a.reach-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: transparent;
+}
+
+.reach-card i {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 12px;
+    border-radius: 14px;
+    background: var(--forest-700);
+    color: var(--sage-300);
+    font-size: 1.15rem;
+}
+
+.reach-card strong {
+    font-family: var(--font-heading);
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--forest-800);
+}
+
+.reach-card span {
+    color: var(--ink);
+    font-weight: 500;
+}
+
+.reach-card .reach-alt {
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+}
+
+.route-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: stretch;
+}
+
+.route-card h2 {
+    margin-bottom: 1.25rem;
+}
+
+.route-card p {
+    margin-bottom: 1rem;
+}
+
+.route-address {
+    display: flex;
+    gap: 12px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--forest-800);
+}
+
+.route-address i,
+.route-note i {
+    margin-top: 4px;
+    color: var(--clay-600);
+}
+
+.route-note {
+    display: flex;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--sage-100);
+    font-size: 0.92rem;
+    color: var(--forest-800);
+}
+
+.route-card .hero-btns {
+    margin-top: 1.5rem;
+}
+
+.route-social a {
+    border-color: var(--line);
+    color: var(--forest-700);
+}
+
+.route-social a:hover {
+    background: var(--forest-700);
+    color: var(--white);
+}
+
+.route-map iframe {
     display: block;
     width: 100%;
-    max-width: var(--container);
-    height: 420px;
-    margin: 0 auto;
+    height: 100%;
+    min-height: 460px;
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--line) !important;
 }
 
 /* ===========================
@@ -1335,6 +1503,8 @@ p {
 .page-header > .container {
     position: relative;
     z-index: 2;
+    /* Üst boşluk: içerik uzarsa (ör. hızlı eylem butonları) başlık üst kenara yapışmasın */
+    padding-top: clamp(40px, 6vw, 72px);
     padding-bottom: clamp(36px, 5vw, 56px);
     color: var(--white);
 }
@@ -1541,6 +1711,12 @@ p {
     grid-template-columns: repeat(3, 1fr);
     gap: 28px;
     padding-bottom: clamp(4rem, 8vw, 6rem);
+}
+
+@media (min-width: 1440px) {
+    .blog-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 .blog-card {
@@ -1913,8 +2089,8 @@ footer h4 {
     align-items: center;
     max-width: var(--container);
     margin: 0 auto;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
     font-size: 0.85rem;
 }
 
@@ -2082,8 +2258,17 @@ footer h4 {
     .area-grid,
     .detail-grid,
     .contact-wrapper,
-    .contact-grid {
+    .contact-grid,
+    .route-grid {
         grid-template-columns: 1fr;
+    }
+
+    .reach-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .route-map iframe {
+        min-height: 360px;
     }
 
     .detail-grid.reverse .text-content {
@@ -2100,6 +2285,15 @@ footer h4 {
 }
 
 @media (max-width: 640px) {
+    .reach-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-actions .btn {
+        flex: 1 1 calc(50% - 5px);
+        padding: 0 14px;
+    }
+
     :root {
         --nav-h: 68px;
     }
