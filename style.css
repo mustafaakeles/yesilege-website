@@ -783,61 +783,8 @@ p {
 }
 
 /* ===========================
-   9. Services
+   9. Services (kartlar ve canlı ekranlar screens.css'te)
    =========================== */
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-}
-
-.service-card {
-    display: flex;
-    flex-direction: column;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    transition: box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
-}
-
-.service-card:hover {
-    box-shadow: var(--shadow-md);
-    border-color: transparent;
-}
-
-.service-card .card-img {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    transition: transform 0.6s var(--ease);
-}
-
-.service-card:hover .card-img {
-    transform: scale(1.04);
-}
-
-.service-card .card-media {
-    overflow: hidden;
-}
-
-.card-content {
-    padding: 26px 26px 28px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.card-content h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.6rem;
-}
-
-.card-content p {
-    font-size: 0.96rem;
-    margin-bottom: 1.25rem;
-}
-
 .read-more {
     margin-top: auto;
     display: inline-flex;
@@ -2011,19 +1958,8 @@ footer h4 {
 }
 
 /* ===========================
-   22. Reveal animations (JS ekler, motion azaltıldıysa kapalı)
+   22. Hareket azaltma (reveal ve giriş animasyonları motion.css'te)
    =========================== */
-.js-reveal .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
-}
-
-.js-reveal .reveal.is-visible {
-    opacity: 1;
-    transform: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -2031,11 +1967,6 @@ footer h4 {
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
-    }
-
-    .js-reveal .reveal {
-        opacity: 1;
-        transform: none;
     }
 }
 
@@ -2059,7 +1990,6 @@ footer h4 {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .services-grid,
     .blog-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -2206,7 +2136,6 @@ footer h4 {
     }
 
     .trust-grid,
-    .services-grid,
     .blog-grid,
     .process-grid,
     .footer-content,

@@ -1,11 +1,11 @@
 // Yeşil Ege Peyzaj — site etkileşimleri (bağımlılıksız)
+// Reveal, giriş ve sayfa geçişi animasyonları motion.js'tedir.
 
 document.addEventListener('DOMContentLoaded', () => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     initNavbar();
     initMobileMenu();
-    initReveal(prefersReducedMotion);
     initCounters(prefersReducedMotion);
     initHeroSlider(prefersReducedMotion);
     initForms();
@@ -71,28 +71,12 @@ function initMobileMenu() {
     });
 }
 
-// 3. Kaydırınca beliren öğeler
-function initReveal(reducedMotion) {
-    const items = document.querySelectorAll('.reveal');
-    if (!items.length || reducedMotion || !('IntersectionObserver' in window)) return;
-
-    document.documentElement.classList.add('js-reveal');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-
-    items.forEach(item => observer.observe(item));
-}
-
-// 4. Rakam sayaçları
+// 3. Rakam sayaçları
 function initCounters(reducedMotion) {
     const numbers = document.querySelectorAll('.stat-item .number[data-target]');
+    // motion.js etkinse anasayfadaki rulo sayaçlar (screens.js) devreye girer
     if (!numbers.length || reducedMotion || !('IntersectionObserver' in window)) return;
+    if (document.documentElement.classList.contains('motion')) return;
 
     const format = (n) => n.toLocaleString('tr-TR');
     const animate = (el) => {
@@ -121,7 +105,7 @@ function initCounters(reducedMotion) {
     numbers.forEach(n => observer.observe(n));
 }
 
-// 5. Hero slider (ilk görsel hariç diğerleri sırası gelince yüklenir)
+// 4. Hero slider (ilk görsel hariç diğerleri sırası gelince yüklenir)
 function initHeroSlider(reducedMotion) {
     const slides = document.querySelectorAll('.hero-slider .slide');
     if (slides.length < 2) return;
@@ -167,7 +151,7 @@ function initHeroSlider(reducedMotion) {
     restart();
 }
 
-// 6. Formlar (Vercel Function /api/contact)
+// 5. Formlar (Vercel Function /api/contact)
 // Bülten gibi kompakt formlar sonucu buton yerine yandaki .form-status alanında gösterir.
 function initForms() {
     document.querySelectorAll('form[data-ajax-form]').forEach(form => {
@@ -225,7 +209,7 @@ function initForms() {
     });
 }
 
-// 7. Galeri lightbox
+// 6. Galeri lightbox
 function initLightbox() {
     const items = document.querySelectorAll('.gallery-item');
     if (!items.length) return;

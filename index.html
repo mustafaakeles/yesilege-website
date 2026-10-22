@@ -143,8 +143,11 @@
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css?v=20261022c">
-    <link rel="stylesheet" href="mascot.css?v=20261022c">
+    <link rel="stylesheet" href="style.css?v=20261022e">
+    <link rel="stylesheet" href="motion.css?v=20261022e">
+    <link rel="stylesheet" href="screens.css?v=20261022e">
+    <script src="motion.js?v=20261022e"></script>
+    <link rel="stylesheet" href="mascot.css?v=20261022e">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -152,6 +155,20 @@
 
 <body>
     <a class="skip-link" href="#main">İçeriğe geç</a>
+
+    <!-- Preloader: yalnızca oturumdaki ilk ziyarette, motion.js html.pl-on ekleyince görünür -->
+    <div class="preloader" aria-hidden="true">
+        <div class="pl-inner">
+            <svg class="pl-sprout" viewBox="0 0 96 120" focusable="false">
+                <path class="soil" d="M14 110h68" />
+                <path class="stem" d="M48 110C48 90 46 70 48 40" />
+                <path class="leaf l" d="M48 52C34 52 22 44 20 30c14 0 26 8 28 22z" />
+                <path class="leaf r" d="M48 40c2-14 12-24 28-26-2 16-12 24-28 26z" />
+            </svg>
+            <span class="pl-year">1996</span>
+            <span class="pl-label">Bayındır · Sera</span>
+        </div>
+    </div>
 
     <nav class="navbar" id="navbar" aria-label="Ana menü">
         <div class="container nav-content">
@@ -237,6 +254,34 @@
             </div>
         </section>
 
+        <!-- Marquee: kayan hizmet şeridi (ikinci kopya kesintisiz döngü içindir) -->
+        <div class="marquee" aria-label="Hizmet alanlarımız">
+            <div class="mq-track">
+                <ul>
+                    <li>Peyzaj tasarımı</li>
+                    <li>Sera üretimi</li>
+                    <li>Otomatik sulama</li>
+                    <li>Bahçe bakımı</li>
+                    <li>Toptan bitki</li>
+                    <li>Rulo çim</li>
+                    <li>Dikey bahçe</li>
+                    <li>Kaktüs &amp; sukulent</li>
+                    <li>Ağaç dikimi</li>
+                </ul>
+                <ul aria-hidden="true">
+                    <li>Peyzaj tasarımı</li>
+                    <li>Sera üretimi</li>
+                    <li>Otomatik sulama</li>
+                    <li>Bahçe bakımı</li>
+                    <li>Toptan bitki</li>
+                    <li>Rulo çim</li>
+                    <li>Dikey bahçe</li>
+                    <li>Kaktüs &amp; sukulent</li>
+                    <li>Ağaç dikimi</li>
+                </ul>
+            </div>
+        </div>
+
         <!-- About -->
         <section id="hakkimizda" class="section about">
             <div class="container about-grid">
@@ -269,6 +314,16 @@
             </div>
         </section>
 
+        <!-- Manifesto: kaydırdıkça kelime kelime aydınlanan metin (screens.js) -->
+        <section class="manifesto" aria-label="Yaklaşımımız">
+            <div class="container">
+                <span class="subtitle">Yaklaşımımız</span>
+                <p class="scrub">Tohumu kendi seramızda çimlendiriyor, Ege iklimine alıştırıyor, bahçenize kendi
+                    ekibimizle dikiyor ve dört mevsim takip ediyoruz. Seradan bahçenize uzanan zincirin her halkası
+                    bizde; 1996'dan beri aynı toprak, aynı özen.</p>
+            </div>
+        </section>
+
         <!-- Stats -->
         <section class="stats" aria-label="Rakamlarla Yeşil Ege">
             <div class="container stats-container">
@@ -291,8 +346,8 @@
             </div>
         </section>
 
-        <!-- Services -->
-        <section id="hizmetler" class="section services">
+        <!-- Services: üst üste binen kartlar, her birinde kendi kendine çalışan canlı ekran (screens.js) -->
+        <section id="hizmetler" class="section services-live">
             <div class="container">
                 <div class="section-header reveal">
                     <span class="subtitle">Hizmetlerimiz</span>
@@ -300,61 +355,174 @@
                     <p>Bitki üretiminden peyzaj projelendirmeye, otomatik sulamadan periyodik bakıma kadar ihtiyacınız
                         olan her şey Bayındır'daki tesisimizde.</p>
                 </div>
-                <div class="services-grid">
-                    <article class="service-card reveal">
-                        <div class="card-media"><img src="images/landscape_architecture_project_3d_render.webp"
-                                alt="3D peyzaj projesi görselleştirmesi" class="card-img" width="800" height="600" loading="lazy"></div>
-                        <div class="card-content">
+                <div class="svc-stack">
+                    <article class="svc-card" style="--i: 0;">
+                        <div class="svc-text">
+                            <span class="svc-idx">01 / 06</span>
                             <h3>Peyzaj Tasarımı &amp; Projelendirme</h3>
                             <p>Alan analizi, konsept proje, 3D görselleştirme ve uygulama projelerini tek elden
                                 yönetiyoruz.</p>
+                            <ul class="svc-tags">
+                                <li>Alan analizi</li>
+                                <li>Konsept proje</li>
+                                <li>3D görsel</li>
+                            </ul>
                             <a href="services.html#landscape" class="read-more">Detaylar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
                         </div>
+                        <div class="svc-screen">
+                            <img src="images/landscape_architecture_project_3d_render.webp" alt="3D peyzaj projesi görselleştirmesi"
+                                class="svc-photo" width="800" height="600" loading="lazy">
+                            <div class="screen" data-screen="plan" aria-hidden="true">
+                                <div class="scr-head"><span class="dot-live"></span>Villa bahçesi · Konsept <b>v3</b></div>
+                                <svg class="plan" viewBox="0 0 320 180">
+                                    <path class="plan-lot" d="M14 16h292v148H14z" />
+                                    <path class="plan-house" d="M30 30h96v58H30z" />
+                                    <path class="plan-pool" d="M150 34h86v34h-86z" />
+                                    <path class="plan-path" d="M78 88c0 30 30 40 70 44s80 6 92 30" />
+                                    <path class="plan-bed" d="M250 30c30 4 46 20 44 50-24 2-44-10-44-50z" />
+                                    <circle class="plan-tree" cx="268" cy="118" r="14" style="--t: 0;" />
+                                    <circle class="plan-tree" cx="40" cy="128" r="11" style="--t: 1;" />
+                                    <circle class="plan-tree" cx="290" cy="148" r="9" style="--t: 2;" />
+                                    <circle class="plan-tree" cx="196" cy="100" r="8" style="--t: 3;" />
+                                    <circle class="plan-tree" cx="112" cy="150" r="10" style="--t: 4;" />
+                                </svg>
+                                <div class="scr-foot"><span>3D render</span><span class="bar"><i></i></span><b class="pct">0%</b></div>
+                            </div>
+                        </div>
                     </article>
-                    <article class="service-card reveal">
-                        <div class="card-media"><img src="images/u/photo-1466692476868-aef1dfb1e735.webp"
-                                alt="Serada yetişen fideler" class="card-img" width="800" height="600" loading="lazy"></div>
-                        <div class="card-content">
+
+                    <article class="svc-card" style="--i: 1;">
+                        <div class="svc-text">
+                            <span class="svc-idx">02 / 06</span>
                             <h3>Bitki Üretimi &amp; Satış</h3>
                             <p>Bayındır'ın bereketli topraklarında yetişen, iklime uyumlu dış mekan süs bitkileri ve
                                 ağaçlar.</p>
+                            <ul class="svc-tags">
+                                <li>Kendi seramız</li>
+                                <li>Mevsimlik</li>
+                                <li>Çok yıllık</li>
+                            </ul>
                             <a href="services.html#outdoor-plants" class="read-more">Detaylar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
                         </div>
+                        <div class="svc-screen">
+                            <img src="images/u/photo-1466692476868-aef1dfb1e735.webp" alt="Serada yetişen fideler"
+                                class="svc-photo" width="800" height="600" loading="lazy">
+                            <div class="screen" data-screen="tray" aria-hidden="true">
+                                <div class="scr-head"><span class="dot-live"></span>Sera 3 · Fide tablası <span class="scr-meta">canlı</span></div>
+                                <div class="tray"></div>
+                                <div class="scr-foot"><span>Sevke hazır</span><b class="tray-count">0</b><span class="scr-meta">fide</span></div>
+                            </div>
+                        </div>
                     </article>
-                    <article class="service-card reveal">
-                        <div class="card-media"><img src="images/u/photo-1616047006789-b7af5afb8c20.webp"
-                                alt="İç mekan bitkileriyle düzenlenmiş salon" class="card-img" width="800" height="600" loading="lazy"></div>
-                        <div class="card-content">
+
+                    <article class="svc-card" style="--i: 2;">
+                        <div class="svc-text">
+                            <span class="svc-idx">03 / 06</span>
                             <h3>İç Mekan &amp; Botanik Tasarım</h3>
                             <p>Ofis ve konutlar için saksı tasarımları, yosun duvarlar ve dikey bahçe uygulamaları.</p>
+                            <ul class="svc-tags">
+                                <li>Saksı tasarımı</li>
+                                <li>Yosun duvar</li>
+                                <li>Dikey bahçe</li>
+                            </ul>
                             <a href="services.html#indoor-plants" class="read-more">Detaylar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
                         </div>
+                        <div class="svc-screen">
+                            <img src="images/u/photo-1616047006789-b7af5afb8c20.webp" alt="İç mekan bitkileriyle düzenlenmiş salon"
+                                class="svc-photo" width="800" height="600" loading="lazy">
+                            <div class="screen" data-screen="indoor" aria-hidden="true">
+                                <div class="scr-head"><span class="dot-live"></span>Bitki kartı <span class="scr-meta">salon</span></div>
+                                <div class="indoor">
+                                    <div class="gauges">
+                                        <div class="gauge" data-key="light"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" /><circle class="g-val" cx="22" cy="22" r="18" /></svg><b>0%</b><span>Işık</span></div>
+                                        <div class="gauge" data-key="hum"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" /><circle class="g-val" cx="22" cy="22" r="18" /></svg><b>0%</b><span>Nem</span></div>
+                                    </div>
+                                    <div class="plant-card">
+                                        <strong class="plant-name">Monstera</strong>
+                                        <span class="plant-row"><i class="fas fa-sun"></i><em class="plant-light">Yarı gölge</em></span>
+                                        <span class="plant-row"><i class="fas fa-tint"></i><em class="plant-water">7 günde bir</em></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </article>
-                    <article class="service-card reveal">
-                        <div class="card-media"><img src="images/bahcebakimhizmeti.webp" alt="Bahçe bakım hizmeti"
-                                class="card-img" width="800" height="600" loading="lazy"></div>
-                        <div class="card-content">
+
+                    <article class="svc-card" style="--i: 3;">
+                        <div class="svc-text">
+                            <span class="svc-idx">04 / 06</span>
                             <h3>Bahçe Bakımı</h3>
                             <p>Periyodik çim biçme, budama, gübreleme ve ilaçlama ile bahçeniz dört mevsim canlı.</p>
+                            <ul class="svc-tags">
+                                <li>Budama</li>
+                                <li>Gübreleme</li>
+                                <li>İlaçlama</li>
+                            </ul>
                             <a href="care.html" class="read-more">Bakım rehberi <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
                         </div>
-                    </article>
-                    <article class="service-card reveal">
-                        <div class="card-media"><img src="images/bahcesulamasistemi.webp" alt="Otomatik bahçe sulama sistemi"
-                                class="card-img" width="800" height="600" loading="lazy"></div>
-                        <div class="card-content">
-                            <h3>Otomatik Sulama</h3>
-                            <p>Su tasarrufu sağlayan akıllı sulama sistemlerinin projelendirilmesi ve montajı.</p>
-                            <a href="services.html#garden-materials" class="read-more">Detaylar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        <div class="svc-screen">
+                            <img src="images/bahcebakimhizmeti.webp" alt="Bahçe bakım hizmeti"
+                                class="svc-photo" width="800" height="600" loading="lazy">
+                            <div class="screen" data-screen="care" aria-hidden="true">
+                                <div class="scr-head"><span class="dot-live"></span>Bakım takvimi <span class="scr-meta">12 ay</span></div>
+                                <div class="season">
+                                    <div class="ring"></div>
+                                    <div class="season-now">
+                                        <strong class="season-month">Ocak</strong>
+                                        <ul class="season-tasks"><li>Kış budaması</li><li>Ağaç dikimi</li></ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </article>
-                    <article class="service-card reveal">
-                        <div class="card-media"><img src="images/perakendesatis.webp" alt="Toptan ve perakende bitki satışı"
-                                class="card-img" width="800" height="600" loading="lazy"></div>
-                        <div class="card-content">
+
+                    <article class="svc-card" style="--i: 4;">
+                        <div class="svc-text">
+                            <span class="svc-idx">05 / 06</span>
+                            <h3>Otomatik Sulama</h3>
+                            <p>Su tasarrufu sağlayan akıllı sulama sistemlerinin projelendirilmesi ve montajı.</p>
+                            <ul class="svc-tags">
+                                <li>Damla sulama</li>
+                                <li>Zamanlayıcı</li>
+                                <li>Su tasarrufu</li>
+                            </ul>
+                            <a href="services.html#garden-materials" class="read-more">Detaylar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="svc-screen">
+                            <img src="images/bahcesulamasistemi.webp" alt="Otomatik bahçe sulama sistemi"
+                                class="svc-photo" width="800" height="600" loading="lazy">
+                            <div class="screen" data-screen="irrigation" aria-hidden="true">
+                                <div class="scr-head"><span class="dot-live"></span>Sulama kontrolü <span class="scr-meta">4 bölge</span></div>
+                                <ul class="zones">
+                                    <li><span class="z-name">Ön bahçe</span><span class="z-bar"><i></i></span><span class="z-state">Bekliyor</span></li>
+                                    <li><span class="z-name">Çim alan</span><span class="z-bar"><i></i></span><span class="z-state">Bekliyor</span></li>
+                                    <li><span class="z-name">Çiçek tarhı</span><span class="z-bar"><i></i></span><span class="z-state">Bekliyor</span></li>
+                                    <li><span class="z-name">Ağaç dibi</span><span class="z-bar"><i></i></span><span class="z-state">Bekliyor</span></li>
+                                </ul>
+                                <div class="scr-foot"><span>Bugün</span><b class="water">0 L</b><span class="scr-meta">damla sulama</span></div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="svc-card" style="--i: 5;">
+                        <div class="svc-text">
+                            <span class="svc-idx">06 / 06</span>
                             <h3>Toptan &amp; Perakende</h3>
                             <p>Sektör profesyonelleri için Türkiye geneline tır bazlı lojistik destekli toptan satış.</p>
+                            <ul class="svc-tags">
+                                <li>Tır bazlı sevkiyat</li>
+                                <li>Belediyeler</li>
+                                <li>Peyzaj firmaları</li>
+                            </ul>
                             <a href="services.html#outdoor-plants" class="read-more">Detaylar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="svc-screen">
+                            <img src="images/perakendesatis.webp" alt="Toptan ve perakende bitki satışı"
+                                class="svc-photo" width="800" height="600" loading="lazy">
+                            <div class="screen" data-screen="routes" aria-hidden="true">
+                                <div class="scr-head"><span class="dot-live"></span>Sevkiyat <span class="scr-meta">Bayındır çıkışlı</span></div>
+                                <svg class="routes" viewBox="0 0 320 170"></svg>
+                                <div class="scr-foot"><span>Rota</span><b class="route-to">İstanbul</b><span class="scr-meta route-eta">tır yolda</span></div>
+                            </div>
                         </div>
                     </article>
                 </div>
@@ -677,8 +845,9 @@
         <i class="fab fa-whatsapp" aria-hidden="true"></i>
     </a>
 
-    <script src="script.js?v=20261022c" defer></script>
-    <script src="mascot.js?v=20261022c" defer></script>
+    <script src="script.js?v=20261022e" defer></script>
+    <script src="screens.js?v=20261022e" defer></script>
+    <script src="mascot.js?v=20261022e" defer></script>
     <!-- Vercel Web Analytics (çerezsiz) -->
     <script defer src="/_vercel/insights/script.js"></script>
 </body>

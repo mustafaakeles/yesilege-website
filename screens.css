@@ -1,0 +1,745 @@
+/*
+   Yeşil Ege Peyzaj — anasayfa canlı ekranları
+   Kayan şerit, kaydırmayla aydınlanan manifesto, rulo sayaçlar ve hizmet kartlarındaki
+   kendi kendine çalışan mini arayüzler (screens.js). Hareket azaltıldığında son durum statik gösterilir.
+*/
+
+:root {
+    --scr-bg: rgba(10, 22, 18, 0.8);
+    --scr-line: rgba(255, 255, 255, 0.09);
+    --scr-text: #e9efe6;
+    --scr-muted: rgba(233, 239, 230, 0.55);
+    --scr-leaf: #8fbf7f;
+    --scr-water: #6fb7d6;
+    --scr-sun: #e8c27a;
+}
+
+/* ===========================
+   1. Kayan hizmet şeridi
+   =========================== */
+.marquee {
+    overflow: hidden;
+    padding: 1.4rem 0;
+    border-block: 1px solid var(--line);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.mq-track {
+    display: flex;
+    width: max-content;
+    animation: mq 38s linear infinite;
+}
+
+.marquee:hover .mq-track {
+    animation-play-state: paused;
+}
+
+.mq-track ul {
+    display: flex;
+    list-style: none;
+}
+
+.mq-track li {
+    display: flex;
+    align-items: center;
+    gap: 2.2rem;
+    padding-right: 2.2rem;
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+    font-weight: 500;
+    color: var(--forest-700);
+    white-space: nowrap;
+}
+
+.mq-track li::after {
+    content: '';
+    width: 18px;
+    height: 18px;
+    flex: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 22C6 22 2 17 2 11c6 0 10 5 10 11zm0 0c0-8 4-14 10-15 0 8-4 14-10 15z' fill='%23a35a33'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+@keyframes mq {
+    to { transform: translate3d(-50%, 0, 0); }
+}
+
+/* ===========================
+   2. Manifesto — kaydırdıkça aydınlanan kelimeler
+   =========================== */
+.manifesto {
+    padding: clamp(4.5rem, 10vw, 8rem) 0;
+}
+
+.manifesto .scrub {
+    max-width: 1040px;
+    font-family: var(--font-heading);
+    font-size: clamp(1.9rem, 4.2vw, 3.6rem);
+    font-weight: 500;
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    color: var(--forest-800);
+}
+
+.scrub-on .scrub .sw {
+    color: rgba(26, 51, 43, 0.16);
+    transition: color 0.35s var(--ease);
+}
+
+.scrub-on .scrub .sw.lit {
+    color: var(--forest-800);
+}
+
+.scrub-on .scrub .sw.lit.accent {
+    color: var(--clay-600);
+}
+
+/* ===========================
+   3. Rulo sayaçlar (istatistikler)
+   =========================== */
+.odo {
+    display: inline-flex;
+    overflow: hidden;
+    line-height: 1.1;
+    height: 1.1em;
+}
+
+.odo-col {
+    display: inline-block;
+    height: 1.1em;
+    overflow: hidden;
+    /* komşu rakamların uçları sızmasın */
+    mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent);
+}
+
+.odo-strip {
+    display: flex;
+    flex-direction: column;
+    transform: translate3d(0, 0, 0);
+    transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1) var(--od, 0ms);
+}
+
+.odo-strip span {
+    height: 1.1em;
+}
+
+/* ===========================
+   4. Hizmetler — karanlık bölüm, üst üste binen kartlar
+   =========================== */
+.services-live {
+    background:
+        radial-gradient(ellipse 60% 40% at 80% 0%, rgba(111, 143, 114, 0.18), transparent 70%),
+        var(--forest-900);
+    color: var(--scr-text);
+}
+
+.services-live .section-header h2 {
+    color: var(--white);
+}
+
+.services-live .section-header p {
+    color: var(--scr-muted);
+}
+
+.services-live .subtitle {
+    color: var(--brass);
+}
+
+.svc-stack {
+    display: grid;
+    gap: 28px;
+}
+
+.svc-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: stretch;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--scr-line);
+    background: linear-gradient(160deg, #1d3a30, #142a22 60%);
+    box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.25);
+    transform-origin: 50% 0;
+}
+
+@media (min-width: 900px) {
+    .svc-card {
+        position: sticky;
+        top: calc(var(--nav-h) + 20px + var(--i, 0) * 14px);
+        min-height: 440px;
+        scale: calc(1 - var(--stack, 0) * 0.06);
+        filter: brightness(calc(1 - var(--stack, 0) * 0.4));
+    }
+}
+
+.svc-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: clamp(0.5rem, 1.5vw, 1rem) 0;
+}
+
+.svc-idx {
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    color: var(--scr-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.svc-text h3 {
+    font-size: clamp(1.8rem, 3.2vw, 2.7rem);
+    line-height: 1.05;
+    color: var(--white);
+}
+
+.svc-text p {
+    color: var(--scr-muted);
+    max-width: 44ch;
+}
+
+.svc-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+}
+
+.svc-tags li {
+    padding: 6px 12px;
+    border: 1px solid var(--scr-line);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: var(--sage-300);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.services-live .read-more {
+    color: var(--brass);
+}
+
+.services-live .read-more:hover {
+    color: var(--white);
+}
+
+/* Ekran: gerçek fotoğraf üzerinde yüzen arayüz */
+.svc-screen {
+    position: relative;
+    min-height: 340px;
+    border-radius: 20px;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: #0d1b16;
+    isolation: isolate;
+}
+
+.svc-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.42;
+    filter: saturate(0.85);
+    z-index: -1;
+    transition: transform 1.2s var(--ease), opacity 0.6s;
+}
+
+.svc-screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(ellipse at 50% 60%, transparent 20%, rgba(13, 27, 22, 0.75));
+}
+
+.svc-card:hover .svc-photo {
+    transform: scale(1.04);
+    opacity: 0.5;
+}
+
+.screen {
+    width: min(380px, 100%);
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid var(--scr-line);
+    background: var(--scr-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+    font-size: 0.8rem;
+    color: var(--scr-text);
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.6s var(--ease);
+}
+
+.svc-card:hover .screen {
+    transform: translate3d(0, -6px, 0);
+}
+
+.scr-head,
+.scr-foot {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.scr-head {
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.scr-head b {
+    color: var(--scr-sun);
+}
+
+.scr-foot {
+    margin-top: 12px;
+    color: var(--scr-muted);
+}
+
+.scr-foot b {
+    color: var(--scr-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.scr-meta {
+    margin-left: auto;
+    font-weight: 400;
+    color: var(--scr-muted);
+}
+
+.scr-foot .scr-meta {
+    margin-left: 0;
+}
+
+.dot-live {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--scr-leaf);
+    box-shadow: 0 0 0 0 rgba(143, 191, 127, 0.6);
+    animation: live 2s infinite;
+}
+
+@keyframes live {
+    70% { box-shadow: 0 0 0 7px rgba(143, 191, 127, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(143, 191, 127, 0); }
+}
+
+/* 4a. Peyzaj planı: çizilen proje */
+.plan {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px) 0 0 / 16px 16px,
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px) 0 0 / 16px 16px,
+        rgba(111, 183, 214, 0.06);
+}
+
+.plan path,
+.plan circle {
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.plan-lot { stroke: rgba(255, 255, 255, 0.35); stroke-dasharray: 4 4; }
+.plan-house { stroke: var(--scr-text); fill: rgba(255, 255, 255, 0.05) !important; }
+.plan-pool { stroke: var(--scr-water); fill: rgba(111, 183, 214, 0.18) !important; }
+.plan-path { stroke: var(--scr-sun); stroke-width: 5 !important; opacity: 0.7; }
+.plan-bed { stroke: var(--scr-leaf); fill: rgba(143, 191, 127, 0.15) !important; }
+.plan-tree { stroke: var(--scr-leaf); fill: rgba(143, 191, 127, 0.35) !important; transform-box: fill-box; transform-origin: center; }
+
+.screen[data-screen="plan"].run .plan-house,
+.screen[data-screen="plan"].run .plan-pool,
+.screen[data-screen="plan"].run .plan-path,
+.screen[data-screen="plan"].run .plan-bed {
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: draw 1.6s var(--ease) forwards;
+}
+
+.screen[data-screen="plan"].run .plan-pool { animation-delay: 0.5s; }
+.screen[data-screen="plan"].run .plan-path { animation-delay: 0.9s; }
+.screen[data-screen="plan"].run .plan-bed { animation-delay: 1.3s; }
+
+.screen[data-screen="plan"].run .plan-tree {
+    transform: scale(0);
+    animation: pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: calc(1.8s + var(--t) * 0.18s);
+}
+
+.bar {
+    flex: 1;
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.bar i {
+    display: block;
+    height: 100%;
+    width: var(--p, 0%);
+    background: linear-gradient(90deg, var(--scr-leaf), var(--scr-sun));
+    transition: width 0.3s linear;
+}
+
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes pop { to { transform: scale(1); } }
+
+/* 4b. Fide tablası: hücreler filizlenir, olgunlaşır, sevk edilir */
+.tray {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    background: #2b2019;
+}
+
+.tray i {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 4px;
+    background: #3a2b20;
+}
+
+.tray i::after {
+    content: '';
+    position: absolute;
+    inset: 18%;
+    border-radius: 50% 50% 50% 0;
+    background: #6b5038;
+    transform: scale(0.35) rotate(-45deg);
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.6s, box-shadow 0.6s;
+}
+
+.tray i.l1::after { transform: scale(0.55) rotate(-45deg); background: #a7c49a; }
+.tray i.l2::after { transform: scale(0.8) rotate(-45deg); background: #79a86a; }
+.tray i.l3::after { transform: scale(1) rotate(-45deg); background: var(--scr-leaf); box-shadow: 0 0 10px rgba(143, 191, 127, 0.6); }
+.tray i.pick { background: rgba(232, 194, 122, 0.35); }
+
+/* 4c. İç mekan bitki kartı: ışık ve nem göstergeleri */
+.indoor {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: center;
+}
+
+.gauges {
+    display: grid;
+    gap: 10px;
+}
+
+.gauge {
+    position: relative;
+    display: grid;
+    grid-template-columns: 52px auto;
+    grid-template-rows: auto auto;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.gauge svg {
+    grid-row: span 2;
+    width: 52px;
+    height: 52px;
+    transform: rotate(-90deg);
+}
+
+.gauge circle {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 4;
+}
+
+.gauge .g-val {
+    stroke: var(--scr-sun);
+    stroke-linecap: round;
+    stroke-dasharray: 113.1;
+    stroke-dashoffset: 113.1;
+    transition: stroke-dashoffset 1.2s var(--ease);
+}
+
+.gauge[data-key="hum"] .g-val {
+    stroke: var(--scr-water);
+}
+
+.gauge b {
+    font-size: 1.05rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.gauge span {
+    color: var(--scr-muted);
+}
+
+.plant-card {
+    display: grid;
+    gap: 8px;
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--scr-line);
+}
+
+.plant-name {
+    font-family: var(--font-heading);
+    font-size: 1.45rem;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.plant-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: var(--scr-muted);
+}
+
+.plant-row i {
+    width: 14px;
+    color: var(--scr-sun);
+}
+
+.plant-row em {
+    font-style: normal;
+}
+
+.swap {
+    animation: swap 0.6s var(--ease);
+}
+
+@keyframes swap {
+    from { opacity: 0; transform: translate3d(0, 8px, 0); }
+}
+
+/* 4d. Bakım takvimi: 12 aylık halka */
+.season {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 230px;
+    height: 230px;
+    margin: 0 auto;
+}
+
+.ring {
+    position: absolute;
+    inset: 0;
+}
+
+.ring span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 28px;
+    height: 28px;
+    margin: -14px 0 0 -14px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--scr-muted);
+    border: 1px solid var(--scr-line);
+    transform: rotate(var(--a)) translate(0, calc(var(--r, 100px) * -1)) rotate(calc(var(--a) * -1));
+    transition: background-color 0.4s, color 0.4s, box-shadow 0.4s;
+}
+
+.ring span.on {
+    color: #10201a;
+    background: var(--scr-leaf);
+    box-shadow: 0 0 16px rgba(143, 191, 127, 0.6);
+}
+
+.ring span.past {
+    color: var(--scr-text);
+    border-color: rgba(143, 191, 127, 0.4);
+}
+
+.season-now {
+    text-align: center;
+}
+
+.season-month {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 1.9rem;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.season-tasks {
+    list-style: none;
+    display: grid;
+    gap: 4px;
+    color: var(--scr-muted);
+}
+
+/* 4e. Sulama kontrolü: bölgeler sırayla sulanır */
+.zones {
+    list-style: none;
+    display: grid;
+    gap: 10px;
+}
+
+.zones li {
+    display: grid;
+    grid-template-columns: 82px 1fr 70px;
+    gap: 10px;
+    align-items: center;
+}
+
+.z-bar {
+    position: relative;
+    height: 8px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+}
+
+.z-bar i {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--m, 40%);
+    border-radius: inherit;
+    background: linear-gradient(90deg, #3f7f9b, var(--scr-water));
+    transition: width 0.4s linear;
+}
+
+.zones li.wet .z-bar i {
+    background-image: linear-gradient(90deg, #3f7f9b, var(--scr-water)),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0 6px, transparent 6px 14px);
+    background-blend-mode: overlay;
+    background-size: 100% 100%, 28px 100%;
+    animation: flow 0.8s linear infinite;
+}
+
+@keyframes flow {
+    to { background-position: 0 0, 28px 0; }
+}
+
+.z-state {
+    justify-self: end;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    color: var(--scr-muted);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.zones li.wet .z-state {
+    color: #0d1b16;
+    background: var(--scr-water);
+}
+
+.zones li.done .z-state {
+    color: #0d1b16;
+    background: var(--scr-leaf);
+}
+
+/* 4f. Sevkiyat haritası */
+.routes {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    background: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1.4px) 0 0 / 10px 10px;
+}
+
+.routes .rt {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.14);
+    stroke-width: 1.2;
+    stroke-dasharray: 3 4;
+}
+
+.routes .rt.on {
+    stroke: var(--scr-sun);
+    stroke-width: 2;
+    animation: dash 1s linear infinite;
+}
+
+@keyframes dash {
+    to { stroke-dashoffset: -14; }
+}
+
+.routes .city {
+    fill: rgba(233, 239, 230, 0.55);
+}
+
+.routes .city.on {
+    fill: var(--scr-sun);
+}
+
+.routes .home {
+    fill: var(--scr-leaf);
+}
+
+.routes .home-pulse {
+    fill: none;
+    stroke: var(--scr-leaf);
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ping 2s ease-out infinite;
+}
+
+.routes text {
+    font-family: var(--font-body);
+    font-size: 8px;
+    fill: var(--scr-muted);
+}
+
+.routes .truck {
+    fill: var(--white);
+    filter: drop-shadow(0 0 4px rgba(232, 194, 122, 0.9));
+}
+
+@keyframes ping {
+    from { transform: scale(0.6); opacity: 1; }
+    to { transform: scale(2.4); opacity: 0; }
+}
+
+/* ===========================
+   5. Mobil
+   =========================== */
+@media (max-width: 899px) {
+    .svc-card {
+        grid-template-columns: 1fr;
+    }
+
+    .svc-screen {
+        min-height: 300px;
+        padding: 14px;
+    }
+}
+
+@media (max-width: 420px) {
+    .zones li {
+        grid-template-columns: 70px 1fr 62px;
+    }
+
+    .season {
+        --r: 86px;
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mq-track {
+        animation: none;
+    }
+
+    .marquee {
+        overflow-x: auto;
+    }
+}
