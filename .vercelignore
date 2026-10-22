@@ -2,6 +2,5 @@
 _internal/
 tests/
 .claude/
-netlify.toml
 *.md
 tools/
