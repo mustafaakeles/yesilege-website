@@ -124,3 +124,45 @@ test('handler: Resend hatası 502 döner', async () => {
     }
     assert.equal(res.statusCode, 502);
 });
+
+const validQuote = {
+    'form-name': 'teklif',
+    name: 'Mehmet Kaya',
+    email: 'mehmet@example.test',
+    phone: '0532 111 22 33',
+    subject: 'sulama',
+    district: 'Torbalı',
+    area: 'orta',
+    message: 'Bahçeye damla sulama kurdurmak istiyorum.'
+};
+
+test('teklif formu: ilçe, alan ve yeni konular kabul edilir', () => {
+    const r = validateSubmission(validQuote);
+    assert.equal(r.ok, true);
+    assert.equal(r.data.subject, 'Otomatik Sulama');
+    assert.equal(r.data.district, 'Torbalı');
+    assert.equal(r.data.area, '100–500 m²');
+    assert.equal(validateSubmission({ ...validQuote, subject: 'toptan' }).data.subject, 'Toptan Bitki Siparişi');
+});
+
+test('teklif formu: ilçe ve alan isteğe bağlıdır, geçersiz alan reddedilir', () => {
+    const r = validateSubmission({ ...validQuote, district: '', area: '' });
+    assert.equal(r.ok, true);
+    assert.equal(r.data.district, '');
+    assert.equal(r.data.area, '');
+    assert.equal(validateSubmission({ ...validQuote, area: 'dev' }).ok, false);
+    assert.equal(validateSubmission({ ...validQuote, district: 'x'.repeat(101) }).ok, false);
+});
+
+test('teklif e-postası: konu ve ek satırlar', () => {
+    const email = buildEmail(validateSubmission(validQuote).data);
+    assert.match(email.subject, /^Teklif talebi: Otomatik Sulama - Mehmet Kaya/);
+    assert.match(email.text, /İlçe \/ konum: Torbalı/);
+    assert.match(email.text, /Alan: 100–500 m²/);
+});
+
+test('iletişim e-postası ilçe/alan satırı eklemez', () => {
+    const email = buildEmail(validateSubmission(validContact).data);
+    assert.ok(!email.text.includes('İlçe'));
+    assert.match(email.subject, /^Web sitesi mesajı/);
+});
