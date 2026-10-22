@@ -50,7 +50,9 @@
     --shadow-md: 0 12px 32px rgba(18, 38, 31, 0.10);
     --shadow-lg: 0 24px 60px rgba(18, 38, 31, 0.16);
 
-    --container: 1200px;
+    /* Geniş ekranlarda kenar boşlukları büyümesin: içerik 1600px'e kadar yayılır */
+    --container: 1600px;
+    --gutter: clamp(20px, 3vw, 48px);
     --nav-h: 76px;
     --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
     --transition: all 0.25s var(--ease);
@@ -166,7 +168,7 @@ p {
     width: 100%;
     max-width: var(--container);
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 var(--gutter);
 }
 
 .text-center {
@@ -542,7 +544,7 @@ p {
     width: 100%;
     max-width: var(--container);
     margin: 0 auto;
-    padding: 0 clamp(24px, 4vw, 48px) clamp(48px, 7vw, 88px);
+    padding: 0 var(--gutter) clamp(48px, 7vw, 88px);
 }
 
 .hero-eyebrow {
@@ -681,6 +683,8 @@ p {
 .about-image img {
     width: 100%;
     aspect-ratio: 4 / 5;
+    /* Geniş kapsayıcıda dikey görsel ekranı taşmasın */
+    max-height: min(720px, 82vh);
     object-fit: cover;
     border-radius: var(--radius-lg);
 }
@@ -856,7 +860,7 @@ p {
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 240px;
+    grid-auto-rows: clamp(220px, 16vw, 300px);
     gap: 16px;
 }
 
@@ -1543,6 +1547,12 @@ p {
     padding-bottom: clamp(4rem, 8vw, 6rem);
 }
 
+@media (min-width: 1440px) {
+    .blog-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
 .blog-card {
     display: flex;
     flex-direction: column;
@@ -1913,8 +1923,8 @@ footer h4 {
     align-items: center;
     max-width: var(--container);
     margin: 0 auto;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
     font-size: 0.85rem;
 }
 
