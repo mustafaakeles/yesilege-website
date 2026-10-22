@@ -4,6 +4,19 @@
   "outputDirectory": ".",
   "cleanUrls": false,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.yesilege.com.tr"
+        }
+      ],
+      "destination": "https://yesilege.com.tr/$1",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
