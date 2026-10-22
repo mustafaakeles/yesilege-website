@@ -104,7 +104,8 @@
 
     // 2. Reveal: öğeleri türüne göre etiketler, görünür olduklarında sırayla açar, sonra temizler
     const WORDS = '.hero h1, .page-header h1, .blog-detail-header h1, .blog-header h1, .section-header h2, '
-        + '.about-text h2, .text-content h2, .area-grid h2, .cta-box h2, .contact-info h3, .svc-text h3';
+        + '.about-text h2, .text-content h2, .area-grid h2, .cta-box h2, .contact-info > h2, .contact-info > h3, '
+        + '.svc-text h3, .route-card h2, .reach h2';
     const IMAGES = '.card-media, .img-wrapper > img, .image-content, .gallery-item, .blog-img, .care-img';
     const LISTS = '.about-list, .feature-list, .area-list, .info-items, .svc-tags';
     const GROUPS = `.trust-grid, .svc-stack, .process-grid, .stats-container, .faq-list, .care-grid, .blog-grid, `
