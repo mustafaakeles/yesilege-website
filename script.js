@@ -74,7 +74,9 @@ function initMobileMenu() {
 // 3. Rakam sayaçları
 function initCounters(reducedMotion) {
     const numbers = document.querySelectorAll('.stat-item .number[data-target]');
+    // motion.js etkinse anasayfadaki rulo sayaçlar (screens.js) devreye girer
     if (!numbers.length || reducedMotion || !('IntersectionObserver' in window)) return;
+    if (document.documentElement.classList.contains('motion')) return;
 
     const format = (n) => n.toLocaleString('tr-TR');
     const animate = (el) => {

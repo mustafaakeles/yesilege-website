@@ -104,14 +104,15 @@
 
     // 2. Reveal: öğeleri türüne göre etiketler, görünür olduklarında sırayla açar, sonra temizler
     const WORDS = '.hero h1, .page-header h1, .blog-detail-header h1, .blog-header h1, .section-header h2, '
-        + '.about-text h2, .text-content h2, .area-grid h2, .cta-box h2, .contact-info h3';
+        + '.about-text h2, .text-content h2, .area-grid h2, .cta-box h2, .contact-info h3, .svc-text h3';
     const IMAGES = '.card-media, .img-wrapper > img, .image-content, .gallery-item, .blog-img, .care-img';
-    const LISTS = '.about-list, .feature-list, .area-list, .info-items';
-    const GROUPS = `.trust-grid, .services-grid, .process-grid, .stats-container, .faq-list, .care-grid, .blog-grid, `
+    const LISTS = '.about-list, .feature-list, .area-list, .info-items, .svc-tags';
+    const GROUPS = `.trust-grid, .svc-stack, .process-grid, .stats-container, .faq-list, .care-grid, .blog-grid, `
         + `.hero-btns, .cta-actions, .footer-content, ${LISTS}`;
     const SINGLES = '.reveal, .hero-eyebrow, .hero-content > p, .header-content > p, .header-content .article-meta, '
         + '.blog-header .subtitle, .blog-header p, .section-header > .subtitle, .section-header > p, '
-        + '.about-text > .subtitle, .about-text > p, .text-content > p, .text-content > .btn, .floating-card';
+        + '.about-text > .subtitle, .about-text > p, .text-content > p, .text-content > .btn, .floating-card, '
+        + '.manifesto .subtitle, .marquee';
 
     function initReveal() {
         const tag = (el, type) => { if (!el.hasAttribute('data-r')) el.setAttribute('data-r', type); };
@@ -463,7 +464,7 @@
     // 7. Kartlarda imleci izleyen sıcak sera ışığı
     function initGlowCards() {
         if (!finePointer) return;
-        document.querySelectorAll('.service-card, .process-step, .care-card, .blog-card, .trust-item').forEach(card => {
+        document.querySelectorAll('.process-step, .care-card, .blog-card, .trust-item').forEach(card => {
             card.classList.add('glow-card');
             card.addEventListener('pointermove', (e) => {
                 const rect = card.getBoundingClientRect();
