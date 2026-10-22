@@ -8,8 +8,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# style.css / script.js / mascot.* değiştiğinde artırın: tarayıcı önbelleğindeki eski dosyaları geçersiz kılar
-ASSET_VERSION = "20261022c"
+# style.css / script.js / mascot.* / motion.* değiştiğinde artırın: tarayıcı önbelleğindeki eski dosyaları geçersiz kılar
+ASSET_VERSION = "20261022d"
 
 SERVICES = [
     ("garden-materials", "Bahçe Malzemeleri"),
@@ -176,7 +176,14 @@ def process(path: Path) -> bool:
     # Betikleri ertele, CSS/JS adreslerine sürüm ekle (önbellek kırma)
     text = re.sub(r'<script src="((?:\.\./)?(?:script|mascot)\.js)(?:\?v=\w+)?"( defer)?></script>',
                   rf'<script src="\1?v={ASSET_VERSION}" defer></script>', text)
-    text = re.sub(r'href="((?:\.\./)?(?:style|mascot)\.css)(?:\?v=\w+)?"', rf'href="\1?v={ASSET_VERSION}"', text)
+    text = re.sub(r'href="((?:\.\./)?(?:style|mascot|motion)\.css)(?:\?v=\w+)?"', rf'href="\1?v={ASSET_VERSION}"', text)
+    text = re.sub(r'<script src="((?:\.\./)?motion\.js)(?:\?v=\w+)?"></script>', rf'<script src="\1?v={ASSET_VERSION}"></script>', text)
+
+    # Motion katmanı: style.css'in hemen ardından, <head> içinde senkron (ilk boyamadan önce html sınıflarını kurar)
+    if "motion.css" not in text:
+        text = re.sub(r'([ \t]*)(<link rel="stylesheet" href="(?:\.\./)?style\.css\?v=\w+">)',
+                      rf'\1\2\n\1<link rel="stylesheet" href="{prefix}motion.css?v={ASSET_VERSION}">'
+                      rf'\n\1<script src="{prefix}motion.js?v={ASSET_VERSION}"></script>', text, count=1)
 
     # Magnolia sohbet widget'ı kullanılan her sayfada stilini de yükle
     if "mascot.js" in text and "mascot.css" not in text:
