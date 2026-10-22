@@ -1,5 +1,7 @@
 // Form doğrulama ve e-posta içeriği üretimi (saf fonksiyonlar, testlenebilir).
 
+import { escapeHtml } from './resend.js';
+
 export const FORM_TYPES = Object.freeze({
     iletisim: 'İletişim Sayfası',
     'iletisim-anasayfa': 'Ana Sayfa İletişim',
@@ -72,13 +74,6 @@ export function validateSubmission(input) {
         }
     };
 }
-
-const escapeHtml = (text) => String(text)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
 
 /** Doğrulanmış veriden e-posta konusu, düz metin ve HTML gövdesi üretir. */
 export function buildEmail(data) {
