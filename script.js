@@ -1,478 +1,188 @@
-// Yeşil Ege Premium Interactive Script
+// Yeşil Ege Peyzaj — site etkileşimleri (bağımlılıksız)
 
 document.addEventListener('DOMContentLoaded', () => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Global flag to prevent duplicate animations
-    let animationsStarted = false;
+    initNavbar();
+    initMobileMenu();
+    initReveal(prefersReducedMotion);
+    initCounters(prefersReducedMotion);
+    initHeroSlider(prefersReducedMotion);
+    initForms();
+    initLightbox();
+});
 
-    // 0. Disable Scroll on Load
-    document.body.style.overflow = 'hidden';
-    if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-    }
-
-    // Check Session Storage for First Visit
-    const hasVisited = sessionStorage.getItem('visited');
-    const preloader = document.querySelector('.preloader');
-
-    if (hasVisited) {
-        // Subsequent Visit: Instant Load
-        if (preloader) {
-            preloader.style.display = 'none'; // Completely remove
-        }
-        document.body.style.overflow = ''; // Enable scroll immediately
-
-        // INSTANTLY REVEAL ELEMENTS (Since CSS hides them by default now)
-        // Ensure opacity is 1 to avoid flash
-        gsap.set([".logo", ".nav-links li", ".hero h1", ".hero p", ".hero-btns a", ".scroll-down"], {
-            opacity: 1,
-            y: 0,
-            overwrite: true
-        });
-
-        // Show Hero Content Immediately
-        const heroContent = document.querySelector('.hero-content');
-        if (heroContent) heroContent.style.opacity = '1';
-
-        // Trigger animations immediately (without delay) - Logic handled by set above, but function can run safely
-    } else {
-        // First Visit: Run Optimized Animation
-        // Only scroll to top if NO hash is present (allow direct linking)
-        if (!window.location.hash) {
-            window.scrollTo(0, 0);
-        }
-        sessionStorage.setItem('visited', 'true');
-        // Logic handled by GSAP timeline below to prevent conflicts
-    }
-
-    // 1. Smooth Scrolling with Lenis
-    // 1. Smooth Scrolling with Lenis
-    /* DISABLED FOR PERFORMANCE */
-    // Native smooth scrolling enabled via CSS
-    document.documentElement.style.scrollBehavior = 'smooth';
-
-    // 2. Register GSAP Plugins
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Optimized Preloader Animation (Fast & Smooth)
-    const preloaderTl = gsap.timeline();
-
-    // Only run if preloader exists and hasn't been removed by "hasVisited" logic
-    const preloaderEl = document.querySelector('.preloader');
-    if (preloaderEl && preloaderEl.style.display !== 'none') {
-        preloaderTl.to(".loader-logo", {
-            y: 0,
-            opacity: 1,
-            duration: 0.5,
-            ease: "back.out(1.7)", // Subtle pop for premium feel
-            delay: 0.1
-        })
-            .to(".preloader", {
-                opacity: 0, // Fade out instead of slide up to prevent "jumping"
-                duration: 0.4,
-                ease: "power2.inOut",
-                delay: 0.2, // Short pause to read text
-                onComplete: () => {
-                    if (preloaderEl) preloaderEl.style.display = 'none';
-                    document.body.style.overflow = '';
-                    startHeroAnimations();
-                }
-            });
-    } else {
-        // Fallback for pages without preloader or if already visited
-        document.body.style.overflow = '';
-        if (typeof startHeroAnimations === 'function') startHeroAnimations();
-    }
-
-    // 3. Hero Animations (Intro) - Modified to .to() because CSS sets initial hidden state
-    function startHeroAnimations() {
-        if (animationsStarted) return;
-        animationsStarted = true;
-
-        const tl = gsap.timeline();
-
-        // Reveal Logo & Nav
-        tl.to(".logo", {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power3.out"
-        })
-            .to(".nav-links li", {
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: "power3.out"
-            }, "-=0.5")
-
-            // Reveal Hero Content
-            .to(".hero h1", {
-                y: 0,
-                opacity: 1,
-                duration: 1.2,
-                ease: "power4.out"
-            }, "-=0.8")
-            .to(".hero p", {
-                y: 0,
-                opacity: 0.9, // Match CSS opacity logic if needed, or 1
-                duration: 1,
-                ease: "power3.out"
-            }, "-=0.8")
-            .to(".hero-btns a", {
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                stagger: 0.2,
-                ease: "power3.out"
-            }, "-=0.6")
-            .to(".scroll-down", {
-                opacity: 0.8,
-                y: 0,
-                duration: 1,
-                ease: "power2.out"
-            }, "-=0.4");
-    } // End of startHeroAnimations
-
-    // 4. Parallax Effect for Hero Background (if we had an image wrapper) - Simulating with background-position
-    // Note: CSS background-attachment: fixed handles this natively well, but GSAP offers more control. 
-    // We will leave the CSS version for performance on background-image, but animate elements.
-
-    // 5. Features Reveal
-    gsap.utils.toArray('.feature-card').forEach((card, i) => {
-        gsap.from(card, {
-            scrollTrigger: {
-                trigger: card,
-                start: "top 85%",
-                toggleActions: "play none none reverse"
-            },
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            delay: i * 0.2,
-            ease: "power3.out"
-        });
-    });
-
-    // 6. About Section - Paralax Image & Text Reveal
-    gsap.from(".about-image", {
-        scrollTrigger: {
-            trigger: ".about",
-            start: "top 75%",
-        },
-        x: -50,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power3.out"
-    });
-
-    gsap.from(".about-text", {
-        scrollTrigger: {
-            trigger: ".about",
-            start: "top 75%",
-        },
-        x: 50,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        delay: 0.2
-    });
-
-    // 7. Services Cards Stagger
-    // 7. Services Cards Stagger (Fixed)
-    const serviceCards = gsap.utils.toArray(".service-card");
-    if (serviceCards.length > 0) {
-        gsap.set(serviceCards, { y: 50, opacity: 0 }); // Initial state
-
-        ScrollTrigger.batch(serviceCards, {
-            start: "top 90%",
-            onEnter: batch => gsap.to(batch, {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                stagger: 0.15,
-                ease: "power3.out",
-                overwrite: true
-            }),
-            once: true // Animasyon sadece bir kere çalışsın (performans ve bug önleme)
-        });
-    }
-
-    // 7.5. Gallery Grid Animation
-    const galleryItemsAnim = gsap.utils.toArray('.gallery-item');
-    if (galleryItemsAnim.length > 0) {
-        gsap.set(galleryItemsAnim, { opacity: 0, y: 50 });
-
-        ScrollTrigger.batch(galleryItemsAnim, {
-            start: "top 85%",
-            onEnter: batch => gsap.to(batch, {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                stagger: 0.15, // Stagger effect
-                ease: "power3.out",
-                overwrite: true
-            }),
-            once: true
-        });
-    }
-
-    // 8. Navbar Background on Scroll (Throttled)
-    let scrollTimeout;
+// 1. Navbar: kaydırınca gölge
+function initNavbar() {
     const navbar = document.getElementById('navbar');
+    if (!navbar) return;
 
-    window.addEventListener('scroll', () => {
-        if (!scrollTimeout) {
-            scrollTimeout = setTimeout(() => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-                scrollTimeout = null;
-            }, 100);
-        }
-    });
+    const update = () => navbar.classList.toggle('scrolled', window.scrollY > 10);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+}
 
-    // 9. Mobile Menu
+// 2. Mobil menü ve açılır alt menü
+function initMobileMenu() {
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
+    if (!hamburger || !navLinks) return;
 
-    if (hamburger && navLinks) {
-        // Accessibility: the hamburger is a <div> on every page, so expose it as a button here
-        hamburger.setAttribute('role', 'button');
-        hamburger.setAttribute('tabindex', '0');
-        hamburger.setAttribute('aria-label', 'Menüyü aç/kapat');
-        hamburger.setAttribute('aria-expanded', 'false');
-        hamburger.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                hamburger.click();
-            }
-        });
-        new MutationObserver(() => {
-            hamburger.setAttribute('aria-expanded', String(navLinks.classList.contains('mobile-open')));
-        }).observe(navLinks, { attributes: true, attributeFilter: ['class'] });
+    const isMobile = () => window.matchMedia('(max-width: 960px)').matches;
 
-        hamburger.addEventListener('click', () => {
-            if (navLinks.classList.contains('mobile-open')) {
-                // Menüyü kapat
-                navLinks.classList.remove('mobile-open');
-                navLinks.style.display = 'none';
-                // Tüm dropdown'ları kapat
-                document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
-            } else {
-                // Menüyü aç
-                navLinks.classList.add('mobile-open');
-                navLinks.style.display = 'flex';
-
-                // li elemanlarının stillerini düzelt
-                navLinks.querySelectorAll('li').forEach(li => {
-                    li.style.opacity = '1';
-                    li.style.transform = 'none';
-                });
-
-                // a elemanlarının stillerini düzelt
-                navLinks.querySelectorAll('a').forEach(a => {
-                    a.style.opacity = '1';
-                });
-            }
-        });
-
-        // Menü dışına tıklanınca kapat
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 1024) {
-                if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-                    if (navLinks.classList.contains('mobile-open')) {
-                        navLinks.classList.remove('mobile-open');
-                        navLinks.style.display = 'none';
-                        document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
-                    }
-                }
-            }
-        });
-    }
-
-    // Mobile Dropdown Toggle Logic
-    const dropdownToggles = document.querySelectorAll('.dropdown > a');
-    dropdownToggles.forEach(toggle => {
-        toggle.addEventListener('click', (e) => {
-            // Only on mobile (CSS breakpoint ile uyumlu)
-            if (window.innerWidth <= 1024) {
-                e.preventDefault();
-                const parent = toggle.parentElement;
-                parent.classList.toggle('active');
-
-                // Chevron döndür
-                const icon = toggle.querySelector('i');
-                if (icon) {
-                    gsap.to(icon, { rotation: parent.classList.contains('active') ? 180 : 0, duration: 0.3 });
-                }
-            }
-        });
-    });
-
-    // Pencere boyutu değişince nav'ı resetle
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 1024) {
-            navLinks.style.display = '';
-            navLinks.style.opacity = '';
-            navLinks.style.transform = '';
-            navLinks.removeAttribute('style');
-            // Dropdown'ları da kapat
+    const setOpen = (open) => {
+        navLinks.classList.toggle('mobile-open', open);
+        hamburger.setAttribute('aria-expanded', String(open));
+        document.body.classList.toggle('menu-open', open);
+        if (!open) {
             document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
+        }
+    };
+
+    hamburger.addEventListener('click', () => setOpen(!navLinks.classList.contains('mobile-open')));
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navLinks.classList.contains('mobile-open')) {
+            setOpen(false);
+            hamburger.focus();
         }
     });
 
-    // 10. Number Counter Animation (keeping the logic but wrapping in ScrollTrigger)
-    const statsSection = document.querySelector('.stats');
-    if (statsSection) {
-        ScrollTrigger.create({
-            trigger: ".stats",
-            start: "top 70%",
-            once: true,
-            onEnter: () => {
-                document.querySelectorAll('.stat-item .number').forEach(el => {
-                    let goal = parseInt(el.dataset.target);
-                    // Reset to 0 before animating since we have default values in HTML now
-                    el.textContent = '0';
+    // Menüdeki bir bağlantıya (alt menü başlığı hariç) tıklanınca kapat
+    navLinks.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link && !link.classList.contains('dropdown-toggle') && isMobile()) setOpen(false);
+    });
 
-                    // Use GSAP's object animation for smooth counting
-                    let obj = { val: 0 };
-                    gsap.to(obj, {
-                        val: goal,
-                        duration: 2,
-                        ease: "power2.out",
-                        onUpdate: () => {
-                            // Format number nicely (e.g. 1.000)
-                            el.textContent = Math.floor(obj.val).toLocaleString('tr-TR') + "+";
-                        }
-                    });
-                });
+    // Mobilde alt menü başlığı açılır/kapanır; masaüstünde normal bağlantı
+    document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            if (!isMobile()) return;
+            e.preventDefault();
+            const parent = toggle.closest('.dropdown');
+            const open = !parent.classList.contains('active');
+            parent.classList.toggle('active', open);
+            toggle.setAttribute('aria-expanded', String(open));
+        });
+    });
+
+    window.addEventListener('resize', () => {
+        if (!isMobile() && navLinks.classList.contains('mobile-open')) setOpen(false);
+    });
+}
+
+// 3. Kaydırınca beliren öğeler
+function initReveal(reducedMotion) {
+    const items = document.querySelectorAll('.reveal');
+    if (!items.length || reducedMotion || !('IntersectionObserver' in window)) return;
+
+    document.documentElement.classList.add('js-reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
             }
         });
-    }
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
 
-    // 11. Hero Background Slider
-    // 11. Hero Background Slider
-    const slides = document.querySelectorAll('.slide');
+    items.forEach(item => observer.observe(item));
+}
+
+// 4. Rakam sayaçları
+function initCounters(reducedMotion) {
+    const numbers = document.querySelectorAll('.stat-item .number[data-target]');
+    if (!numbers.length || reducedMotion || !('IntersectionObserver' in window)) return;
+
+    const format = (n) => n.toLocaleString('tr-TR');
+    const animate = (el) => {
+        const target = Number(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const duration = 1600;
+        const start = performance.now();
+        const step = (now) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = format(Math.round(target * eased)) + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animate(entry.target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    numbers.forEach(n => observer.observe(n));
+}
+
+// 5. Hero slider (ilk görsel hariç diğerleri sırası gelince yüklenir)
+function initHeroSlider(reducedMotion) {
+    const slides = document.querySelectorAll('.hero-slider .slide');
+    if (slides.length < 2) return;
+
     const prevBtn = document.querySelector('.nav-btn.prev');
     const nextBtn = document.querySelector('.nav-btn.next');
+    const intervalTime = 6500;
+    let current = 0;
+    let timer = null;
 
-    let currentSlide = 0;
-    let isAnimating = false;
-    let slideInterval;
-    const intervalTime = 6000;
-
-    // Slides other than the first carry their image in data-bg and load on demand
-    function loadSlide(index) {
+    const loadSlide = (index) => {
         const slide = slides[index];
         if (slide && slide.dataset.bg) {
             slide.style.backgroundImage = `url('${slide.dataset.bg}')`;
             delete slide.dataset.bg;
         }
-    }
+    };
 
-    function goToSlide(index, direction) {
-        if (isAnimating || index === currentSlide) return;
-        isAnimating = true;
-        loadSlide(index);
-        loadSlide((index + 1) % slides.length); // preload the one after
+    const goTo = (index) => {
+        const next = (index + slides.length) % slides.length;
+        if (next === current) return;
+        loadSlide(next);
+        loadSlide((next + 1) % slides.length);
+        slides[current].classList.remove('active');
+        slides[next].classList.add('active');
+        current = next;
+    };
 
-        const activeSlide = slides[currentSlide];
-        const nextSlide = slides[index];
+    const restart = () => {
+        clearInterval(timer);
+        if (!reducedMotion) timer = setInterval(() => goTo(current + 1), intervalTime);
+    };
 
-        // Determine animation direction if not provided
-        // (Optional: could add direction-based sliding, but fade is safer/classier)
+    nextBtn?.addEventListener('click', () => { goTo(current + 1); restart(); });
+    prevBtn?.addEventListener('click', () => { goTo(current - 1); restart(); });
 
-        // Ensure the incoming slide is visible and on top
-        nextSlide.style.zIndex = '3'; // Higher than active (2)
-        activeSlide.style.zIndex = '2';
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) clearInterval(timer);
+        else restart();
+    });
 
-        gsap.to(activeSlide, {
-            opacity: 0,
-            duration: 1.0,
-            ease: "power2.inOut"
-        });
+    window.addEventListener('load', () => loadSlide(1));
+    restart();
+}
 
-        gsap.fromTo(nextSlide,
-            { opacity: 0, scale: 1.1 },
-            {
-                opacity: 1,
-                scale: 1,
-                duration: 1.0,
-                ease: "power2.inOut",
-                onComplete: () => {
-                    activeSlide.classList.remove('active');
-                    nextSlide.classList.add('active');
-
-                    // Reset inline styles to let CSS class handle z-index
-                    activeSlide.style.zIndex = '';
-                    activeSlide.style.opacity = '';
-                    nextSlide.style.zIndex = '';
-
-                    isAnimating = false;
-                }
-            }
-        );
-
-        currentSlide = index;
-    }
-
-    function nextSlide() {
-        let newIndex = (currentSlide + 1) % slides.length;
-        goToSlide(newIndex, 'next');
-    }
-
-    function prevSlide() {
-        let newIndex = (currentSlide - 1 + slides.length) % slides.length;
-        goToSlide(newIndex, 'prev');
-    }
-
-    // Event Listeners
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            resetInterval();
-            nextSlide();
-        });
-    }
-
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            resetInterval();
-            prevSlide();
-        });
-    }
-
-    function resetInterval() {
-        clearInterval(slideInterval);
-        slideInterval = setInterval(nextSlide, intervalTime);
-    }
-
-    // Start Loop (only on pages that have a hero slider)
-    if (slides.length > 1) {
-        window.addEventListener('load', () => loadSlide(1));
-        resetInterval();
-
-        // Initial State ensure
-        gsap.set(slides, { opacity: 0 });
-        gsap.set(slides[0], { opacity: 1 });
-    }
-
-    // 12. Form Handling (Netlify Forms via AJAX)
-    // Compact forms (newsletter) report into a sibling .form-status instead of the button label.
-    document.querySelectorAll('form[data-netlify="true"]').forEach(contactForm => {
-        const isNewsletter = contactForm.getAttribute('name') === 'bulten';
-        const status = contactForm.nextElementSibling?.classList.contains('form-status')
-            ? contactForm.nextElementSibling : null;
+// 6. Formlar (Vercel Function /api/contact)
+// Bülten gibi kompakt formlar sonucu buton yerine yandaki .form-status alanında gösterir.
+function initForms() {
+    document.querySelectorAll('form[data-ajax-form]').forEach(form => {
+        const isNewsletter = form.getAttribute('name') === 'bulten';
+        const status = form.nextElementSibling?.classList.contains('form-status') ? form.nextElementSibling : null;
         const messages = isNewsletter
             ? { success: 'Bültene kaydoldunuz! ✓', error: 'Kayıt yapılamadı, lütfen tekrar deneyin.' }
-            : { success: 'Mesajınız İletildi! ✓', error: 'Gönderilemedi, lütfen bizi arayın.' };
+            : { success: 'Mesajınız iletildi! ✓', error: 'Gönderilemedi, lütfen bizi arayın.' };
 
-        contactForm.addEventListener('submit', async (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = contactForm.querySelector('button[type="submit"]');
+            const btn = form.querySelector('button[type="submit"]');
             const originalHTML = btn.innerHTML;
+            let errorText = messages.error;
+
             const show = (text, color) => {
                 if (status) {
                     status.textContent = text;
@@ -482,28 +192,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
 
-            // UI Loading State
             show('Gönderiliyor...', '');
-            btn.style.opacity = '0.7';
             btn.disabled = true;
 
             try {
-                const response = await fetch('/', {
+                const response = await fetch(form.getAttribute('action'), {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams(new FormData(contactForm)).toString()
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(Object.fromEntries(new FormData(form)))
                 });
+                const result = await response.json().catch(() => ({}));
 
-                if (!response.ok) {
+                if (!response.ok || !result.success) {
+                    // Sunucunun doğrulama mesajını (400) göster, diğer durumlarda genel metin
+                    if (response.status === 400 && result.error) errorText = result.error;
                     throw new Error(`Form gönderilemedi (HTTP ${response.status})`);
                 }
-                show(messages.success, '#4d7c6e');
-                contactForm.reset();
+                show(messages.success, '#2c5244');
+                form.reset();
             } catch (error) {
                 console.error(error);
-                show(messages.error, '#d9534f');
+                show(errorText, '#8a4a29');
             } finally {
-                btn.style.opacity = '1';
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
                     btn.style.backgroundColor = '';
@@ -513,59 +223,55 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+}
 
-    // 13. Lightbox Functionality
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    if (galleryItems.length > 0) {
-        // Create Lightbox DOM
-        const lightbox = document.createElement('div');
-        lightbox.className = 'lightbox';
-        lightbox.innerHTML = `
-            <button class="lightbox-close">&times;</button>
-            <img src="" alt="Galeri Büyük Boy">
-        `;
-        document.body.appendChild(lightbox);
+// 7. Galeri lightbox
+function initLightbox() {
+    const items = document.querySelectorAll('.gallery-item');
+    if (!items.length) return;
 
-        const lightboxImg = lightbox.querySelector('img');
-        const closeBtn = lightbox.querySelector('.lightbox-close');
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.setAttribute('role', 'dialog');
+    lightbox.setAttribute('aria-modal', 'true');
+    lightbox.setAttribute('aria-label', 'Proje görseli');
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Kapat">&times;</button><img alt="">';
+    document.body.appendChild(lightbox);
 
-        // Open Lightbox
-        galleryItems.forEach(item => {
-            item.addEventListener('click', () => {
-                // Get image source from the img tag inside the gallery item
-                const img = item.querySelector('img');
+    const img = lightbox.querySelector('img');
+    const closeBtn = lightbox.querySelector('.lightbox-close');
+    let lastFocus = null;
 
-                if (img && img.src) {
-                    lightboxImg.src = img.src;
-                    lightbox.classList.add('active');
-                    document.body.style.overflow = 'hidden'; // Scroll'u engelle
-                }
-            });
-        });
+    const open = (item) => {
+        const source = item.querySelector('img');
+        if (!source) return;
+        lastFocus = item;
+        img.src = source.currentSrc || source.src;
+        img.alt = source.alt;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+    };
 
-        // Close Lightbox
-        const closeLightbox = () => {
-            lightbox.classList.remove('active');
-            document.body.style.overflow = '';
-            setTimeout(() => {
-                lightboxImg.src = '';
-            }, 300); // Transition bitince sil
-        };
+    const close = () => {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+        lastFocus?.focus();
+    };
 
-        closeBtn.addEventListener('click', closeLightbox);
-
-        // Close on outside click
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                closeLightbox();
+    items.forEach(item => {
+        item.addEventListener('click', () => open(item));
+        item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                open(item);
             }
         });
+    });
 
-        // Close on Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-                closeLightbox();
-            }
-        });
-    }
-});
+    closeBtn.addEventListener('click', close);
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) close();
+    });
+}

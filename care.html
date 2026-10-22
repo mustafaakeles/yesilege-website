@@ -4,14 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitki Bakım Rehberi | Yeşil Ege</title>
+    <title>Bitki Bakım Rehberi: Ege İklimine Uygun Bakım | Yeşil Ege Peyzaj</title>
     <link rel="canonical" href="https://yesilege.com.tr/care.html">
-    <meta name="description" content="Ege iklimine uygun bitkiler için mevsimsel bakım, sulama ve gübreleme ipuçları.">
+    <meta name="description"
+        content="Ege iklimine uygun bitkiler için mevsimsel bakım, sulama, gübreleme ve budama ipuçları. Bayındır&#x27;daki seramızın uzmanlarından pratik rehber.">
 
     <!-- Open Graph SEO -->
-    <meta property="og:title" content="Bitki Bakım Rehberi | Yeşil Ege">
-    <meta property="og:description" content="Bitkileriniz için yaşam kılavuzu.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1518531933037-91b2f5d2294c?q=80&w=1200">
+    <meta property="og:title" content="Bitki Bakım Rehberi: Ege İklimine Uygun Bakım | Yeşil Ege Peyzaj">
+    <meta property="og:description"
+        content="Ege iklimine uygun bitkiler için mevsimsel bakım, sulama, gübreleme ve budama ipuçları. Bayındır&#x27;daki seramızın uzmanlarından pratik rehber.">
+    <meta property="og:image" content="https://yesilege.com.tr/images/sera-ic-mekan.jpg">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicon.png">
@@ -20,95 +22,34 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="mascot.css">
+    <link rel="stylesheet" href="style.css?v=20261022c">
+    <link rel="stylesheet" href="mascot.css?v=20261022c">
 
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .care-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 4rem 0;
-        }
-
-        .care-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-            transition: var(--transition);
-            border: 1px solid #eee;
-        }
-
-        .care-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .care-img {
-            height: 250px;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .care-content {
-            padding: 2rem;
-        }
-
-        .care-content h3 {
-            margin-bottom: 1rem;
-            color: var(--color-primary);
-        }
-
-        .care-content ul {
-            list-style: none;
-            margin-top: 1rem;
-        }
-
-        .care-content li {
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #666;
-        }
-
-        .care-content li i {
-            color: var(--color-accent);
-            font-size: 0.8rem;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 0.25rem 0.8rem;
-            background-color: #f0f0f0;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- SEO: breadcrumb -->
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Ana Sayfa", "item": "https://yesilege.com.tr/"}, {"@type": "ListItem", "position": 2, "name": "Bitki Bakım Rehberi", "item": "https://yesilege.com.tr/care.html"}]}</script>
 </head>
 
 <body>
+    <a class="skip-link" href="#main">İçeriğe geç</a>
 
     <!-- Navigation (Same as Main) -->
-    <nav class="navbar" id="navbar">
+    <nav class="navbar" id="navbar" aria-label="Ana menü">
         <div class="container nav-content">
-            <a href="index.html" class="logo">
-                <img src="images/logo1.png" alt="Yeşil Ege">
+            <a href="index.html" class="logo" aria-label="Yeşil Ege Peyzaj ana sayfa">
+                <img src="images/logo-dark.png" alt="Yeşil Ege Peyzaj" width="398" height="160">
             </a>
-            <ul class="nav-links">
+            <ul class="nav-links" id="nav-links">
                 <li><a href="index.html">Ana Sayfa</a></li>
                 <li class="dropdown">
-                    <a href="services.html">Hizmetler & Ürünler <i class="fas fa-chevron-down"
-                            style="font-size: 0.7em;"></i></a>
+                    <a href="services.html" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Hizmetler &amp; Ürünler <i class="fas fa-chevron-down" aria-hidden="true"></i></a>
                     <ul class="dropdown-menu">
                         <li><a href="services.html#garden-materials">Bahçe Malzemeleri</a></li>
                         <li><a href="services.html#indoor-plants">İç Mekan Süs Bitkileri</a></li>
@@ -119,35 +60,39 @@
                         <li><a href="services.html#project">Proje Uygulama</a></li>
                     </ul>
                 </li>
+                <li><a href="care.html" aria-current="page">Bakım Rehberi</a></li>
                 <li><a href="blog.html">Blog</a></li>
-                <li><a href="index.html#about">Hakkımızda</a></li>
-                <li><a href="index.html#gallery">Projeler</a></li>
-                <li><a href="contact.html" class="btn-primary">İletişim</a></li>
+                <li><a href="index.html#projeler">Projeler</a></li>
+                <li><a href="contact.html">İletişim</a></li>
             </ul>
-            <div class="hamburger">
-                <i class="fas fa-bars"></i>
+            <div class="nav-actions">
+                <a href="tel:+905350805951" class="nav-phone" aria-label="Telefon: 0535 080 59 51"><i class="fas fa-phone-alt" aria-hidden="true"></i><span>0535 080 59 51</span></a>
+                <a href="contact.html" class="btn btn-primary btn-sm">Teklif Alın</a>
+                <button class="hamburger" type="button" aria-label="Menüyü aç/kapat" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
             </div>
         </div>
     </nav>
 
+    <main id="main">
+
     <!-- Page Header -->
     <header class="page-header"
-        style="background-image: linear-gradient(rgba(26, 60, 52, 0.85), rgba(26, 60, 52, 0.85)), url('https://images.unsplash.com/photo-1518531933037-91b2f5d2294c?q=80&w=1600&auto=format&fit=crop');">
+        style="background-image: linear-gradient(rgba(26, 60, 52, 0.85), rgba(26, 60, 52, 0.85)), url('images/sera-ic-mekan.webp');">
         <div class="container">
             <span class="subtitle"> UZMAN TAVSİYELERİ</span>
-            <h1>Bitkileriniz İçin Yaşam Kılavuzu</h1>
+            <h1>Bitki Bakım Rehberi</h1>
             <p>Ege iklimine uygun bitkiler için mevsimsel bakım, sulama ve gübreleme ipuçları.</p>
         </div>
     </header>
 
     <!-- Care Content -->
-    <section class="container">
+    <section class="container care-section">
         <div class="care-grid">
 
             <!-- Card 1 -->
             <article class="care-card">
                 <div class="care-img"
-                    style="background-image: url('https://images.unsplash.com/photo-1459156212016-c812468e2115?q=80&w=800');">
+                    style="background-image: url('images/u/photo-1459156212016-c812468e2115.webp');">
                 </div>
                 <div class="care-content">
                     <span class="tag">İç Mekan</span>
@@ -165,7 +110,7 @@
             <!-- Card 2 -->
             <article class="care-card">
                 <div class="care-img"
-                    style="background-image: url('https://images.unsplash.com/photo-1598902168393-2761895a940f?q=80&w=800');">
+                    style="background-image: url('images/xeriscape_mediterranean_garden_olive.webp');">
                 </div>
                 <div class="care-content">
                     <span class="tag">Dış Mekan</span>
@@ -182,7 +127,7 @@
             <!-- Card 3 -->
             <article class="care-card">
                 <div class="care-img"
-                    style="background-image: url('https://images.unsplash.com/photo-1558904541-efa843a96f01?q=80&w=800&auto=format&fit=crop');">
+                    style="background-image: url('images/u/photo-1558904541-efa843a96f01.webp');">
                 </div>
                 <div class="care-content">
                     <span class="tag">Peyzaj</span>
@@ -200,7 +145,7 @@
             <!-- Card 4 -->
             <article class="care-card">
                 <div class="care-img"
-                    style="background-image: url('https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=800');">
+                    style="background-image: url('images/u/photo-1459411552884-841db9b3cc2a.webp');">
                 </div>
                 <div class="care-content">
                     <span class="tag">İç Mekan</span>
@@ -218,37 +163,54 @@
     </section>
 
     <!-- Footer -->
+    </main>
+
     <footer>
         <div class="container footer-content">
             <div class="footer-brand">
-                <a href="index.html" class="logo-footer">
-                    <img src="images/logo1.png" alt="Yeşil Ege" style="height: 50px; width: auto;">
+                <a href="index.html" class="logo-footer" aria-label="Yeşil Ege Peyzaj ana sayfa">
+                    <img src="images/logo-light.png" alt="Yeşil Ege Peyzaj" width="398" height="160" loading="lazy">
                 </a>
-                <p>Doğayı sanatla buluşturan profesyonel çözümler.</p>
+                <p>1996'dan beri Bayındır'da sera ve fidanlık üretimi, İzmir ve Ege'de peyzaj tasarımı ve bahçe bakımı.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/yesilegepeyzaj/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    <a href="https://wa.me/905350805951" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+                    <a href="https://linkedin.com/company/yesilege-peyzaj" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                </div>
             </div>
             <div class="footer-links">
-                <h4>Hızlı Erişim</h4>
+                <h4>Keşfedin</h4>
                 <ul>
-                    <li><a href="index.html">Ana Sayfa</a></li>
-                    <li><a href="index.html#about">Hakkımızda</a></li>
-                    <li><a href="index.html#services">Hizmetler</a></li>
-                    <li><a href="index.html#contact">İletişim</a></li>
+                    <li><a href="services.html">Hizmetler &amp; Ürünler</a></li>
+                    <li><a href="index.html#projeler">Projeler</a></li>
+                    <li><a href="care.html">Bitki Bakım Rehberi</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="index.html#sss">Sıkça Sorulanlar</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>İletişim</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i><a href="https://maps.app.goo.gl/BhpF9Gh1Xto5Y9368" target="_blank" rel="noopener">Karaveliler, Kazım Dirik Cd. No: 225, 35847 Bayındır/İzmir</a></li>
+                    <li><i class="fas fa-phone-alt" aria-hidden="true"></i><a href="tel:+905350805951">+90 535 080 59 51</a></li>
+                    <li><i class="fas fa-phone-alt" aria-hidden="true"></i><a href="tel:+905323247288">+90 532 324 72 88</a></li>
+                    <li><i class="fas fa-clock" aria-hidden="true"></i><span>Hafta içi 09:00 – 18:00</span></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
             <p>&copy; 2026 Yeşil Ege Peyzaj. Tüm hakları saklıdır.</p>
             <div class="codera-signature">
-                Software & Design by <a href="https://www.codera.com.tr" target="_blank" rel="noopener">CODERA</a>
+                Software &amp; Design by <a href="https://www.codera.com.tr" target="_blank" rel="noopener">CODERA</a>
             </div>
         </div>
     </footer>
 
     <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="script.js"></script>
-    <script src="mascot.js"></script>
+    <script src="script.js?v=20261022c" defer></script>
+    <script src="mascot.js?v=20261022c" defer></script>
+    <!-- Vercel Web Analytics (çerezsiz) -->
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
 
 </html>

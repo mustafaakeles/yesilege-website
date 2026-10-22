@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="magnolia-window" id="magnoliaWindow">
                 <div class="magnolia-header">
                     <div class="magnolia-header-avatar">
-                        <img src="https://cdn-icons-png.flaticon.com/512/628/628283.png" alt="Magnolia Icon">
+                        <img src="/images/magnolia-icon.webp" alt="Magnolia Icon">
                     </div>
                     <div class="magnolia-info">
                         <h4>Magnolia</h4>
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <!-- Avatar Trigger -->
             <div class="magnolia-avatar" id="magnoliaTrigger">
-                <img src="https://cdn-icons-png.flaticon.com/512/628/628283.png" alt="Magnolia">
+                <img src="/images/magnolia-icon.webp" alt="Magnolia">
             </div>
         </div>
     `;

@@ -1,0 +1,7 @@
+# Yayına gitmemesi gerekenler (iç belgeler, testler, yerel ayarlar)
+_internal/
+tests/
+.claude/
+netlify.toml
+*.md
+tools/

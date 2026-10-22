@@ -4,14 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog | Yeşil Ege</title>
-    <meta name="description" content="Peyzaj trendleri, bitki bakım ipuçları ve sürdürülebilir yaşam üzerine notlar.">
+    <title>Bahçe ve Bitki Bakımı Blogu | Yeşil Ege Peyzaj</title>
+    <meta name="description"
+        content="Peyzaj trendleri, salon bitkileri, sukulent ve orkide bakımı, balkon ve bahçe fikirleri. Bayındır&#x27;daki seramızın uzmanlarından yazılar.">
 
     <!-- Open Graph SEO -->
-    <meta property="og:title" content="Blog | Yeşil Ege">
-    <meta property="og:description" content="Doğayla iç içe yaşam rehberi.">
+    <meta property="og:title" content="Bahçe ve Bitki Bakımı Blogu | Yeşil Ege Peyzaj">
+    <meta property="og:description"
+        content="Peyzaj trendleri, salon bitkileri, sukulent ve orkide bakımı, balkon ve bahçe fikirleri. Bayındır&#x27;daki seramızın uzmanlarından yazılar.">
     <link rel="canonical" href="https://yesilege.com.tr/blog.html">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=1200">
+    <meta property="og:image" content="https://yesilege.com.tr/images/u/photo-1585320806297-9794b3e4eeae.jpg">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicon.png">
@@ -19,114 +21,31 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="mascot.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .blog-header {
-            background-color: #fdfbf7;
-            padding: 10rem 0 4rem;
-            text-align: center;
-        }
-
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 3rem;
-            margin-top: -3rem;
-            /* Overlap header slightly */
-            margin-bottom: 5rem;
-        }
-
-        .blog-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            transition: all 0.4s ease;
-        }
-
-        .blog-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .blog-img {
-            height: 250px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        .blog-category {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: white;
-            padding: 5px 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: var(--color-primary);
-            text-transform: uppercase;
-        }
-
-        .blog-content {
-            padding: 2rem;
-        }
-
-        .blog-meta {
-            font-size: 0.85rem;
-            color: #888;
-            margin-bottom: 1rem;
-        }
-
-        .blog-content h3 {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            color: var(--color-primary);
-            line-height: 1.3;
-        }
-
-        .blog-content p {
-            color: #666;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-        }
-
-        .read-btn {
-            color: var(--color-accent);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .read-btn:hover {
-            gap: 15px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css?v=20261022c">
+    <link rel="stylesheet" href="mascot.css?v=20261022c">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- SEO: breadcrumb -->
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Ana Sayfa", "item": "https://yesilege.com.tr/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://yesilege.com.tr/blog.html"}]}</script>
 </head>
 
 <body>
+    <a class="skip-link" href="#main">İçeriğe geç</a>
 
     <!-- Navigation (Same as Main) -->
-    <nav class="navbar" id="navbar">
+    <nav class="navbar" id="navbar" aria-label="Ana menü">
         <div class="container nav-content">
-            <a href="index.html" class="logo">
-                <img src="images/logo1.png" alt="Yeşil Ege">
+            <a href="index.html" class="logo" aria-label="Yeşil Ege Peyzaj ana sayfa">
+                <img src="images/logo-dark.png" alt="Yeşil Ege Peyzaj" width="398" height="160">
             </a>
-            <ul class="nav-links">
+            <ul class="nav-links" id="nav-links">
                 <li><a href="index.html">Ana Sayfa</a></li>
                 <li class="dropdown">
-                    <a href="index.html#services">Hizmetler <i class="fas fa-chevron-down"
-                            style="font-size: 0.7em;"></i></a>
+                    <a href="services.html" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Hizmetler &amp; Ürünler <i class="fas fa-chevron-down" aria-hidden="true"></i></a>
                     <ul class="dropdown-menu">
                         <li><a href="services.html#garden-materials">Bahçe Malzemeleri</a></li>
                         <li><a href="services.html#indoor-plants">İç Mekan Süs Bitkileri</a></li>
@@ -137,21 +56,25 @@
                         <li><a href="services.html#project">Proje Uygulama</a></li>
                     </ul>
                 </li>
-                <li><a href="blog.html" class="active" style="color: var(--color-accent);">Blog</a></li>
-                <li><a href="index.html#about">Hakkımızda</a></li>
-                <li><a href="index.html#gallery">Projeler</a></li>
-                <li><a href="contact.html" class="btn-primary">İletişim</a></li>
+                <li><a href="care.html">Bakım Rehberi</a></li>
+                <li><a href="blog.html" aria-current="page">Blog</a></li>
+                <li><a href="index.html#projeler">Projeler</a></li>
+                <li><a href="contact.html">İletişim</a></li>
             </ul>
-            <div class="hamburger">
-                <i class="fas fa-bars"></i>
+            <div class="nav-actions">
+                <a href="tel:+905350805951" class="nav-phone" aria-label="Telefon: 0535 080 59 51"><i class="fas fa-phone-alt" aria-hidden="true"></i><span>0535 080 59 51</span></a>
+                <a href="contact.html" class="btn btn-primary btn-sm">Teklif Alın</a>
+                <button class="hamburger" type="button" aria-label="Menüyü aç/kapat" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
             </div>
         </div>
     </nav>
 
+    <main id="main">
+
     <header class="blog-header">
         <div class="container">
             <span class="subtitle">YEŞİL YAŞAM KÜLTÜRÜ</span>
-            <h1>Editörün Seçimleri</h1>
+            <h1>Bahçe ve Bitki Bakımı Blogu</h1>
             <p>Peyzaj trendleri, bitki bakım ipuçları ve sürdürülebilir yaşam üzerine notlar.</p>
         </div>
     </header>
@@ -248,7 +171,7 @@
             <!-- New Article 7: Küçük Balkon -->
             <article class="blog-card">
                 <div class="blog-img"
-                    style="background-image: url('https://images.unsplash.com/photo-1598928636135-d146006ff4be?q=80&w=800');">
+                    style="background-image: url('images/u/photo-1598928636135-d146006ff4be.webp');">
                     <span class="blog-category">Dekorasyon</span>
                 </div>
                 <div class="blog-content">
@@ -263,7 +186,7 @@
             <!-- New Article 8: Evcil Hayvan Dostu -->
             <article class="blog-card">
                 <div class="blog-img"
-                    style="background-image: url('https://images.unsplash.com/photo-1574158622682-e40e69881006?q=80&w=800');">
+                    style="background-image: url('images/u/photo-1574158622682-e40e69881006.webp');">
                     <span class="blog-category">Yaşam</span>
                 </div>
                 <div class="blog-content">
@@ -278,7 +201,7 @@
             <!-- New Article 9: Kompost -->
             <article class="blog-card">
                 <div class="blog-img"
-                    style="background-image: url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=800');">
+                    style="background-image: url('images/u/photo-1416879595882-3373a0480b5b.webp');">
                     <span class="blog-category">Sürdürülebilirlik</span>
                 </div>
                 <div class="blog-content">
@@ -293,7 +216,7 @@
             <!-- New Article 10: Ofis Bitkileri -->
             <article class="blog-card">
                 <div class="blog-img"
-                    style="background-image: url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=800');">
+                    style="background-image: url('images/u/photo-1524758631624-e2822e304c36.webp');">
                     <span class="blog-category">Kurumsal</span>
                 </div>
                 <div class="blog-content">
@@ -309,7 +232,7 @@
             <!-- New Article 11: Teraryum -->
             <article class="blog-card">
                 <div class="blog-img"
-                    style="background-image: url('https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=800');">
+                    style="background-image: url('images/u/photo-1485955900006-10f4d324d411.webp');">
                     <span class="blog-category">Hobi</span>
                 </div>
                 <div class="blog-content">
@@ -324,7 +247,7 @@
             <!-- New Article 12: Bitki Çoğaltma -->
             <article class="blog-card">
                 <div class="blog-img"
-                    style="background-image: url('https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=800');">
+                    style="background-image: url('images/u/photo-1459411552884-841db9b3cc2a.webp');">
                     <span class="blog-category">Pratik Bilgi</span>
                 </div>
                 <div class="blog-content">
@@ -339,7 +262,7 @@
             <!-- New Article 13: Tatilde Bakım -->
             <article class="blog-card">
                 <div class="blog-img"
-                    style="background-image: url('https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=800');">
+                    style="background-image: url('images/u/photo-1466692476868-aef1dfb1e735.webp');">
                     <span class="blog-category">İpuçları</span>
                 </div>
                 <div class="blog-content">
@@ -354,7 +277,7 @@
             <!-- New Article 14: Mutfak Bahçeciliği -->
             <article class="blog-card">
                 <div class="blog-img"
-                    style="background-image: url('https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=800');background-position: bottom;">
+                    style="background-image: url('images/u/photo-1466692476868-aef1dfb1e735.webp');background-position: bottom;">
                     <span class="blog-category">Mutfak</span>
                 </div>
                 <div class="blog-content">
@@ -369,43 +292,60 @@
     </section>
 
     <!-- Footer -->
+    </main>
+
     <footer>
         <div class="container footer-content">
             <div class="footer-brand">
-                <a href="index.html" class="logo-footer">
-                    <img src="images/logo1.png" alt="Yeşil Ege" style="height: 50px; width: auto;">
+                <a href="index.html" class="logo-footer" aria-label="Yeşil Ege Peyzaj ana sayfa">
+                    <img src="images/logo-light.png" alt="Yeşil Ege Peyzaj" width="398" height="160" loading="lazy">
                 </a>
-                <p>Doğayı sanatla buluşturan profesyonel çözümler.</p>
+                <p>1996'dan beri Bayındır'da sera ve fidanlık üretimi, İzmir ve Ege'de peyzaj tasarımı ve bahçe bakımı.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/yesilegepeyzaj/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    <a href="https://wa.me/905350805951" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+                    <a href="https://linkedin.com/company/yesilege-peyzaj" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                </div>
             </div>
             <div class="footer-links">
-                <h4>Hızlı Erişim</h4>
+                <h4>Keşfedin</h4>
                 <ul>
-                    <li><a href="index.html">Ana Sayfa</a></li>
-                    <li><a href="index.html#about">Hakkımızda</a></li>
-                    <li><a href="index.html#services">Hizmetler</a></li>
-                    <li><a href="index.html#contact">İletişim</a></li>
+                    <li><a href="services.html">Hizmetler &amp; Ürünler</a></li>
+                    <li><a href="index.html#projeler">Projeler</a></li>
+                    <li><a href="care.html">Bitki Bakım Rehberi</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="index.html#sss">Sıkça Sorulanlar</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>İletişim</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i><a href="https://maps.app.goo.gl/BhpF9Gh1Xto5Y9368" target="_blank" rel="noopener">Karaveliler, Kazım Dirik Cd. No: 225, 35847 Bayındır/İzmir</a></li>
+                    <li><i class="fas fa-phone-alt" aria-hidden="true"></i><a href="tel:+905350805951">+90 535 080 59 51</a></li>
+                    <li><i class="fas fa-phone-alt" aria-hidden="true"></i><a href="tel:+905323247288">+90 532 324 72 88</a></li>
+                    <li><i class="fas fa-clock" aria-hidden="true"></i><span>Hafta içi 09:00 – 18:00</span></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
             <p>&copy; 2026 Yeşil Ege Peyzaj. Tüm hakları saklıdır.</p>
             <div class="codera-signature">
-                Software & Design by <a href="https://www.codera.com.tr" target="_blank" rel="noopener">CODERA</a>
+                Software &amp; Design by <a href="https://www.codera.com.tr" target="_blank" rel="noopener">CODERA</a>
             </div>
         </div>
     </footer>
 
     <!-- Scripts (Reusing same script for navbar logic mainly) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="script.js"></script>
-    <script src="mascot.js"></script>
+    <script src="script.js?v=20261022c" defer></script>
+    <script src="mascot.js?v=20261022c" defer></script>
 
     <!-- WhatsApp Floating Button -->
     <a href="https://wa.me/905350805951?text=Merhaba,%20bilgi%20almak%20istiyorum." class="whatsapp-float"
         target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
+    <!-- Vercel Web Analytics (çerezsiz) -->
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
 
 </html>

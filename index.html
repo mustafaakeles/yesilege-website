@@ -4,104 +4,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="no-referrer">
-    <title>Yeşil Ege | Peyzaj ve Çiçek Üretimi</title>
+    <title>Yeşil Ege Peyzaj | Bayındır Sera, Fidanlık ve Peyzaj Tasarımı</title>
     <meta name="description"
-        content="Yeşil Ege - Ege'nin en kaliteli çiçek üreticisi ve peyzaj mimarlığı firması. Doğayı yaşam alanlarınıza taşıyoruz.">
-    <!-- Open Graph SEO -->
-    <meta property="og:title" content="Yeşil Ege | Peyzaj ve Çiçek Üretimi">
+        content="1996'dan beri Bayındır'da kendi seramızda süs bitkisi üretiyoruz. İzmir ve Ege'de peyzaj tasarımı, uygulama ve bahçe bakımı; toptan ve perakende bitki satışı. 0535 080 59 51">
+    <link rel="canonical" href="https://yesilege.com.tr/">
+    <meta name="theme-color" content="#1f3d33">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Yeşil Ege Peyzaj">
+    <meta property="og:locale" content="tr_TR">
+    <meta property="og:title" content="Yeşil Ege Peyzaj | Bayındır Sera, Fidanlık ve Peyzaj">
     <meta property="og:description"
-        content="Ege'nin en seçkin villaları ve özel mülkleri için premium peyzaj tasarımı ve bitki üretimi.">
+        content="1996'dan beri Bayındır'da sera üretimi, İzmir ve Ege'de peyzaj tasarımı ve bahçe bakımı.">
     <meta property="og:image" content="https://yesilege.com.tr/images/anton-lammert-JEPpEhHEfbM-unsplash.jpg">
     <meta property="og:url" content="https://yesilege.com.tr/">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Yeşil Ege">
-    <meta property="og:locale" content="tr_TR">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="canonical" href="https://yesilege.com.tr/">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "@id": "https://yesilege.com.tr/#business",
-        "name": "Yeşil Ege Peyzaj",
-        "description": "Bayındır/İzmir merkezli peyzaj tasarımı, uygulama, bahçe bakımı ve süs bitkisi üretimi.",
-        "url": "https://yesilege.com.tr/",
-        "logo": "https://yesilege.com.tr/images/logo1.png",
-        "image": "https://yesilege.com.tr/images/anton-lammert-JEPpEhHEfbM-unsplash.jpg",
-        "telephone": ["+905350805951", "+905323247288"],
-        "email": "info@yesilege.com.tr",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Karaveliler, Kazım Dirik Cd. No: 225",
-            "addressLocality": "Bayındır",
-            "addressRegion": "İzmir",
-            "postalCode": "35847",
-            "addressCountry": "TR"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": 38.1923646,
-            "longitude": 27.5408019
-        },
-        "hasMap": "https://maps.app.goo.gl/BhpF9Gh1Xto5Y9368",
-        "areaServed": "İzmir",
-        "sameAs": [
-            "https://www.instagram.com/yesilegepeyzaj/",
-            "https://linkedin.com/company/yesilege-peyzaj"
+        "@graph": [
+            {
+                "@type": ["GardenStore", "HomeAndConstructionBusiness"],
+                "@id": "https://yesilege.com.tr/#business",
+                "name": "Yeşil Ege Peyzaj",
+                "alternateName": "Yeşil Ege",
+                "description": "Bayındır/İzmir'de 1996'dan beri sera ve fidanlık üretimi, peyzaj tasarımı, peyzaj uygulama, bahçe bakımı, otomatik sulama ile toptan ve perakende süs bitkisi satışı.",
+                "url": "https://yesilege.com.tr/",
+                "logo": "https://yesilege.com.tr/images/logo-dark.png",
+                "image": [
+                    "https://yesilege.com.tr/images/anton-lammert-JEPpEhHEfbM-unsplash.jpg",
+                    "https://yesilege.com.tr/images/sera-ic-mekan.jpg"
+                ],
+                "foundingDate": "1996",
+                "telephone": "+905350805951",
+                "email": "info@yesilege.com.tr",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Karaveliler, Kazım Dirik Cd. No: 225",
+                    "addressLocality": "Bayındır",
+                    "addressRegion": "İzmir",
+                    "postalCode": "35847",
+                    "addressCountry": "TR"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 38.192289,
+                    "longitude": 27.540724
+                },
+                "hasMap": "https://maps.app.goo.gl/BhpF9Gh1Xto5Y9368",
+                "openingHoursSpecification": [
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                        "opens": "09:00",
+                        "closes": "18:00"
+                    }
+                ],
+                "areaServed": [
+                    { "@type": "City", "name": "Bayındır" },
+                    { "@type": "AdministrativeArea", "name": "İzmir" },
+                    { "@type": "Place", "name": "Ege Bölgesi" }
+                ],
+                "knowsAbout": ["Peyzaj tasarımı", "Peyzaj uygulama", "Süs bitkisi üretimi", "Sera", "Fidanlık", "Bahçe bakımı", "Otomatik sulama"],
+                "hasOfferCatalog": {
+                    "@type": "OfferCatalog",
+                    "name": "Hizmetler ve Ürünler",
+                    "itemListElement": [
+                        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Peyzaj Tasarımı ve Projelendirme" } },
+                        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Peyzaj Uygulama" } },
+                        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Bahçe Bakımı" } },
+                        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Otomatik Sulama Sistemleri" } },
+                        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "İç ve Dış Mekan Süs Bitkileri" } },
+                        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Toptan Süs Bitkisi" } }
+                    ]
+                },
+                "sameAs": [
+                    "https://www.instagram.com/yesilegepeyzaj/",
+                    "https://linkedin.com/company/yesilege-peyzaj"
+                ]
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://yesilege.com.tr/#website",
+                "url": "https://yesilege.com.tr/",
+                "name": "Yeşil Ege Peyzaj",
+                "inLanguage": "tr-TR",
+                "publisher": { "@id": "https://yesilege.com.tr/#business" }
+            },
+            {
+                "@type": "FAQPage",
+                "@id": "https://yesilege.com.tr/#faq",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "Yeşil Ege Peyzaj nerede?",
+                        "acceptedAnswer": { "@type": "Answer", "text": "Seramız Karaveliler, Kazım Dirik Cd. No: 225, 35847 Bayındır/İzmir adresindedir. Bayındır-Torbalı yolu üzerindeki seramıza Google Haritalar'dan yol tarifi alabilirsiniz." }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Seranızdan perakende bitki alabilir miyim?",
+                        "acceptedAnswer": { "@type": "Answer", "text": "Evet. Kendi seramızda yetiştirdiğimiz iç ve dış mekan süs bitkilerini hem toptan hem perakende satıyoruz. Ziyaret öncesi 0535 080 59 51 numarasından bize ulaşmanızı öneririz." }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Toptan bitki satışı ve sevkiyat yapıyor musunuz?",
+                        "acceptedAnswer": { "@type": "Answer", "text": "Evet. Peyzaj firmaları, belediyeler ve sektör profesyonelleri için Türkiye geneline tır bazlı lojistik destekli toptan satış yapıyoruz." }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Peyzaj keşfi ücretli mi?",
+                        "acceptedAnswer": { "@type": "Answer", "text": "Hayır. Bahçe ve peyzaj projeleri için ücretsiz keşif ve danışmanlık hizmeti veriyoruz." }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Hangi bitkileri yetiştiriyorsunuz?",
+                        "acceptedAnswer": { "@type": "Answer", "text": "Mevsimlik ve çok yıllık dış mekan süs bitkileri, ağaçlar, iç mekan süs bitkileri, kaktüs ve sukulentler yetiştiriyoruz; ayrıca saksı grupları ve bahçe malzemeleri sunuyoruz." }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Çalışma saatleriniz nedir?",
+                        "acceptedAnswer": { "@type": "Answer", "text": "Hafta içi 09:00-18:00 arası hizmet veriyoruz. Hafta sonu ziyaretleri için lütfen önceden arayın." }
+                    }
+                ]
+            }
         ]
     }
     </script>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preload" as="image" href="images/anton-lammert-JEPpEhHEfbM-unsplash.webp" fetchpriority="high">
 
-    <!-- First hero slide (LCP image) -->
-    <link rel="preload" as="image" href="images/anton-lammert-JEPpEhHEfbM-unsplash.webp">
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="mascot.css">
-    <link rel="stylesheet" href="slider-nav.css">
-
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Premium Animation Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
+    <link rel="stylesheet" href="style.css?v=20261022c">
+    <link rel="stylesheet" href="mascot.css?v=20261022c">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 
 <body>
+    <a class="skip-link" href="#main">İçeriğe geç</a>
 
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="loader-content">
-            <img src="images/logo1.png" alt="Yeşil Ege" class="loader-logo" style="width: 120px; height: auto;">
-        </div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
+    <nav class="navbar" id="navbar" aria-label="Ana menü">
         <div class="container nav-content">
-            <a href="#" class="logo">
-                <img src="images/logo1.png" alt="Yeşil Ege">
+            <a href="index.html" class="logo" aria-label="Yeşil Ege Peyzaj ana sayfa">
+                <img src="images/logo-dark.png" alt="Yeşil Ege Peyzaj" width="398" height="160">
             </a>
-            <ul class="nav-links">
-                <li><a href="#home">Ana Sayfa</a></li>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" aria-current="page">Ana Sayfa</a></li>
                 <li class="dropdown">
-                    <a href="#services">Hizmetler & Ürünler <i class="fas fa-chevron-down"
-                            style="font-size: 0.7em;"></i></a>
+                    <a href="services.html" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Hizmetler &amp; Ürünler <i class="fas fa-chevron-down" aria-hidden="true"></i></a>
                     <ul class="dropdown-menu">
                         <li><a href="services.html#garden-materials">Bahçe Malzemeleri</a></li>
                         <li><a href="services.html#indoor-plants">İç Mekan Süs Bitkileri</a></li>
@@ -112,371 +172,418 @@
                         <li><a href="services.html#project">Proje Uygulama</a></li>
                     </ul>
                 </li>
+                <li><a href="care.html">Bakım Rehberi</a></li>
                 <li><a href="blog.html">Blog</a></li>
-                <li><a href="#about">Hakkımızda</a></li>
-                <li><a href="#gallery">Projeler</a></li>
-                <li><a href="#contact" class="btn-primary">İletişim</a></li>
-                <li><a href="https://maps.app.goo.gl/dtUSMt2n7MnuiNtt8" target="_blank" class="nav-icon"
-                        aria-label="Konum"><i class="fas fa-map-marker-alt"></i></a></li>
+                <li><a href="index.html#projeler">Projeler</a></li>
+                <li><a href="contact.html">İletişim</a></li>
             </ul>
-            <div class="hamburger">
-                <i class="fas fa-bars"></i>
+            <div class="nav-actions">
+                <a href="tel:+905350805951" class="nav-phone" aria-label="Telefon: 0535 080 59 51"><i class="fas fa-phone-alt" aria-hidden="true"></i><span>0535 080 59 51</span></a>
+                <a href="contact.html" class="btn btn-primary btn-sm">Teklif Alın</a>
+                <button class="hamburger" type="button" aria-label="Menüyü aç/kapat" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header id="home" class="hero">
-        <!-- Background Slider Container - Landscaping Focus -->
-        <!-- Background Slider Container - Landscaping Focus -->
-        <div class="hero-slider">
-            <!-- 1. Local Image -->
-            <div class="slide active" style="background-image: url('images/anton-lammert-JEPpEhHEfbM-unsplash.webp');">
+    <main id="main">
+        <!-- Hero -->
+        <header class="hero" id="home">
+            <div class="hero-slider" aria-hidden="true">
+                <div class="slide active" style="background-image: url('images/anton-lammert-JEPpEhHEfbM-unsplash.webp');"></div>
+                <div class="slide" data-bg="images/villa-194671_1280.webp"></div>
+                <div class="slide" data-bg="images/sera-ic-mekan.webp"></div>
+                <div class="slide" data-bg="images/dominik-miTaCGn2y84-unsplash.webp"></div>
+                <div class="slide" data-bg="images/connie-garrad-VGtMvqHDpFw-unsplash.webp"></div>
+                <div class="slide" data-bg="images/usalandscaping.webp"></div>
             </div>
-            <!-- 2. Local Image -->
-            <div class="slide" data-bg="images/connie-garrad-VGtMvqHDpFw-unsplash.webp">
-            </div>
-            <!-- 3. Local Image -->
-            <div class="slide" data-bg="images/joey-genovese-ktd2fT6R-QM-unsplash.webp">
-            </div>
-            <!-- 4. Local Image -->
-            <div class="slide" data-bg="images/john-fornander-tVzyDSV84w8-unsplash.webp">
-            </div>
-            <!-- 5. Local Image -->
-            <div class="slide" data-bg="images/frames-for-your-heart-2d4lAQAlbDA-unsplash.webp">
-            </div>
-            <!-- 6. Local Image -->
-            <div class="slide" data-bg="images/tania-melnyczuk-E4Ryf8GKWbs-unsplash.webp">
-            </div>
-            <!-- 7. Local Image -->
-            <div class="slide" data-bg="images/villa-194671_1280.webp">
-            </div>
-            <!-- 8. Local Image -->
-            <div class="slide" data-bg="images/chris-lee-70l1tDAI6rM-unsplash.webp">
-            </div>
-            <!-- 9. Local Image -->
-            <div class="slide" data-bg="images/dominik-miTaCGn2y84-unsplash.webp">
-            </div>
-            <!-- 10. Local Image -->
-            <div class="slide" data-bg="images/usalandscaping.webp">
-            </div>
-        </div>
+            <div class="overlay"></div>
 
-        <div class="overlay"></div> <!-- Dark overlay sits on top of slider -->
-
-        <!-- Slider Navigation (Placed after overlay to ensure clickability) -->
-        <div class="slider-nav">
-            <button class="nav-btn prev" aria-label="Önceki görsel"><i class="fas fa-chevron-left"></i></button>
-            <button class="nav-btn next" aria-label="Sonraki görsel"><i class="fas fa-chevron-right"></i></button>
-        </div>
-
-        <div class="hero-content">
-            <!-- Subtitle removed as per request -->
-            <h1 class="fade-in-up">Lüks Yaşamın <span class="text-gradient">Yeşil İmzası</span></h1>
-            <p class="fade-in-up delay-1">Ege'nin en seçkin villaları ve özel mülkleri için premium peyzaj tasarımı.
-                Hayalinizdeki "Private Garden" konseptini gerçeğe dönüştürüyoruz.</p>
-            <div class="hero-btns fade-in-up delay-2">
-                <a href="#gallery" class="btn btn-primary">Projelerimiz</a>
-                <a href="#contact" class="btn btn-outline">Randevu Alın</a>
-            </div>
-        </div>
-        <div class="scroll-down">
-            <div class="mouse"></div>
-        </div>
-    </header>
-
-    <!-- Features / Intro -->
-    <section class="features">
-        <div class="container">
-            <div class="feature-grid">
-                <div class="feature-card glass">
-                    <div class="icon-box">
-                        <i class="fas fa-seedling"></i>
-                    </div>
-                    <h3>Üretim Aşkı</h3>
-                    <p>Kendi seralarımızda özenle yetiştirdiğimiz mevsimlik ve çok yıllık bitkiler.</p>
-                </div>
-                <div class="feature-card glass">
-                    <div class="icon-box">
-                        <i class="fas fa-drafting-compass"></i>
-                    </div>
-                    <h3>Peyzaj Mimarlığı</h3>
-                    <p>Modern, sürdürülebilir ve estetik bahçe tasarımları ile hayallerinizi çiziyoruz.</p>
-                </div>
-                <div class="feature-card glass">
-                    <div class="icon-box">
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                    <h3>Bakım & Onarım</h3>
-                    <p>Mevcut yeşil alanlarınızın profesyonel bakımı ve yenilenmesi.</p>
+            <div class="hero-content">
+                <span class="hero-eyebrow"><i class="fas fa-seedling" aria-hidden="true"></i> 1996'dan beri · Bayındır / İzmir</span>
+                <h1>Bayındır'da sera, fidanlık ve <em>peyzaj tasarımı</em></h1>
+                <p>Kendi seramızda yetiştirdiğimiz binlerce bitkiyi, uzman peyzaj ekibimizle villa bahçelerinden
+                    kurumsal projelere kadar İzmir ve Ege'nin dört bir yanına taşıyoruz.</p>
+                <div class="hero-btns">
+                    <a href="#iletisim" class="btn btn-primary">Ücretsiz Keşif İsteyin <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                    <a href="#projeler" class="btn btn-outline">Projelerimizi Görün</a>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-image">
+            <div class="slider-nav">
+                <button class="nav-btn prev" aria-label="Önceki görsel"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+                <button class="nav-btn next" aria-label="Sonraki görsel"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+            </div>
+        </header>
+
+        <!-- Trust bar -->
+        <section class="trust" aria-label="Neden Yeşil Ege">
+            <div class="container trust-grid">
+                <div class="trust-item reveal">
+                    <i class="fas fa-award" aria-hidden="true"></i>
+                    <div><strong>1996'dan beri</strong><span>30 yıla yakın tecrübe</span></div>
+                </div>
+                <div class="trust-item reveal">
+                    <i class="fas fa-seedling" aria-hidden="true"></i>
+                    <div><strong>Kendi seramızda üretim</strong><span>Ege iklimine uyumlu bitkiler</span></div>
+                </div>
+                <div class="trust-item reveal">
+                    <i class="fas fa-truck" aria-hidden="true"></i>
+                    <div><strong>Toptan &amp; perakende</strong><span>Türkiye geneline sevkiyat</span></div>
+                </div>
+                <div class="trust-item reveal">
+                    <i class="fas fa-drafting-compass" aria-hidden="true"></i>
+                    <div><strong>Ücretsiz keşif</strong><span>Projeye özel danışmanlık</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section id="hakkimizda" class="section about">
+            <div class="container about-grid">
+                <div class="about-image reveal">
                     <div class="img-wrapper">
-                        <!-- Placeholder for visual style -->
-                        <!-- Premium Local Image -->
-                        <img src="images/chris-lee-70l1tDAI6rM-unsplash.webp" alt="Hakkımızda" class="placeholder-img"
-                            loading="lazy">
-                        <div class="floating-card glass">
-                            <h4>Deneyim</h4>
-                            <p>20+ Yıllık Tecrübe</p>
+                        <img src="images/sera-ic-mekan.webp" alt="Yeşil Ege Peyzaj serasında yetişen süs bitkileri"
+                            width="1200" height="1500" loading="lazy">
+                        <div class="floating-card">
+                            <h4>1996</h4>
+                            <p>Bayındır'da kuşaklar boyu üretim</p>
                         </div>
                     </div>
                 </div>
-                <div class="about-text">
-                    <span class="subtitle">BİZ KİMİZ?</span>
-                    <h2>Yeşilin Her Tonuna Hakimiz</h2>
-                    <p>Yeşil Ege olarak, doğanın iyileştirici gücüne inanıyoruz. İzmir merkezli firmamız, hem geniş
-                        ölçekli kurumsal peyzaj projelerinde hem de butik bahçe tasarımlarında Ege'nin ruhunu
-                        yansıtıyor.</p>
-                    <p>Kendi üretim tesislerimizde yetiştirdiğimiz binlerce çeşit bitkiyi, uzman peyzaj mimarlarımızın
-                        vizyonuyla birleştirerek, sadece bir bahçe değil, yaşayan bir ekosistem yaratıyoruz.</p>
+                <div class="about-text reveal">
+                    <span class="subtitle">Biz Kimiz</span>
+                    <h2>Bayındır'ın topraklarında kuşaklar boyu yeşil</h2>
+                    <p>Yeşil Ege Peyzaj, 1996'dan bu yana İzmir'in çiçekçilik merkezi Bayındır'da üretim yapan köklü
+                        bir aile işletmesidir. Kendi seralarımızda yetiştirdiğimiz mevsimlik ve çok yıllık bitkileri,
+                        peyzaj tasarım ve uygulama tecrübemizle birleştiriyoruz.</p>
+                    <p>Seradan bahçenize uzanan bu zincirin her halkası bizde olduğu için bitkilerinizi iklime uygun
+                        seçiyor, doğru zamanda dikiyor ve dört mevsim takip ediyoruz.</p>
                     <ul class="about-list">
-                        <li><i class="fas fa-check-circle"></i> Ekolojik ve Sürdürülebilir Tasarım</li>
-                        <li><i class="fas fa-check-circle"></i> Yerli ve İthal Bitki Temini</li>
-                        <li><i class="fas fa-check-circle"></i> 4 Mevsim Bakım Garantisi</li>
+                        <li><i class="fas fa-check-circle" aria-hidden="true"></i> Ekolojik ve sürdürülebilir tasarım</li>
+                        <li><i class="fas fa-check-circle" aria-hidden="true"></i> Yerli ve ithal bitki temini</li>
+                        <li><i class="fas fa-check-circle" aria-hidden="true"></i> Villa ve kurumsal projeler</li>
+                        <li><i class="fas fa-check-circle" aria-hidden="true"></i> 4 mevsim bakım garantisi</li>
                     </ul>
+                    <a href="services.html" class="btn btn-ghost">Hizmetlerimizi İnceleyin</a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Stats Parallax -->
-    <section class="stats">
-        <div class="overlay-dark"></div>
-        <div class="container stats-container">
-            <div class="stat-item">
-                <span class="number" data-target="500">500+</span>
-                <span class="label">Tamamlanan Proje</span>
-            </div>
-            <div class="stat-item">
-                <span class="number" data-target="100000">100.000+</span>
-                <span class="label">Dikilen Bitki</span>
-            </div>
-            <div class="stat-item">
-                <span class="number" data-target="50">50+</span>
-                <span class="label">Uzman Personel</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <div class="section-header">
-                <span class="subtitle">HİZMETLERİMİZ</span>
-                <h2>Sizin İçin Neler Yapıyoruz?</h2>
-            </div>
-            <div class="services-grid">
-                <!-- 1. Peyzaj Projelendirme -->
-                <article class="service-card">
-                    <img src="images/landscape_architecture_project_3d_render.webp" alt="Peyzaj Projelendirme"
-                        class="card-img">
-                    <div class="card-content">
-                        <h3>Peyzaj Projelendirme</h3>
-                        <p>Hayalinizdeki yaşam alanını tasarlıyoruz. Uzman mimar kadromuzla alan analizi, konsept proje,
-                            3D görselleştirme ve detaylı uygulama projelerini tek elden yönetiyoruz.</p>
-                        <a href="services.html#landscape" class="read-more">Detaylar <i
-                                class="fas fa-arrow-right"></i></a>
-                    </div>
-                </article>
-
-                <!-- 2. Bitki Üretimi & Satış -->
-                <article class="service-card">
-                    <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=800"
-                        alt="Bitki Üretimi" class="card-img">
-                    <div class="card-content">
-                        <h3>Bitki Üretimi & Satış</h3>
-                        <p>Bayındır'ın bereketli topraklarında yetişen binlerce çeşit bitki. İklime tam uyumlu, sağlıklı
-                            dış mekan süs bitkileri ve ağaçlar.</p>
-                        <a href="services.html#outdoor-plants" class="read-more">Detaylar <i
-                                class="fas fa-arrow-right"></i></a>
-                    </div>
-                </article>
-
-                <!-- 3. Botanik Tasarım -->
-                <article class="service-card">
-                    <img src="https://images.unsplash.com/photo-1616047006789-b7af5afb8c20?auto=format&fit=crop&w=800"
-                        alt="Botanik Tasarım" class="card-img">
-                    <div class="card-content">
-                        <h3>Botanik Tasarım</h3>
-                        <p>Doğayı iç mekanlarınıza taşıyoruz. Ofisler ve konutlar için özel saksı tasarımları, yosun
-                            duvarlar ve dikey bahçe uygulamaları.</p>
-                        <a href="services.html#indoor-plants" class="read-more">Detaylar <i
-                                class="fas fa-arrow-right"></i></a>
-                    </div>
-                </article>
-
-                <!-- 4. Bahçe Bakım Hizmetleri -->
-                <article class="service-card">
-                    <img src="images/bahcebakimhizmeti.webp" alt="Bahçe Bakım" class="card-img">
-                    <div class="card-content">
-                        <h3>Bahçe Bakım Hizmetleri</h3>
-                        <p>Bahçeniz 4 mevsim canlı kalsın. Periyodik çim biçme, budama, gübreleme ve ilaçlama hizmetleri
-                            ile profesyonel bakım.</p>
-                        <a href="services.html" class="read-more">Detaylar <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </article>
-
-                <!-- 5. Otomatik Sulama -->
-                <article class="service-card">
-                    <img src="images/bahcesulamasistemi.webp" alt="Otomatik Sulama" class="card-img">
-                    <div class="card-content">
-                        <h3>Otomatik Sulama</h3>
-                        <p>Su tasarrufu ve verimlilik sağlayan akıllı sulama sistemleri projelendirme ve montajı.
-                            Bitkileriniz susuz kalmasın.</p>
-                        <a href="services.html#garden-materials" class="read-more">Detaylar <i
-                                class="fas fa-arrow-right"></i></a>
-                    </div>
-                </article>
-
-                <!-- 6. Toptan Satış -->
-                <article class="service-card">
-                    <img src="images/perakendesatis.webp" alt="Toptan Satış" class="card-img">
-                    <div class="card-content">
-                        <h3>Toptan & Perakende</h3>
-                        <p>Sektör profesyonelleri için güvenilir çözüm ortağı. Türkiye'nin her yerine tır bazlı lojistik
-                            destekli toptan satış.</p>
-                        <a href="services.html" class="read-more">Detaylar <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- Gallery / Portfolio -->
-    <section id="gallery" class="gallery">
-        <div class="container">
-            <div class="section-header">
-                <span class="subtitle">PORTFOLYO</span>
-                <h2>İmzamızı Attığımız İşler</h2>
-            </div>
-            <!-- Masonry Grid Layout -->
-            <div class="gallery-grid">
-                <!-- Item 1 -->
-                <div class="gallery-item">
-                    <img src="images/v4.webp" alt="Özel Villa Peyzajı" loading="lazy">
-                    <div class="gallery-overlay">
-                        <h5>Lüks Villa Bahçesi</h5>
-                        <p>Özel Tasarım & Uygulama</p>
-                    </div>
+        <!-- Stats -->
+        <section class="stats" aria-label="Rakamlarla Yeşil Ege">
+            <div class="container stats-container">
+                <div class="stat-item">
+                    <span class="number" data-target="30" data-suffix="+">30+</span>
+                    <span class="label">Yıllık tecrübe</span>
                 </div>
-                <!-- Item 2 -->
-                <div class="gallery-item">
-                    <img src="images/v5.webp" alt="Modern Havuz Başı" loading="lazy">
-                    <div class="gallery-overlay">
-                        <h5>Modern Havuz Başı</h5>
-                        <p>Sert Zemin & Bitkilendirme</p>
-                    </div>
+                <div class="stat-item">
+                    <span class="number" data-target="500" data-suffix="+">500+</span>
+                    <span class="label">Tamamlanan proje</span>
                 </div>
-                <!-- Item 3 -->
-                <div class="gallery-item">
-                    <img src="images/v6.jpg" alt="Tropik Bahçe Düzenlemesi" loading="lazy">
-                    <div class="gallery-overlay">
-                        <h5>Tropik Bahçe</h5>
-                        <p>İthal Bitkiler</p>
-                    </div>
+                <div class="stat-item">
+                    <span class="number" data-target="100000" data-suffix="+">100.000+</span>
+                    <span class="label">Dikilen bitki</span>
                 </div>
-                <!-- Item 4 -->
-                <div class="gallery-item">
-                    <img src="images/villas1.webp" alt="Villa Giriş Düzenlemesi" loading="lazy">
-                    <div class="gallery-overlay">
-                        <h5>Villa Girişi</h5>
-                        <p>Prestijli Karşılama</p>
-                    </div>
-                </div>
-                <!-- Item 5 -->
-                <div class="gallery-item">
-                    <img src="images/villas2.webp" alt="Geniş Bahçe Alanı" loading="lazy">
-                    <div class="gallery-overlay">
-                        <h5>Geniş Çim Alanlar</h5>
-                        <p>Rulo Çim & Sulama</p>
-                    </div>
-                </div>
-                <!-- Item 6 -->
-                <div class="gallery-item">
-                    <img src="images/villas3.webp" alt="Detaylı Bitki Uygulaması" loading="lazy">
-                    <div class="gallery-overlay">
-                        <h5>Konsept Tasarım</h5>
-                        <p>Anahtar Teslim Proje</p>
-                    </div>
+                <div class="stat-item">
+                    <span class="number" data-target="50" data-suffix="+">50+</span>
+                    <span class="label">Uzman personel</span>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="container text-center">
-            <h2>Bahçenizi Yenilemeye Hazır Mısınız?</h2>
-            <p>Ücretsiz keşif ve danışmanlık hizmetimizden yararlanın.</p>
-            <a href="#contact" class="btn btn-white">Hemen Randevu Alın</a>
-        </div>
-    </section>
+        <!-- Services -->
+        <section id="hizmetler" class="section services">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="subtitle">Hizmetlerimiz</span>
+                    <h2>Seradan bahçenize, tek elden</h2>
+                    <p>Bitki üretiminden peyzaj projelendirmeye, otomatik sulamadan periyodik bakıma kadar ihtiyacınız
+                        olan her şey Bayındır'daki tesisimizde.</p>
+                </div>
+                <div class="services-grid">
+                    <article class="service-card reveal">
+                        <div class="card-media"><img src="images/landscape_architecture_project_3d_render.webp"
+                                alt="3D peyzaj projesi görselleştirmesi" class="card-img" width="800" height="600" loading="lazy"></div>
+                        <div class="card-content">
+                            <h3>Peyzaj Tasarımı &amp; Projelendirme</h3>
+                            <p>Alan analizi, konsept proje, 3D görselleştirme ve uygulama projelerini tek elden
+                                yönetiyoruz.</p>
+                            <a href="services.html#landscape" class="read-more">Detaylar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        </div>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="card-media"><img src="images/u/photo-1466692476868-aef1dfb1e735.webp"
+                                alt="Serada yetişen fideler" class="card-img" width="800" height="600" loading="lazy"></div>
+                        <div class="card-content">
+                            <h3>Bitki Üretimi &amp; Satış</h3>
+                            <p>Bayındır'ın bereketli topraklarında yetişen, iklime uyumlu dış mekan süs bitkileri ve
+                                ağaçlar.</p>
+                            <a href="services.html#outdoor-plants" class="read-more">Detaylar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        </div>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="card-media"><img src="images/u/photo-1616047006789-b7af5afb8c20.webp"
+                                alt="İç mekan bitkileriyle düzenlenmiş salon" class="card-img" width="800" height="600" loading="lazy"></div>
+                        <div class="card-content">
+                            <h3>İç Mekan &amp; Botanik Tasarım</h3>
+                            <p>Ofis ve konutlar için saksı tasarımları, yosun duvarlar ve dikey bahçe uygulamaları.</p>
+                            <a href="services.html#indoor-plants" class="read-more">Detaylar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        </div>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="card-media"><img src="images/bahcebakimhizmeti.webp" alt="Bahçe bakım hizmeti"
+                                class="card-img" width="800" height="600" loading="lazy"></div>
+                        <div class="card-content">
+                            <h3>Bahçe Bakımı</h3>
+                            <p>Periyodik çim biçme, budama, gübreleme ve ilaçlama ile bahçeniz dört mevsim canlı.</p>
+                            <a href="care.html" class="read-more">Bakım rehberi <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        </div>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="card-media"><img src="images/bahcesulamasistemi.webp" alt="Otomatik bahçe sulama sistemi"
+                                class="card-img" width="800" height="600" loading="lazy"></div>
+                        <div class="card-content">
+                            <h3>Otomatik Sulama</h3>
+                            <p>Su tasarrufu sağlayan akıllı sulama sistemlerinin projelendirilmesi ve montajı.</p>
+                            <a href="services.html#garden-materials" class="read-more">Detaylar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        </div>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="card-media"><img src="images/perakendesatis.webp" alt="Toptan ve perakende bitki satışı"
+                                class="card-img" width="800" height="600" loading="lazy"></div>
+                        <div class="card-content">
+                            <h3>Toptan &amp; Perakende</h3>
+                            <p>Sektör profesyonelleri için Türkiye geneline tır bazlı lojistik destekli toptan satış.</p>
+                            <a href="services.html#outdoor-plants" class="read-more">Detaylar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="contact-wrapper glass-panel">
-                <div class="contact-info">
-                    <h3>İletişime Geçin</h3>
-                    <p>Sorularınız, proje teklifleri veya bitki siparişleriniz için bize ulaşın.</p>
+        <!-- Process -->
+        <section class="section process">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="subtitle">Nasıl Çalışırız</span>
+                    <h2>Dört adımda hayalinizdeki bahçe</h2>
+                </div>
+                <ol class="process-grid">
+                    <li class="process-step reveal">
+                        <h3>Ücretsiz keşif</h3>
+                        <p>Alanınızı yerinde inceliyor, ihtiyaçlarınızı ve bütçenizi dinliyoruz.</p>
+                    </li>
+                    <li class="process-step reveal">
+                        <h3>Proje &amp; tasarım</h3>
+                        <p>Konsept ve 3D görsellerle bitki seçimini iklime ve kullanıma göre planlıyoruz.</p>
+                    </li>
+                    <li class="process-step reveal">
+                        <h3>Uygulama</h3>
+                        <p>Kendi seramızdan gelen bitkilerle sert zemin, sulama ve bitkilendirmeyi tamamlıyoruz.</p>
+                    </li>
+                    <li class="process-step reveal">
+                        <h3>Bakım &amp; takip</h3>
+                        <p>Periyodik bakımla bahçenizin her mevsim sağlıklı kalmasını sağlıyoruz.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
 
-                    <div class="info-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <span>Adresimiz</span>
-                            <p><a href="https://maps.app.goo.gl/BhpF9Gh1Xto5Y9368" target="_blank"
-                                    style="color: inherit; text-decoration: underline;">Karaveliler, Kazım Dirik Cd. No:
-                                    225, 35847 Bayındır/İzmir</a></p>
+        <!-- Gallery -->
+        <section id="projeler" class="section gallery">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="subtitle">Portfolyo</span>
+                    <h2>İmzamızı attığımız bahçeler</h2>
+                    <p>Villa bahçelerinden havuz başı düzenlemelerine, Ege'nin farklı noktalarındaki projelerimizden
+                        bir seçki.</p>
+                </div>
+                <div class="gallery-grid">
+                    <figure class="gallery-item" tabindex="0">
+                        <img src="images/v4.webp" alt="Villa bahçesi peyzaj tasarımı ve uygulaması" loading="lazy">
+                        <figcaption class="gallery-overlay">
+                            <h3>Lüks Villa Bahçesi</h3>
+                            <p>Özel tasarım &amp; uygulama</p>
+                        </figcaption>
+                    </figure>
+                    <figure class="gallery-item" tabindex="0">
+                        <img src="images/v5.webp" alt="Modern havuz başı peyzaj düzenlemesi" loading="lazy">
+                        <figcaption class="gallery-overlay">
+                            <h3>Modern Havuz Başı</h3>
+                            <p>Sert zemin &amp; bitkilendirme</p>
+                        </figcaption>
+                    </figure>
+                    <figure class="gallery-item" tabindex="0">
+                        <img src="images/v6.jpg" alt="Tropik bahçe düzenlemesi" loading="lazy">
+                        <figcaption class="gallery-overlay">
+                            <h3>Tropik Bahçe</h3>
+                            <p>İthal bitkiler</p>
+                        </figcaption>
+                    </figure>
+                    <figure class="gallery-item" tabindex="0">
+                        <img src="images/villas1.webp" alt="Villa giriş peyzaj düzenlemesi" loading="lazy">
+                        <figcaption class="gallery-overlay">
+                            <h3>Villa Girişi</h3>
+                            <p>Prestijli karşılama</p>
+                        </figcaption>
+                    </figure>
+                    <figure class="gallery-item" tabindex="0">
+                        <img src="images/villas2.webp" alt="Rulo çim ve sulama uygulanmış geniş bahçe" loading="lazy">
+                        <figcaption class="gallery-overlay">
+                            <h3>Geniş Çim Alanlar</h3>
+                            <p>Rulo çim &amp; sulama</p>
+                        </figcaption>
+                    </figure>
+                    <figure class="gallery-item" tabindex="0">
+                        <img src="images/villas3.webp" alt="Anahtar teslim konsept bahçe tasarımı" loading="lazy">
+                        <figcaption class="gallery-overlay">
+                            <h3>Konsept Tasarım</h3>
+                            <p>Anahtar teslim proje</p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location & service area -->
+        <section class="section process" id="konum">
+            <div class="container area-grid">
+                <div class="reveal">
+                    <span class="subtitle">Bayındır'dan Ege'ye</span>
+                    <h2>Seramızı ziyaret edin</h2>
+                    <p>Bayındır'daki seramızda bitkileri yerinde görüp seçebilir, projeniz için ekibimizle yüz yüze
+                        görüşebilirsiniz. Peyzaj uygulamalarımızı İzmir ve Ege genelinde yapıyor, toptan bitki
+                        siparişlerini Türkiye'nin her yerine gönderiyoruz.</p>
+                    <ul class="area-list" aria-label="Hizmet bölgeleri">
+                        <li>Bayındır</li>
+                        <li>Torbalı</li>
+                        <li>Tire</li>
+                        <li>Ödemiş</li>
+                        <li>İzmir</li>
+                        <li>Ege Bölgesi</li>
+                        <li>Türkiye geneli toptan</li>
+                    </ul>
+                    <div class="hero-btns">
+                        <a href="https://maps.app.goo.gl/BhpF9Gh1Xto5Y9368" class="btn btn-dark" target="_blank"
+                            rel="noopener">Yol Tarifi Alın <i class="fas fa-location-arrow" aria-hidden="true"></i></a>
+                        <a href="tel:+905350805951" class="btn btn-ghost"><i class="fas fa-phone-alt" aria-hidden="true"></i> 0535 080 59 51</a>
+                    </div>
+                </div>
+                <div class="area-map reveal">
+                    <iframe title="Yeşil Ege Peyzaj seranın konumu - Bayındır, İzmir"
+                        src="https://www.google.com/maps/embed?origin=mfe&amp;pb=!1m3!2m1!1s38.192289,27.540724!6i16!3m1!1str!5m1!1str"
+                        loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="section faq" id="sss">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="subtitle">Sıkça Sorulanlar</span>
+                    <h2>Merak ettikleriniz</h2>
+                </div>
+                <div class="faq-list">
+                    <details class="faq-item">
+                        <summary>Yeşil Ege Peyzaj nerede?</summary>
+                        <p>Seramız Karaveliler, Kazım Dirik Cd. No: 225, 35847 Bayındır/İzmir adresindedir.
+                            Bayındır-Torbalı yolu üzerindeki seramıza <a href="https://maps.app.goo.gl/BhpF9Gh1Xto5Y9368"
+                                target="_blank" rel="noopener">Google Haritalar</a>'dan yol tarifi alabilirsiniz.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Seranızdan perakende bitki alabilir miyim?</summary>
+                        <p>Evet. Kendi seramızda yetiştirdiğimiz iç ve dış mekan süs bitkilerini hem toptan hem
+                            perakende satıyoruz. Ziyaret öncesi <a href="tel:+905350805951">0535 080 59 51</a>
+                            numarasından bize ulaşmanızı öneririz.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Toptan bitki satışı ve sevkiyat yapıyor musunuz?</summary>
+                        <p>Evet. Peyzaj firmaları, belediyeler ve sektör profesyonelleri için Türkiye geneline tır
+                            bazlı lojistik destekli toptan satış yapıyoruz.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Peyzaj keşfi ücretli mi?</summary>
+                        <p>Hayır. Bahçe ve peyzaj projeleri için ücretsiz keşif ve danışmanlık hizmeti veriyoruz.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Hangi bitkileri yetiştiriyorsunuz?</summary>
+                        <p>Mevsimlik ve çok yıllık dış mekan süs bitkileri, ağaçlar, iç mekan süs bitkileri, kaktüs ve
+                            sukulentler yetiştiriyoruz; ayrıca saksı grupları ve bahçe malzemeleri sunuyoruz.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Çalışma saatleriniz nedir?</summary>
+                        <p>Hafta içi 09:00-18:00 arası hizmet veriyoruz. Hafta sonu ziyaretleri için lütfen önceden
+                            arayın.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="iletisim" class="section contact">
+            <div class="container">
+                <div class="contact-wrapper">
+                    <div class="contact-info reveal">
+                        <span class="subtitle">İletişim</span>
+                        <h3>Projenizi konuşalım</h3>
+                        <p>Peyzaj teklifi, bitki siparişi veya bakım hizmeti için bize yazın; en kısa sürede dönüş
+                            yapalım.</p>
+
+                        <div class="info-items">
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                <div>
+                                    <span>Adres</span>
+                                    <p><a href="https://maps.app.goo.gl/BhpF9Gh1Xto5Y9368" target="_blank"
+                                            rel="noopener">Karaveliler, Kazım Dirik Cd. No: 225<br>35847 Bayındır/İzmir</a></p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-phone-alt" aria-hidden="true"></i>
+                                <div>
+                                    <span>Telefon</span>
+                                    <p><a href="tel:+905350805951">+90 535 080 59 51</a></p>
+                                    <p><a href="tel:+905323247288">+90 532 324 72 88</a></p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock" aria-hidden="true"></i>
+                                <div>
+                                    <span>Çalışma saatleri</span>
+                                    <p>Hafta içi 09:00 – 18:00</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="social-links">
+                            <a href="https://www.instagram.com/yesilegepeyzaj/" target="_blank" rel="noopener"
+                                aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                            <a href="https://wa.me/905350805951" target="_blank" rel="noopener"
+                                aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+                            <a href="https://linkedin.com/company/yesilege-peyzaj" target="_blank" rel="noopener"
+                                aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
                         </div>
                     </div>
-                    <div class="info-item">
-                        <i class="fas fa-phone-alt"></i>
-                        <div>
-                            <span>Telefon</span>
-                            <p><a href="tel:+905350805951" style="color:white;">+90 535 080 59 51</a></p>
-                            <p><a href="tel:+905323247288" style="color:white;">+90 532 324 72 88</a></p>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <span>E-posta</span>
-                            <p>info@yesilege.com.tr</p>
-                        </div>
-                    </div>
 
-                    <div class="social-links">
-                        <a href="https://www.instagram.com/yesilegepeyzaj/" target="_blank" aria-label="Instagram"><i
-                                class="fab fa-instagram"></i></a>
-                        <!-- Facebook Removed -->
-                        <a href="https://linkedin.com/company/yesilege-peyzaj" target="_blank" aria-label="LinkedIn"><i
-                                class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-
-                <div class="contact-form">
-                    <form name="iletisim-anasayfa" method="POST" data-netlify="true" netlify-honeypot="bot-field"
-                        id="contactForm">
+                    <form class="contact-form reveal" name="iletisim-anasayfa" method="POST" action="/api/contact"
+                        data-ajax-form id="contactForm">
                         <input type="hidden" name="form-name" value="iletisim-anasayfa">
                         <p hidden><label>Bu alanı boş bırakın: <input name="bot-field"></label></p>
-                        <div class="form-group">
-                            <input type="text" name="name" placeholder="Adınız Soyadınız" required>
+                        <h3>Teklif isteyin</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="home-name">Adınız Soyadınız</label>
+                                <input type="text" id="home-name" name="name" autocomplete="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="home-email">E-posta</label>
+                                <input type="email" id="home-email" name="email" autocomplete="email" required>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <input type="email" name="email" placeholder="E-posta Adresiniz" required>
-                        </div>
-                        <div class="form-group">
-                            <select name="subject">
-                                <option value="" disabled selected>Konu Seçiniz</option>
+                            <label for="home-subject">Konu</label>
+                            <select id="home-subject" name="subject">
                                 <option value="peyzaj">Peyzaj Projesi</option>
                                 <option value="bitki">Bitki Siparişi</option>
                                 <option value="bakim">Bakım Hizmeti</option>
@@ -484,43 +591,75 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <textarea name="message" rows="5" placeholder="Mesajınız..." required></textarea>
+                            <label for="home-message">Mesajınız</label>
+                            <textarea id="home-message" name="message" rows="5" required
+                                placeholder="Alanınızdan ve ihtiyacınızdan kısaca bahsedin"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-submit">Gönder</button>
+                        <button type="submit" class="btn btn-submit">Gönder <i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+                        <p class="form-note">Mesajınız yalnızca size dönüş yapmak için kullanılır.</p>
                     </form>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
+        <!-- CTA -->
+        <section class="cta">
+            <div class="container">
+                <div class="cta-box reveal" style="--cta-image: url('images/pergola-havuz.webp');">
+                    <div>
+                        <h2>Bahçenizi yenilemeye hazır mısınız?</h2>
+                        <p>Ücretsiz keşif için bugün arayın ya da WhatsApp'tan yazın.</p>
+                    </div>
+                    <div class="cta-actions">
+                        <a href="tel:+905350805951" class="btn btn-white"><i class="fas fa-phone-alt" aria-hidden="true"></i> Hemen Arayın</a>
+                        <a href="https://wa.me/905350805951?text=Merhaba,%20bilgi%20almak%20istiyorum." class="btn btn-outline"
+                            target="_blank" rel="noopener"><i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <footer>
         <div class="container footer-content">
             <div class="footer-brand">
-                <a href="#" class="logo-footer">
-                    <img src="images/logo1.png" alt="Yeşil Ege" style="height: 50px; width: auto;">
+                <a href="index.html" class="logo-footer" aria-label="Yeşil Ege Peyzaj ana sayfa">
+                    <img src="images/logo-light.png" alt="Yeşil Ege Peyzaj" width="398" height="160" loading="lazy">
                 </a>
-                <p>Doğayı sanatla buluşturan profesyonel çözümler.</p>
+                <p>1996'dan beri Bayındır'da sera ve fidanlık üretimi, İzmir ve Ege'de peyzaj tasarımı ve bahçe bakımı.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/yesilegepeyzaj/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    <a href="https://wa.me/905350805951" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+                    <a href="https://linkedin.com/company/yesilege-peyzaj" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                </div>
             </div>
             <div class="footer-links">
-                <h4>Hızlı Erişim</h4>
+                <h4>Keşfedin</h4>
                 <ul>
-                    <li><a href="#home">Ana Sayfa</a></li>
-                    <li><a href="#about">Hakkımızda</a></li>
-                    <li><a href="#services">Hizmetler</a></li>
-                    <li><a href="#contact">İletişim</a></li>
+                    <li><a href="services.html">Hizmetler &amp; Ürünler</a></li>
+                    <li><a href="index.html#projeler">Projeler</a></li>
+                    <li><a href="care.html">Bitki Bakım Rehberi</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="index.html#sss">Sıkça Sorulanlar</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>İletişim</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i><a href="https://maps.app.goo.gl/BhpF9Gh1Xto5Y9368" target="_blank" rel="noopener">Karaveliler, Kazım Dirik Cd. No: 225, 35847 Bayındır/İzmir</a></li>
+                    <li><i class="fas fa-phone-alt" aria-hidden="true"></i><a href="tel:+905350805951">+90 535 080 59 51</a></li>
+                    <li><i class="fas fa-phone-alt" aria-hidden="true"></i><a href="tel:+905323247288">+90 532 324 72 88</a></li>
+                    <li><i class="fas fa-clock" aria-hidden="true"></i><span>Hafta içi 09:00 – 18:00</span></li>
                 </ul>
             </div>
             <div class="footer-newsletter">
                 <h4>Bülten</h4>
-                <p>Kampanyalardan haberdar olun.</p>
-                <form class="input-group" name="bulten" method="POST" data-netlify="true"
-                    netlify-honeypot="bot-field">
+                <p>Sezonluk bitki önerileri ve kampanyalardan haberdar olun.</p>
+                <form class="input-group" name="bulten" method="POST" action="/api/contact" data-ajax-form>
                     <input type="hidden" name="form-name" value="bulten">
                     <p hidden><label>Bu alanı boş bırakın: <input name="bot-field"></label></p>
-                    <input type="email" name="email" placeholder="E-posta adresiniz" aria-label="E-posta adresiniz"
-                        required>
-                    <button type="submit" aria-label="Bültene abone ol"><i class="fas fa-arrow-right"></i></button>
+                    <input type="email" name="email" placeholder="E-posta adresiniz" aria-label="E-posta adresiniz" required>
+                    <button type="submit" aria-label="Bültene abone ol"><i class="fas fa-arrow-right" aria-hidden="true"></i></button>
                 </form>
                 <p class="form-status" aria-live="polite"></p>
             </div>
@@ -528,19 +667,20 @@
         <div class="footer-bottom">
             <p>&copy; 2026 Yeşil Ege Peyzaj. Tüm hakları saklıdır.</p>
             <div class="codera-signature">
-                Software & Design by <a href="https://www.codera.com.tr" target="_blank" rel="noopener">CODERA</a>
+                Software &amp; Design by <a href="https://www.codera.com.tr" target="_blank" rel="noopener">CODERA</a>
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Floating Button -->
     <a href="https://wa.me/905350805951?text=Merhaba,%20bilgi%20almak%20istiyorum." class="whatsapp-float"
         target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile iletişime geçin">
-        <i class="fab fa-whatsapp"></i>
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
     </a>
 
-    <script src="script.js"></script>
-    <script src="mascot.js"></script>
+    <script src="script.js?v=20261022c" defer></script>
+    <script src="mascot.js?v=20261022c" defer></script>
+    <!-- Vercel Web Analytics (çerezsiz) -->
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
 
 </html>

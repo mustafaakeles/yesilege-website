@@ -4,7 +4,7 @@
     bottom: 30px;
     right: 30px;
     z-index: 9999;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: var(--font-body);
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -15,7 +15,7 @@
 .magnolia-avatar {
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, #1a3c34, #4d7c6e);
+    background: linear-gradient(135deg, var(--forest-700), var(--sage-500));
     border-radius: 50%;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     cursor: pointer;
@@ -23,7 +23,7 @@
     justify-content: center;
     align-items: center;
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 2px solid #c59d5f;
+    border: 2px solid var(--brass);
     position: relative;
     pointer-events: auto;
     /* Restore clicks */
@@ -49,7 +49,7 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 2px solid #c59d5f;
+    border: 2px solid var(--brass);
     opacity: 0;
     animation: magnoliaPulse 2s infinite;
 }
@@ -91,13 +91,13 @@
 }
 
 .magnolia-header {
-    background: linear-gradient(135deg, #1a3c34, #2d4a3e);
+    background: linear-gradient(135deg, var(--forest-700), #2d4a3e);
     padding: 15px 20px;
     display: flex;
     align-items: center;
     gap: 15px;
     color: white;
-    border-bottom: 3px solid #c59d5f;
+    border-bottom: 3px solid var(--brass);
 }
 
 .magnolia-header-avatar {
@@ -115,10 +115,10 @@
 }
 
 .magnolia-info h4 {
-    color: #c59d5f;
+    color: var(--brass);
     font-size: 1rem;
     margin: 0;
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-heading);
 }
 
 .magnolia-info p {
@@ -145,13 +145,13 @@
 .magnolia-chat-area {
     flex-grow: 1;
     padding: 20px;
-    background: #fdfbf7;
+    background: var(--cream);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 15px;
     scrollbar-width: thin;
-    scrollbar-color: #c59d5f #f0f0f0;
+    scrollbar-color: var(--brass) #f0f0f0;
 }
 
 .message {
@@ -182,11 +182,11 @@
     border-bottom-left-radius: 2px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     align-self: flex-start;
-    border-left: 3px solid #1a3c34;
+    border-left: 3px solid var(--forest-700);
 }
 
 .message.user {
-    background: #1a3c34;
+    background: var(--forest-700);
     color: white;
     border-bottom-right-radius: 2px;
     align-self: flex-end;
@@ -211,11 +211,11 @@
 }
 
 .magnolia-input-area input:focus {
-    border-color: #1a3c34;
+    border-color: var(--forest-700);
 }
 
 .magnolia-send-btn {
-    background: #c59d5f;
+    background: var(--brass);
     color: white;
     border: none;
     width: 40px;
@@ -247,7 +247,7 @@
 .typing-indicator span {
     width: 6px;
     height: 6px;
-    background: #1a3c34;
+    background: var(--forest-700);
     border-radius: 50%;
     animation: typing 1s infinite;
     opacity: 0.5;
