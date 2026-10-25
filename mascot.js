@@ -4,34 +4,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const mascotHTML = `
         <div class="magnolia-chat-widget">
             <!-- Window -->
-            <div class="magnolia-window" id="magnoliaWindow">
+            <div class="magnolia-window" id="magnoliaWindow" role="dialog" aria-label="Bitki bakım rehberi" aria-hidden="true" inert>
                 <div class="magnolia-header">
                     <div class="magnolia-header-avatar">
                         <img src="/images/magnolia-icon.webp" alt="Magnolia Icon">
                     </div>
                     <div class="magnolia-info">
                         <h4>Magnolia</h4>
-                        <p>Bitki Bakım Uzmanı</p>
+                        <p>Otomatik bitki bakım rehberi</p>
                     </div>
-                    <button class="magnolia-close" id="magnoliaClose"><i class="fas fa-times"></i></button>
+                    <button type="button" class="magnolia-close" id="magnoliaClose" aria-label="Rehberi kapat"><i class="fas fa-times" aria-hidden="true"></i></button>
                 </div>
                 
                 <div class="magnolia-chat-area" id="magnoliaChat">
                     <div class="message bot">
-                        Merhaba! 🌿 Ben Magnolia, Yeşil Ege'nin yapay zeka destekli çiçek uzmanıyım. Bitkilerinizin bakımı, hastalıkları veya seçimleri konusunda size nasıl yardımcı olabilirim?
+                        Merhaba! 🌿 Ben Magnolia. Sık sorulan bitki bakım konularına önceden hazırlanmış bilgilerle yanıt veriyorum. Size nasıl yardımcı olabilirim?
                     </div>
                 </div>
 
                 <div class="magnolia-input-area">
-                    <input type="text" id="magnoliaInput" placeholder="Sorunuzu yazın... (örn: Orkide bakımı)">
-                    <button class="magnolia-send-btn" id="magnoliaSend"><i class="fas fa-paper-plane"></i></button>
+                    <input type="text" id="magnoliaInput" maxlength="300" aria-label="Bitki bakımı sorunuz" placeholder="Sorunuzu yazın... (örn: Orkide bakımı)">
+                    <button type="button" class="magnolia-send-btn" id="magnoliaSend" aria-label="Soruyu gönder"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
                 </div>
             </div>
 
             <!-- Avatar Trigger -->
-            <div class="magnolia-avatar" id="magnoliaTrigger">
-                <img src="/images/magnolia-icon.webp" alt="Magnolia">
-            </div>
+            <button type="button" class="magnolia-avatar" id="magnoliaTrigger" aria-label="Bitki bakım rehberini aç" aria-expanded="false" aria-controls="magnoliaWindow">
+                <img src="/images/magnolia-icon.webp" alt="" aria-hidden="true">
+            </button>
         </div>
     `;
 
@@ -45,30 +45,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('magnoliaInput');
     const sendBtn = document.getElementById('magnoliaSend');
 
-    // Toggle Window
-    trigger.addEventListener('click', () => {
-        windowEl.classList.add('active');
-        trigger.style.transform = 'scale(0) rotate(180deg)'; // Hide trigger
-        input.focus();
-    });
+    // Pencere kapalıyken odaklanabilir içerik devreden çıkarılır.
+    const setOpen = (open) => {
+        windowEl.classList.toggle('active', open);
+        windowEl.setAttribute('aria-hidden', String(!open));
+        windowEl.inert = !open;
+        trigger.setAttribute('aria-expanded', String(open));
+        trigger.style.transform = open ? 'scale(0) rotate(180deg)' : 'scale(1) rotate(0deg)';
+        if (open) input.focus();
+        else trigger.focus();
+    };
 
-    closeBtn.addEventListener('click', () => {
-        windowEl.classList.remove('active');
-        trigger.style.transform = 'scale(1) rotate(0deg)'; // Show trigger
-    });
-
-    // Close on Click Outside
+    trigger.addEventListener('click', () => setOpen(true));
+    closeBtn.addEventListener('click', () => setOpen(false));
     document.addEventListener('click', (e) => {
+        if (windowEl.classList.contains('active') && !e.target.closest('.magnolia-chat-widget')) {
+            setOpen(false);
+        }
+    });
+    document.addEventListener('keydown', (e) => {
         if (!windowEl.classList.contains('active')) return;
-
-        // If click is NOT inside the widget and NOT on the trigger
-        if (!e.target.closest('.magnolia-chat-widget')) {
-            windowEl.classList.remove('active');
-            trigger.style.transform = 'scale(1) rotate(0deg)';
+        if (e.key === 'Escape') {
+            setOpen(false);
+            return;
+        }
+        if (e.key === 'Tab') {
+            const controls = [closeBtn, input, sendBtn];
+            const first = controls[0];
+            const last = controls[controls.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
         }
     });
 
-    // Send Message Logic
+        // Send Message Logic
     function sendMessage() {
         const text = input.value.trim();
         if (!text) return;
@@ -119,16 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateResponse(userText) {
         const lowerText = userText.toLowerCase();
 
-        // Topic Guardrails (Only Plants)
-        const forbiddenTopics = ['fiyat', 'kaça', 'satın', 'sipariş', 'adres', 'telefon', 'futbol', 'siyaset', 'hava durumu'];
-        if (forbiddenTopics.some(topic => lowerText.includes(topic))) {
-            if (lowerText.includes('fiyat') || lowerText.includes('sipariş')) {
-                return "Ben sadece bitki bakımı ve sağlığı konularında uzmanım. 🌸 Fiyat bilgisi ve siparişleriniz için lütfen 'İletişim' sayfamızı ziyaret edin veya bizi arayın.";
-            }
-            return "Üzgünüm, sadece bitkiler, çiçek bakımı ve peyzaj konularında yardımcı olabilirim. Bana orkidenizden veya bahçenizden bahsedin! 🌿";
+        // Satın alma niyeti taşıyan soruları gerçek iletişim kanalına yönlendir.
+        if (['fiyat', 'kaça', 'satın', 'sipariş', 'adres', 'telefon', 'nerede', 'teklif'].some(topic => lowerText.includes(topic))) {
+            return "Bitki seçimi, sipariş, fiyat veya teklif için 0535 080 59 51 numarasını arayabilir, WhatsApp'tan yazabilir ya da İletişim sayfamızdaki formu kullanabilirsiniz. 🌿";
         }
 
-        // Greeting
+        // Diğer konularda önceden hazırlanmış bitki bakım yanıtları kullanılır.
+                // Greeting
         if (lowerText.match(/^(merhaba|selam|günaydın|iyi günler)/)) {
             return "Merhaba! Yeşilliklerle dolu güzel bir gün dilerim. Hangi bitkiniz için yardıma ihtiyacınız var?";
         }

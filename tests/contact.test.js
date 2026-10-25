@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { validateSubmission, buildEmail } from '../api/_lib/contact.js';
-import { createHandler } from '../api/contact.js';
+import { createHandler, createRateLimiter } from '../api/contact.js';
 
 const validContact = {
     'form-name': 'iletisim',
@@ -47,9 +47,8 @@ test('honeypot dolu ise spam olarak işaretlenir', () => {
     assert.deepEqual(validateSubmission({ ...validContact, 'bot-field': 'http://spam' }), { ok: true, spam: true });
 });
 
-test('bülten sadece e-posta ister', () => {
-    const r = validateSubmission({ 'form-name': 'bulten', email: 'a@b.test' });
-    assert.deepEqual(r, { ok: true, data: { formName: 'bulten', email: 'a@b.test' } });
+test('abonelik altyapısı yokken bülten isteği reddedilir', () => {
+    assert.equal(validateSubmission({ 'form-name': 'bulten', email: 'a@b.test' }).ok, false);
 });
 
 test('e-posta HTML gövdesi kullanıcı girdisini escape eder', () => {
@@ -165,4 +164,37 @@ test('iletişim e-postası ilçe/alan satırı eklemez', () => {
     const email = buildEmail(validateSubmission(validContact).data);
     assert.ok(!email.text.includes('İlçe'));
     assert.match(email.subject, /^Web sitesi mesajı/);
+});
+
+test('rate limit: aynı IP 5 başarılı isteğin ardından 429 alır', async () => {
+    let clock = 0;
+    const limiter = createRateLimiter({ max: 5, windowMs: 60_000, now: () => clock });
+    const handler = createHandler({ env: ENV, limiter, fetchImpl: async () => ({ ok: true }) });
+    for (let i = 0; i < 5; i++) {
+        const res = mockRes();
+        await handler({ ...req(validContact), headers: { 'x-forwarded-for': '192.0.2.10' } }, res);
+        assert.equal(res.statusCode, 200);
+    }
+    const blocked = mockRes();
+    await handler({ ...req(validContact), headers: { 'x-forwarded-for': '192.0.2.10' } }, blocked);
+    assert.equal(blocked.statusCode, 429);
+    assert.equal(blocked.headers['Retry-After'], '60');
+    clock = 60_001;
+    const renewed = mockRes();
+    await handler({ ...req(validContact), headers: { 'x-forwarded-for': '192.0.2.10' } }, renewed);
+    assert.equal(renewed.statusCode, 200);
+});
+
+test('rate limit: farklı IP bağımsız ve JSON olmayan içerik reddedilir', async () => {
+    const limiter = createRateLimiter({ max: 1 });
+    const handler = createHandler({ env: ENV, limiter, fetchImpl: async () => ({ ok: true }) });
+    const first = mockRes();
+    await handler({ ...req(validContact), headers: { 'x-forwarded-for': '192.0.2.11' } }, first);
+    assert.equal(first.statusCode, 200);
+    const other = mockRes();
+    await handler({ ...req(validContact), headers: { 'x-forwarded-for': '192.0.2.12' } }, other);
+    assert.equal(other.statusCode, 200);
+    const wrong = mockRes();
+    await handler({ ...req(validContact), headers: { 'content-type': 'text/plain' } }, wrong);
+    assert.equal(wrong.statusCode, 415);
 });

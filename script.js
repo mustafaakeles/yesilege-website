@@ -36,6 +36,7 @@ function initMobileMenu() {
         document.body.classList.toggle('menu-open', open);
         if (!open) {
             document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
+            document.querySelectorAll('.dropdown-toggle').forEach(toggle => toggle.setAttribute('aria-expanded', 'false'));
         }
     };
 
@@ -155,11 +156,8 @@ function initHeroSlider(reducedMotion) {
 // Bülten gibi kompakt formlar sonucu buton yerine yandaki .form-status alanında gösterir.
 function initForms() {
     document.querySelectorAll('form[data-ajax-form]').forEach(form => {
-        const isNewsletter = form.getAttribute('name') === 'bulten';
         const status = form.nextElementSibling?.classList.contains('form-status') ? form.nextElementSibling : null;
-        const messages = isNewsletter
-            ? { success: 'Bültene kaydoldunuz! ✓', error: 'Kayıt yapılamadı, lütfen tekrar deneyin.' }
-            : { success: 'Mesajınız iletildi! ✓', error: 'Gönderilemedi, lütfen bizi arayın.' };
+        const messages = { success: 'Mesajınız iletildi! ✓', error: 'Gönderilemedi, lütfen bizi arayın.' };
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -218,28 +216,33 @@ function initLightbox() {
     lightbox.className = 'lightbox';
     lightbox.setAttribute('role', 'dialog');
     lightbox.setAttribute('aria-modal', 'true');
-    lightbox.setAttribute('aria-label', 'Proje görseli');
+    lightbox.setAttribute('aria-label', 'Galeri görseli');
+    lightbox.setAttribute('aria-hidden', 'true');
     lightbox.innerHTML = '<button class="lightbox-close" aria-label="Kapat">&times;</button><img alt="">';
     document.body.appendChild(lightbox);
 
     const img = lightbox.querySelector('img');
     const closeBtn = lightbox.querySelector('.lightbox-close');
     let lastFocus = null;
+    let previousOverflow = '';
 
     const open = (item) => {
         const source = item.querySelector('img');
         if (!source) return;
         lastFocus = item;
+        previousOverflow = document.body.style.overflow;
         img.src = source.currentSrc || source.src;
         img.alt = source.alt;
         lightbox.classList.add('active');
+        lightbox.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
         closeBtn.focus();
     };
 
     const close = () => {
         lightbox.classList.remove('active');
-        document.body.style.overflow = '';
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = previousOverflow;
         lastFocus?.focus();
     };
 
@@ -256,6 +259,12 @@ function initLightbox() {
     closeBtn.addEventListener('click', close);
     lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && lightbox.classList.contains('active')) close();
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') close();
+        // Diyalogda tek etkileşimli öğe kapatma düğmesi; Tab ile arka plana kaçılmasın.
+        if (e.key === 'Tab') {
+            e.preventDefault();
+            closeBtn.focus();
+        }
     });
 }

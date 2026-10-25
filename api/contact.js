@@ -4,6 +4,43 @@
 import { validateSubmission, buildEmail } from './_lib/contact.js';
 
 const MAX_BODY_BYTES = 20_000;
+const WINDOW_MS = 10 * 60_000;
+const MAX_REQUESTS = 5;
+
+// Aynı serverless örneğinde ek koruma sağlar; dağıtık limit için Vercel WAF gerekir.
+export function createRateLimiter({ max = MAX_REQUESTS, windowMs = WINDOW_MS, now = Date.now } = {}) {
+    const buckets = new Map();
+    return {
+        check(ip) {
+            if (!ip) return { allowed: true };
+            const time = now();
+            if (buckets.size > 500) {
+                for (const [key, bucket] of buckets) {
+                    if (bucket.resetAt <= time) buckets.delete(key);
+                }
+                if (buckets.size > 500) buckets.clear();
+            }
+            let bucket = buckets.get(ip);
+            if (!bucket || bucket.resetAt <= time) {
+                buckets.set(ip, { count: 1, resetAt: time + windowMs });
+                return { allowed: true };
+            }
+            if (bucket.count >= max) {
+                return { allowed: false, retryAfter: Math.max(1, Math.ceil((bucket.resetAt - time) / 1000)) };
+            }
+            bucket.count++;
+            return { allowed: true };
+        }
+    };
+}
+
+const sharedLimiter = createRateLimiter();
+
+function getClientIp(req) {
+    const forwarded = req.headers['x-forwarded-for'];
+    const ip = Array.isArray(forwarded) ? forwarded[0] : forwarded;
+    return (typeof ip === 'string' ? ip.split(',')[0].trim() : '') || req.socket?.remoteAddress || '';
+}
 
 function readConfig(env) {
     const config = {
@@ -38,11 +75,16 @@ export async function sendEmail({ apiKey, to, from }, email, replyTo, fetchImpl 
     }
 }
 
-export function createHandler({ env = process.env, fetchImpl = fetch } = {}) {
+export function createHandler({ env = process.env, fetchImpl = fetch, limiter = sharedLimiter } = {}) {
     return async function handler(req, res) {
         if (req.method !== 'POST') {
             res.setHeader('Allow', 'POST');
             return res.status(405).json({ success: false, error: 'Yalnızca POST desteklenir.' });
+        }
+
+        const contentType = String(req.headers['content-type'] || '');
+        if (contentType && !/^application\/json(?:;|$)/i.test(contentType)) {
+            return res.status(415).json({ success: false, error: 'JSON içeriği bekleniyor.' });
         }
 
         const contentLength = Number(req.headers['content-length'] || 0);
@@ -56,6 +98,12 @@ export function createHandler({ env = process.env, fetchImpl = fetch } = {}) {
         }
         if (result.spam) {
             return res.status(200).json({ success: true });
+        }
+
+        const limit = limiter.check(getClientIp(req));
+        if (!limit.allowed) {
+            res.setHeader('Retry-After', String(limit.retryAfter));
+            return res.status(429).json({ success: false, error: 'Çok fazla istek gönderdiniz. Lütfen biraz sonra tekrar deneyin.' });
         }
 
         const { config, missing } = readConfig(env);

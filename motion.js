@@ -66,21 +66,21 @@
 
         store.set('ye-intro', '1');
         countYear(preloader.querySelector('.pl-year'), 1996, 2026);
-        const minTime = new Promise(resolve => setTimeout(resolve, 1700));
-        Promise.all([minTime, waitForHeroImage(2600)]).then(() => {
+        const minTime = Promise.resolve();
+        Promise.all([minTime, waitForHeroImage(900)]).then(() => {
             preloader.classList.add('is-done');
-            setTimeout(markReady, 250);
+            setTimeout(markReady, 120);
             setTimeout(() => {
                 preloader.remove();
                 root.classList.remove('pl-on');
-            }, 1100);
+            }, 550);
         });
     }
 
     function countYear(el, from, to) {
         if (!el) return;
-        const duration = 1300;
-        const start = performance.now() + 300;
+        const duration = 650;
+        const start = performance.now();
         const step = (now) => {
             const progress = Math.min(Math.max((now - start) / duration, 0), 1);
             const eased = 1 - Math.pow(1 - progress, 3);

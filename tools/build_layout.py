@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 # style.css / script.js / mascot.* / motion.* / screens.* değiştiğinde artırın: tarayıcı önbelleğindeki eski dosyaları geçersiz kılar
-ASSET_VERSION = "20261024b"
+ASSET_VERSION = "20261026a"
 
 SERVICES = [
     ("garden-materials", "Bahçe Malzemeleri"),
@@ -69,15 +69,9 @@ def nav_html(prefix: str, active: str) -> str:
 def footer_html(prefix: str, with_newsletter: bool) -> str:
     newsletter = f'''
             <div class="footer-newsletter">
-                <h4>Bülten</h4>
-                <p>Sezonluk bitki önerileri ve kampanyalardan haberdar olun.</p>
-                <form class="input-group" name="bulten" method="POST" action="/api/contact" data-ajax-form>
-                    <input type="hidden" name="form-name" value="bulten">
-                    <p hidden><label>Bu alanı boş bırakın: <input name="bot-field"></label></p>
-                    <input type="email" name="email" placeholder="E-posta adresiniz" aria-label="E-posta adresiniz" required>
-                    <button type="submit" aria-label="Bültene abone ol"><i class="fas fa-arrow-right" aria-hidden="true"></i></button>
-                </form>
-                <p class="form-status" aria-live="polite"></p>
+                <h4>Bitki bakım önerileri</h4>
+                <p>Mevsimlik bakım ipuçlarımızı ve yeni yazılarımızı blogumuzda bulabilirsiniz.</p>
+                <a href="{prefix}blog.html" class="btn btn-ghost">Blogu keşfedin <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
             </div>''' if with_newsletter else ''
     return f'''    <footer>
         <div class="container footer-content">
@@ -139,7 +133,7 @@ def active_for(path: Path) -> str:
     return path.name
 
 
-def process(path: Path) -> bool:
+def process(path: Path, check_only: bool = False) -> bool:
     raw = path.read_bytes().decode("utf-8")
     eol = "\r\n" if "\r\n" in raw else "\n"
     text = raw.replace("\r\n", "\n")
@@ -192,12 +186,22 @@ def process(path: Path) -> bool:
 
     new = text.replace("\n", eol)
     if new != raw:
-        path.write_bytes(new.encode("utf-8"))
+        if not check_only:
+            path.write_bytes(new.encode("utf-8"))
         return True
     return False
 
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--check", action="store_true", help="Dosyaları değiştirmeden şablon tutarlılığını denetle")
+    args = parser.parse_args()
     pages = sorted(ROOT.glob("*.html")) + sorted((ROOT / "blog-yazilari").glob("*.html"))
+    changed = 0
     for page in pages:
-        print(("güncellendi " if process(page) else "aynı        ") + str(page.relative_to(ROOT)))
+        differs = process(page, check_only=args.check)
+        changed += differs
+        print(("fark var    " if args.check and differs else "güncellendi " if differs else "aynı        ") + str(page.relative_to(ROOT)))
+    if args.check and changed:
+        raise SystemExit(1)

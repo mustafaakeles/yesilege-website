@@ -743,3 +743,13 @@
         overflow-x: auto;
     }
 }
+
+/* Hareketli hizmet ekranlarının gerçek zamanlı tesis verisi olmadığını belirtir. */
+.service-demo-disclaimer {
+    margin: 12px auto 0;
+    max-width: 760px;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    opacity: 0.78;
+    text-align: center;
+}
