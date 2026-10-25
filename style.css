@@ -1509,6 +1509,24 @@ a.reach-card:hover {
     color: var(--white);
 }
 
+/* Kısa kapak: altındaki içerik (ör. iletişim formu) ilk ekranda görünsün */
+.page-header--compact {
+    min-height: 0;
+}
+
+.page-header--compact .header-content {
+    padding-top: clamp(28px, 4vw, 44px);
+    padding-bottom: clamp(28px, 4vw, 40px);
+}
+
+.page-header--compact h1 {
+    font-size: clamp(2.1rem, 4vw, 3rem);
+}
+
+.section--tight-top {
+    padding-top: clamp(2rem, 4vw, 3rem);
+}
+
 .page-header .subtitle {
     color: #e8d3ad;
 }
@@ -2261,6 +2279,11 @@ footer h4 {
     .contact-grid,
     .route-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Tek sütunda teklif formu, açıklama kutusunun önüne gelsin */
+    .contact-section .contact-grid > .contact-form {
+        order: -1;
     }
 
     .reach-grid {
