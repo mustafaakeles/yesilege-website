@@ -166,3 +166,55 @@ test('handler: yalnızca POST', async () => {
     await createPlantHandler({ env: ENV })({ method: 'GET', headers: {} }, res);
     assert.equal(res.statusCode, 405);
 });
+
+test('handler: aynı IP için sınır aşılınca 429 döner, e-posta gönderilmez', async () => {
+    let calls = 0;
+    const fetchImpl = async () => { calls++; return { ok: true }; };
+    const limiter = { check: () => ({ allowed: false, retryAfter: 42 }) };
+    const res = mockRes();
+    await createPlantHandler({ env: ENV, fetchImpl, now: () => NOW, limiter })(req(valid(), { 'x-forwarded-for': '1.2.3.4' }), res);
+    assert.equal(res.statusCode, 429);
+    assert.equal(res.headers['Retry-After'], '42');
+    assert.equal(calls, 0);
+});
+
+test('handler: MX kaydı olmayan kurumsal adres atlanır, alıcı kalmazsa 503', async () => {
+    let calls = 0;
+    const fetchImpl = async () => { calls++; return { ok: true }; };
+    const res = mockRes();
+    const origError = console.error;
+    console.error = () => {};
+    try {
+        await createPlantHandler({
+            env: { ...ENV, PLANT_DOCTOR_TO_EMAIL: 'info@yesilege.com.tr' },
+            fetchImpl,
+            now: () => NOW,
+            mxLookup: async () => []
+        })(req(valid()), res);
+    } finally {
+        console.error = origError;
+    }
+    assert.equal(res.statusCode, 503);
+    assert.equal(calls, 0);
+});
+
+test('handler: MX yoksa kurumsal adres atlanır, harici adrese gönderilir', async () => {
+    let sent = null;
+    const fetchImpl = async (url, init) => { sent = JSON.parse(init.body); return { ok: true }; };
+    const res = mockRes();
+    const origError = console.error;
+    console.error = () => {};
+    try {
+        await createPlantHandler({
+            env: { ...ENV, PLANT_DOCTOR_TO_EMAIL: 'info@yesilege.com.tr, ekip@x.test' },
+            fetchImpl,
+            now: () => NOW,
+            mxLookup: async () => []
+        })(req(valid()), res);
+    } finally {
+        console.error = origError;
+    }
+    assert.equal(res.statusCode, 200);
+    assert.deepEqual(sent.to, ['ekip@x.test']);
+    assert.equal(sent.attachments.length, 2);
+});

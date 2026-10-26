@@ -1,9 +1,14 @@
 // Vercel Function: Bitki Doktoru gönderimini doğrular ve fotoğraflarla birlikte Resend ile e-posta olarak iletir.
 // Gerekli ortam değişkenleri: RESEND_API_KEY, CONTACT_FROM_EMAIL ve PLANT_DOCTOR_TO_EMAIL
 // (PLANT_DOCTOR_TO_EMAIL yoksa CONTACT_TO_EMAIL kullanılır).
+// İletişim formuyla aynı korumalar: IP başına gönderim sınırı ve MX kaydı olmayan kurumsal adresi atlama.
 
+import { resolveMx } from 'node:dns/promises';
 import { validatePlantSubmission, buildPlantEmail, LIMITS } from './_lib/plant-doctor.js';
 import { sendEmail } from './_lib/resend.js';
+import { createRateLimiter, getClientIp, verifiedRecipients } from './contact.js';
+
+const sharedLimiter = createRateLimiter();
 
 function readConfig(env) {
     const config = {
@@ -16,7 +21,13 @@ function readConfig(env) {
     return { config, missing };
 }
 
-export function createPlantHandler({ env = process.env, fetchImpl = fetch, now = Date.now } = {}) {
+export function createPlantHandler({
+    env = process.env,
+    fetchImpl = fetch,
+    now = Date.now,
+    limiter = sharedLimiter,
+    mxLookup = resolveMx
+} = {}) {
     return async function handler(req, res) {
         if (req.method !== 'POST') {
             res.setHeader('Allow', 'POST');
@@ -36,6 +47,12 @@ export function createPlantHandler({ env = process.env, fetchImpl = fetch, now =
             return res.status(200).json({ success: true });
         }
 
+        const limit = limiter.check(getClientIp(req));
+        if (!limit.allowed) {
+            res.setHeader('Retry-After', String(limit.retryAfter));
+            return res.status(429).json({ success: false, error: 'Çok fazla gönderim yaptınız. Lütfen biraz sonra tekrar deneyin.' });
+        }
+
         const { config, missing } = readConfig(env);
         if (missing.length > 0) {
             console.error(`Bitki Doktoru e-postası gönderilemedi, eksik ortam değişkenleri: ${missing.join(', ')}`);
@@ -43,7 +60,17 @@ export function createPlantHandler({ env = process.env, fetchImpl = fetch, now =
         }
 
         try {
-            await sendEmail(config, buildPlantEmail(result.data), result.data.email, fetchImpl);
+            const delivery = await verifiedRecipients(config.to, mxLookup);
+            if (delivery.excluded.length) {
+                console.error('MX kaydı olmayan kurumsal e-posta alıcıları atlandı. Lütfen DNS ayarlarını düzeltin.');
+            }
+            if (!delivery.to) {
+                return res.status(503).json({
+                    success: false,
+                    error: 'Gönderiminiz şu anda iletilemiyor. Fotoğrafları WhatsApp\'tan gönderebilirsiniz.'
+                });
+            }
+            await sendEmail({ ...config, to: delivery.to }, buildPlantEmail(result.data), result.data.email, fetchImpl);
             return res.status(200).json({ success: true });
         } catch (error) {
             console.error('Bitki Doktoru e-postası gönderilemedi:', error);
