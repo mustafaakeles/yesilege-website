@@ -1,5 +1,8 @@
 name: Site kalite kontrolleri
 on:
+  push:
+    branches:
+      - audit-fixes-2026-10-26
   pull_request:
   workflow_dispatch:
 jobs:

@@ -198,3 +198,25 @@ test('rate limit: farklı IP bağımsız ve JSON olmayan içerik reddedilir', as
     await handler({ ...req(validContact), headers: { 'content-type': 'text/plain' } }, wrong);
     assert.equal(wrong.statusCode, 415);
 });
+
+test('gövde boyutu yanlış bildirilse bile büyük JSON reddedilir', async () => {
+    const handler = createHandler({ env: ENV, fetchImpl: async () => ({ ok: true }) });
+    const res = mockRes();
+    await handler({ ...req({ ...validContact, message: 'x'.repeat(21000) }), headers: { 'content-length': '10' } }, res);
+    assert.equal(res.statusCode, 413);
+});
+
+test('Vercel IP başlığı, dış proxy tarafından aktarılan başlığa önceliklidir', async () => {
+    const limiter = createRateLimiter({ max: 1 });
+    const handler = createHandler({ env: ENV, limiter, fetchImpl: async () => ({ ok: true }) });
+    const makeRequest = (client) => ({
+        ...req(validContact),
+        headers: { 'x-vercel-forwarded-for': '198.51.100.9', 'x-forwarded-for': client }
+    });
+    const first = mockRes();
+    await handler(makeRequest('203.0.113.1'), first);
+    assert.equal(first.statusCode, 200);
+    const second = mockRes();
+    await handler(makeRequest('203.0.113.2'), second);
+    assert.equal(second.statusCode, 429);
+});

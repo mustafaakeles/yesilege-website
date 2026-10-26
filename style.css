@@ -2090,6 +2090,21 @@ footer h4 {
     background: var(--clay-700);
 }
 
+.form-feedback {
+    margin: 10px 0 0;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+}
+
+.form-feedback[data-state="success"] {
+    color: #256547;
+}
+
+.form-feedback[data-state="error"] {
+    color: #9a3928;
+}
+
 .form-status {
     min-height: 1.4em;
     margin-top: 8px;

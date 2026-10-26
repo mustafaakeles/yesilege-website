@@ -37,7 +37,8 @@ export function createRateLimiter({ max = MAX_REQUESTS, windowMs = WINDOW_MS, no
 const sharedLimiter = createRateLimiter();
 
 function getClientIp(req) {
-    const forwarded = req.headers['x-forwarded-for'];
+    // Vercel edge tarafından sağlanan başlık, proxy zincirine göre daha güvenilir.
+    const forwarded = req.headers['x-vercel-forwarded-for'] || req.headers['x-forwarded-for'];
     const ip = Array.isArray(forwarded) ? forwarded[0] : forwarded;
     return (typeof ip === 'string' ? ip.split(',')[0].trim() : '') || req.socket?.remoteAddress || '';
 }
@@ -89,6 +90,17 @@ export function createHandler({ env = process.env, fetchImpl = fetch, limiter = 
 
         const contentLength = Number(req.headers['content-length'] || 0);
         if (contentLength > MAX_BODY_BYTES) {
+            return res.status(413).json({ success: false, error: 'İstek çok büyük.' });
+        }
+
+        // Content-Length bulunmasa veya hatalı bildirilse bile gövde sınırını uygula.
+        let payloadBytes = 0;
+        try {
+            payloadBytes = Buffer.byteLength(JSON.stringify(req.body ?? {}), 'utf8');
+        } catch {
+            return res.status(400).json({ success: false, error: 'İstek içeriği geçersiz.' });
+        }
+        if (payloadBytes > MAX_BODY_BYTES) {
             return res.status(413).json({ success: false, error: 'İstek çok büyük.' });
         }
 
