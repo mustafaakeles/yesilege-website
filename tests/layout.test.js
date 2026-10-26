@@ -14,7 +14,7 @@ test('tüm sayfalarda doğru işletme telefonları ve 225 adresi yer alır', () 
     for (const path of pages) {
         const html = read(path);
         assert.match(html, /0535 080 59 51/, path);
-        assert.match(html, /0532 324 72 88/, path);
+        assert.match(html, /(?:0532 324 72 88|\+90 532 324 72 88)/, path);
         assert.match(html, /No: 225/, path);
         assert.doesNotMatch(html, /No: 231|0532 575 58 76/, path);
     }
