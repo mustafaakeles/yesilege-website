@@ -26,16 +26,16 @@ test('Yayımlanan HTML sayfaları ve yerel dosya bağlantıları eksiksiz', () =
     for (const page of pages) {
         const path = relative(ROOT, page).replaceAll('\\', '/');
         const content = readFileSync(page, 'utf8');
-        const ids = [...content.matchAll(/\\bid=["']([^"']+)["']/g)].map(match => match[1]);
+        const ids = [...content.matchAll(/\bid=["']([^"']+)["']/g)].map(match => match[1]);
         assert.equal(new Set(ids).size, ids.length, path + ': yinelenen HTML id');
 
-        for (const match of content.matchAll(/<(?:a|img|script|link)\\b[^>]*?\\b(?:src|href)=["']([^"']+)["'][^>]*>/gi)) {
+        for (const match of content.matchAll(/<(?:a|img|script|link)\b[^>]*?\b(?:src|href)=["']([^"']+)["'][^>]*>/gi)) {
             const href = match[1];
-            if (/^(?:https?:|mailto:|tel:|data:|javascript:|\\/\\/)/i.test(href)) continue;
+            if (/^(?:https?:|mailto:|tel:|data:|javascript:|\/\/)/i.test(href)) continue;
             const url = new URL(href, HOST + '/' + path);
             if (url.origin !== HOST) continue;
-            const target = decodeURIComponent(url.pathname).replace(/^\\/+/, '') || 'index.html';
-            if (/^(?:api\\/|_vercel\\/)/.test(target)) continue;
+            const target = decodeURIComponent(url.pathname).replace(/^\/+/, '') || 'index.html';
+            if (/^(?:api\/|_vercel\/)/.test(target)) continue;
             const absolute = resolve(ROOT, target);
             assert.ok(absolute.startsWith(ROOT + '/') && existsSync(absolute),
                 path + ': eksik dosya ' + href);
@@ -47,8 +47,8 @@ test('Yayımlanan HTML sayfaları ve yerel dosya bağlantıları eksiksiz', () =
             }
             checked++;
         }
-        for (const match of content.matchAll(/<img\\b[^>]*>/gi)) {
-            assert.match(match[0], /\\balt=["'][^"']*["']/, path + ': açıklaması eksik görsel');
+        for (const match of content.matchAll(/<img\b[^>]*>/gi)) {
+            assert.match(match[0], /\balt=["'][^"']*["']/, path + ': açıklaması eksik görsel');
         }
     }
     assert.ok(checked >= 350, 'Yeterli sayıda iç bağlantı kontrol edilmedi');
