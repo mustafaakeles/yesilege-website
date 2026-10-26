@@ -219,7 +219,7 @@ p {
 }
 
 .section {
-    padding: clamp(4.5rem, 9vw, 7.5rem) 0;
+    padding: clamp(3.5rem, 7vw, 6.25rem) 0;
 }
 
 .section-header {
@@ -1281,6 +1281,151 @@ p {
 .contact-form .btn-primary,
 .contact-form .btn-submit {
     width: 100%;
+}
+
+/* Ana sayfa iletişim: iki dengeli kart, kısa form, rahat okuma. */
+#iletisim.section {
+    padding-block: clamp(2rem, 3.1vw, 3.25rem);
+}
+
+#iletisim .contact-wrapper {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    align-items: stretch;
+    gap: clamp(1.25rem, 2.4vw, 2.25rem);
+}
+
+#iletisim .contact-info,
+#iletisim .contact-form {
+    padding: clamp(1.5rem, 2.6vw, 2.25rem);
+}
+
+#iletisim .contact-info {
+    display: flex;
+    flex-direction: column;
+}
+
+#iletisim .contact-info > h3 {
+    font-size: clamp(1.9rem, 2.8vw, 2.2rem);
+    margin-bottom: 0.35rem;
+}
+
+#iletisim .contact-info > p {
+    max-width: 52ch;
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+#iletisim .info-items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.25rem;
+    margin-top: 1.1rem;
+}
+
+#iletisim .info-item:first-child {
+    grid-column: 1 / -1;
+}
+
+#iletisim .info-item {
+    gap: 12px;
+    padding-block: 11px;
+}
+
+#iletisim .info-item > i,
+#iletisim .info-item .icon-box {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+}
+
+#iletisim .info-item > div > span {
+    margin-bottom: 3px;
+    letter-spacing: 0.1em;
+}
+
+#iletisim .info-item p {
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+#iletisim .social-links {
+    padding-top: 1rem;
+    margin-top: auto;
+}
+
+#iletisim .social-links a {
+    width: 40px;
+    height: 40px;
+}
+
+#iletisim .contact-form h3 {
+    font-size: clamp(1.9rem, 2.6vw, 2.15rem);
+    margin-bottom: 0.7rem;
+}
+
+#iletisim .form-row {
+    gap: 12px;
+}
+
+#iletisim .form-group {
+    margin-bottom: 10px;
+}
+
+#iletisim .form-group label {
+    font-size: 0.84rem;
+    margin-bottom: 4px;
+}
+
+#iletisim .form-group input,
+#iletisim .form-group select,
+#iletisim .form-group textarea {
+    padding: 9px 13px;
+    min-height: 44px;
+    line-height: 1.4;
+}
+
+#iletisim .form-group textarea {
+    height: 102px;
+    min-height: 102px;
+    resize: vertical;
+}
+
+#iletisim .contact-form .btn-submit {
+    min-height: 46px;
+}
+
+#iletisim .form-note {
+    margin-top: 8px;
+    line-height: 1.45;
+}
+
+@media (max-width: 1200px) {
+    #iletisim .info-items {
+        display: block;
+    }
+}
+
+@media (max-width: 960px) {
+    #iletisim .contact-wrapper {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
+    }
+}
+
+@media (max-width: 640px) {
+    #iletisim.section {
+        padding-block: 2.5rem;
+    }
+
+    #iletisim .contact-info,
+    #iletisim .contact-form {
+        padding: 1.5rem;
+    }
+
+    #iletisim .form-group textarea {
+        height: 120px;
+        min-height: 120px;
+    }
 }
 
 /* İletişim sayfası: hızlı eylemler, teklif adımları, kanallar, yol tarifi */

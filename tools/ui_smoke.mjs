@@ -4,7 +4,7 @@
 //           node tools/ui_smoke.mjs
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { readFile, mkdir } from 'node:fs/promises';
+import { readFile, mkdir, readdir } from 'node:fs/promises';
 import { extname, resolve, sep, join } from 'node:path';
 import { chromium } from 'playwright';
 
@@ -57,10 +57,18 @@ try {
     const origin = 'http://127.0.0.1:' + server.address().port;
     browser = await chromium.launch({ headless: true });
     const sizes = [
+        { name: 'small-mobile', width: 320, height: 700 },
         { name: 'mobile', width: 375, height: 812 },
         { name: 'tablet', width: 768, height: 1024 },
-        { name: 'desktop', width: 1440, height: 900 }
+        { name: 'laptop', width: 1024, height: 768 },
+        { name: 'desktop', width: 1440, height: 900 },
+        { name: 'zoomed-desktop', width: 1536, height: 768 },
+        { name: 'wide-desktop', width: 1920, height: 960 }
     ];
+
+    const articles = (await readdir(join(ROOT, 'blog-yazilari')))
+        .filter(name => name.endsWith('.html'))
+        .map(name => '/blog-yazilari/' + name);
 
     for (const size of sizes) {
         const page = await browser.newPage({
@@ -68,7 +76,15 @@ try {
             reducedMotion: 'reduce'
         });
         const errors = [];
+        const missingAssets = new Set();
         page.on('pageerror', error => errors.push(error.message));
+        page.on('response', response => {
+            const url = new URL(response.url());
+            if (url.origin === origin && response.status() === 404
+                && !url.pathname.startsWith('/_vercel/')) {
+                missingAssets.add(url.pathname);
+            }
+        });
 
         await page.goto(origin + '/index.html', { waitUntil: 'domcontentloaded' });
         await page.waitForSelector('#magnoliaTrigger');
@@ -81,6 +97,33 @@ try {
         await page.screenshot({ path: join(SCREENSHOTS, size.name + '-home.png') });
         assert.ok(dimensions.scrollWidth <= dimensions.innerWidth + 2,
             size.name + ': yatay taşma ' + JSON.stringify(dimensions));
+
+        const homeContact = await page.locator('#iletisim').evaluate(section => {
+            const nav = document.querySelector('.navbar');
+            const info = section.querySelector('.contact-info');
+            const form = section.querySelector('.contact-form');
+            return {
+                sectionHeight: Math.ceil(section.getBoundingClientRect().height),
+                navHeight: Math.ceil(nav.getBoundingClientRect().height),
+                viewportHeight: window.innerHeight,
+                cardHeights: [
+                    Math.ceil(info.getBoundingClientRect().height),
+                    Math.ceil(form.getBoundingClientRect().height)
+                ]
+            };
+        });
+        if (size.width >= 1024 && size.height >= 768) {
+            assert.ok(homeContact.sectionHeight + homeContact.navHeight <= size.height + 8,
+                size.name + ': ana sayfa iletişim bölümü tek ekrana sığmıyor: '
+                + JSON.stringify(homeContact));
+            assert.ok(Math.abs(homeContact.cardHeights[0] - homeContact.cardHeights[1]) <= 2,
+                size.name + ': iletişim kartları aynı hizada değil: '
+                + JSON.stringify(homeContact));
+        }
+        await page.locator('#iletisim').screenshot({
+            path: join(SCREENSHOTS, size.name + '-home-contact.png'),
+            animations: 'disabled'
+        });
 
         if (size.width <= 960) {
             const menuButton = page.locator('.hamburger');
@@ -115,15 +158,32 @@ try {
             assert.equal(mockedSubmissions, 1);
         }
 
-        await page.goto(origin + '/contact.html', { waitUntil: 'domcontentloaded' });
-        await page.waitForTimeout(250);
-        await page.screenshot({ path: join(SCREENSHOTS, size.name + '-contact.png') });
-        const contactOverflow = await page.evaluate(() =>
-            document.documentElement.scrollWidth - window.innerWidth
-        );
-        assert.ok(contactOverflow <= 2, size.name + ': iletişim sayfasında yatay taşma ' + contactOverflow);
+        // Tüm temel sayfalar her çözünürlükte; tüm blog yazıları mobil ve masaüstünde.
+        const routes = [
+            '/services.html', '/care.html', '/blog.html', '/contact.html',
+            ...(size.name === 'mobile' || size.name === 'desktop' ? articles : []),
+            ...(size.name === 'mobile' || size.name === 'desktop' ? ['/subscription/confirm.html'] : [])
+        ];
+        for (const route of routes) {
+            await page.goto(origin + route, { waitUntil: 'domcontentloaded' });
+            const view = await page.evaluate(() => ({
+                doc: document.documentElement.scrollWidth,
+                body: document.body.scrollWidth,
+                window: window.innerWidth
+            }));
+            assert.ok(Math.max(view.doc, view.body) <= view.window + 2,
+                size.name + ' ' + route + ': yatay taşma ' + JSON.stringify(view));
+
+            if (['mobile', 'desktop'].includes(size.name)
+                && ['/services.html', '/care.html', '/blog.html', '/contact.html'].includes(route)) {
+                await page.screenshot({
+                    path: join(SCREENSHOTS, size.name + '-' + route.slice(1).replace('.html', '') + '.png')
+                });
+            }
+        }
+        assert.deepEqual([...missingAssets], [], size.name + ': eksik yerel görsel/CSS/JS');
         assert.deepEqual(errors, [], size.name + ': JavaScript sayfa hataları');
-        console.log(size.name + ': başarılı');
+        console.log(size.name + ': ' + (routes.length + 1) + ' sayfa denetlendi');
         await page.close();
     }
 
