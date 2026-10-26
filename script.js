@@ -199,7 +199,7 @@ function initForms() {
 
                 if (!response.ok || result.success !== true) {
                     let errorMessage = 'Gönderilemedi. Lütfen telefonla iletişime geçin.';
-                    if (response.status === 400 && result.error) {
+                    if ((response.status === 400 || response.status === 503) && result.error) {
                         errorMessage = result.error;
                     } else if (response.status === 429) {
                         errorMessage = 'Çok sayıda istek gönderildi. Lütfen biraz sonra tekrar deneyin.';
@@ -208,7 +208,7 @@ function initForms() {
                     return;
                 }
 
-                show('Mesajınız başarıyla iletildi. En kısa sürede dönüş yapacağız.', 'success');
+                show('Talebiniz e-posta gönderim servisine aktarıldı. Yanıt alamazsanız bizi telefonla arayın.', 'success');
                 form.reset();
             } catch (error) {
                 console.error('Form gönderme hatası:', error);

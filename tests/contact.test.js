@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { validateSubmission, buildEmail } from '../api/_lib/contact.js';
-import { createHandler, createRateLimiter } from '../api/contact.js';
+import { createHandler, createRateLimiter, verifiedRecipients } from '../api/contact.js';
 
 const validContact = {
     'form-name': 'iletisim',
@@ -219,4 +219,47 @@ test('Vercel IP başlığı, dış proxy tarafından aktarılan başlığa önce
     const second = mockRes();
     await handler(makeRequest('203.0.113.2'), second);
     assert.equal(second.statusCode, 429);
+});
+
+test('MX kaydı yoksa kurumsal alıcıya sahte teslim başarısı dönmez', async () => {
+    const env = { ...ENV, CONTACT_TO_EMAIL: 'form@yesilege.com.tr' };
+    let sent = false;
+    const handler = createHandler({
+        env,
+        mxLookup: async () => [],
+        fetchImpl: async () => { sent = true; return { ok: true }; }
+    });
+    const origError = console.error;
+    console.error = () => {};
+    try {
+        const res = mockRes();
+        await handler(req(validQuote), res);
+        assert.equal(res.statusCode, 503);
+        assert.equal(res.body.success, false);
+        assert.match(res.body.error, /telefon veya WhatsApp/);
+    } finally {
+        console.error = origError;
+    }
+    assert.equal(sent, false);
+});
+
+test('MX yoksa yalnızca çalışır harici e-posta alıcısına gönderir', async () => {
+    const targets = await verifiedRecipients('form@yesilege.com.tr, iletisim@gmail.com', async () => []);
+    assert.equal(targets.to, 'iletisim@gmail.com');
+    assert.deepEqual(targets.excluded, ['form@yesilege.com.tr']);
+});
+
+test('MX kayıtları düzelirse kurumsal alıcıya teslim denemesi yapılabilir', async () => {
+    const targets = await verifiedRecipients('info@yesilege.com.tr', async () => [
+        { exchange: 'mx.example.net', priority: 10 }
+    ]);
+    assert.equal(targets.to, 'info@yesilege.com.tr');
+    assert.deepEqual(targets.excluded, []);
+});
+
+test('harici e-posta alıcıları için MX sorgusuna gerek yoktur', async () => {
+    let called = false;
+    const targets = await verifiedRecipients('test@example.com', async () => { called = true; return []; });
+    assert.equal(targets.to, 'test@example.com');
+    assert.equal(called, false);
 });

@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - audit-fixes-2026-10-26
+      - main
   pull_request:
   workflow_dispatch:
 jobs:

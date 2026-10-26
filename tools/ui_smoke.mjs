@@ -154,7 +154,7 @@ try {
             await form.locator('textarea[name="message"]').fill('Otomatik deneme mesajı');
             await form.locator('button[type="submit"]').click();
             await page.waitForFunction(() => document.querySelector('#contactForm .form-feedback')
-                ?.textContent.includes('başarıyla iletildi'));
+                ?.textContent.includes('e-posta gönderim servisine aktarıldı'));
             assert.equal(mockedSubmissions, 1);
         }
 
@@ -173,6 +173,21 @@ try {
             }));
             assert.ok(Math.max(view.doc, view.body) <= view.window + 2,
                 size.name + ' ' + route + ': yatay taşma ' + JSON.stringify(view));
+
+            if (route === '/contact.html' && size.width >= 1024 && size.height >= 768) {
+                const quote = await page.locator('#teklif').evaluate(section => ({
+                    sectionHeight: Math.ceil(section.getBoundingClientRect().height),
+                    navHeight: Math.ceil(document.querySelector('.navbar').getBoundingClientRect().height),
+                    viewportHeight: window.innerHeight,
+                    formHeight: Math.ceil(section.querySelector('.contact-form').getBoundingClientRect().height)
+                }));
+                assert.ok(quote.sectionHeight + quote.navHeight <= size.height + 8,
+                    size.name + ': teklif ekranı dikeyde taşmamalı: ' + JSON.stringify(quote));
+                await page.locator('#teklif').screenshot({
+                    path: join(SCREENSHOTS, size.name + '-quote.png'),
+                    animations: 'disabled'
+                });
+            }
 
             if (['mobile', 'desktop'].includes(size.name)
                 && ['/services.html', '/care.html', '/blog.html', '/contact.html'].includes(route)) {

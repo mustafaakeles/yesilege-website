@@ -2,6 +2,7 @@
 // Gerekli ortam değişkenleri: RESEND_API_KEY, CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL
 
 import { validateSubmission, buildEmail } from './_lib/contact.js';
+import { resolveMx } from 'node:dns/promises';
 
 const MAX_BODY_BYTES = 20_000;
 const WINDOW_MS = 10 * 60_000;
@@ -76,7 +77,29 @@ export async function sendEmail({ apiKey, to, from }, email, replyTo, fetchImpl 
     }
 }
 
-export function createHandler({ env = process.env, fetchImpl = fetch, limiter = sharedLimiter } = {}) {
+// Kurumsal alan adının MX kaydı yokken Resend'in kabul yanıtı gerçek teslimat demek değildir.
+// Varsa çalışan harici alıcılara gönderir; hiçbir alıcı kalmıyorsa formu hatayla sonlandırır.
+export async function verifiedRecipients(to, mxLookup = resolveMx) {
+    const recipients = to.split(',').map(value => value.trim()).filter(Boolean);
+    const own = recipients.filter(value => /@yesilege\.com\.tr$/i.test(value));
+    if (own.length === 0) return { to: recipients.join(','), excluded: [] };
+
+    let records = [];
+    try {
+        records = await mxLookup('yesilege.com.tr');
+    } catch (error) {
+        console.warn('Kurumsal e-posta MX sorgusu başarısız:', error?.code || error?.message);
+    }
+    const hasMx = Array.isArray(records) && records.some(record => record.exchange && record.exchange !== '.');
+    if (hasMx) return { to: recipients.join(','), excluded: [] };
+
+    return {
+        to: recipients.filter(value => !own.includes(value)).join(','),
+        excluded: own
+    };
+}
+
+export function createHandler({ env = process.env, fetchImpl = fetch, limiter = sharedLimiter, mxLookup = resolveMx } = {}) {
     return async function handler(req, res) {
         if (req.method !== 'POST') {
             res.setHeader('Allow', 'POST');
@@ -125,7 +148,17 @@ export function createHandler({ env = process.env, fetchImpl = fetch, limiter = 
         }
 
         try {
-            await sendEmail(config, buildEmail(result.data), result.data.email, fetchImpl);
+            const delivery = await verifiedRecipients(config.to, mxLookup);
+            if (delivery.excluded.length) {
+                console.error('MX kaydı olmayan kurumsal e-posta alıcıları atlandı. Lütfen Cloudflare DNS ayarlarını düzeltin.');
+            }
+            if (!delivery.to) {
+                return res.status(503).json({
+                    success: false,
+                    error: 'E-posta teslimi yapılandırılmamış. Lütfen telefon veya WhatsApp ile ulaşın.'
+                });
+            }
+            await sendEmail({ ...config, to: delivery.to }, buildEmail(result.data), result.data.email, fetchImpl);
             return res.status(200).json({ success: true });
         } catch (error) {
             console.error('Form e-postası gönderilemedi:', error);

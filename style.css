@@ -1428,6 +1428,133 @@ p {
     }
 }
 
+/* Teklif bağlantısı: geniş ekranlarda form ve adımlar aynı bakışta görünür. */
+#teklif {
+    scroll-margin-top: calc(var(--nav-h, 84px) + 8px);
+}
+
+.contact-section.section {
+    padding-block: clamp(1.15rem, 2.8vw, 2rem);
+}
+
+.contact-section .contact-grid {
+    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+    gap: clamp(1rem, 2vw, 2rem);
+    align-items: stretch;
+}
+
+.contact-section .contact-info,
+.contact-section .contact-form {
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+    min-width: 0;
+}
+
+.contact-section .contact-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-section .contact-info > h2 {
+    font-size: clamp(1.75rem, 2.4vw, 2.35rem);
+    line-height: 1.12;
+    margin: 0.3rem 0 0.65rem;
+}
+
+.contact-section .contact-info > p {
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+.contact-section .quote-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.15rem 0.85rem;
+    margin: 1.45rem 0;
+}
+
+.contact-section .quote-steps li {
+    padding-left: 41px;
+}
+
+.contact-section .quote-steps li::before {
+    width: 31px;
+    height: 31px;
+    font-size: 1rem;
+}
+
+.contact-section .quote-steps strong {
+    font-size: 0.94rem;
+}
+
+.contact-section .quote-steps span {
+    font-size: 0.82rem;
+    line-height: 1.35;
+}
+
+.contact-section .quote-urgent {
+    margin-top: auto;
+    padding-top: 14px;
+}
+
+.contact-section .contact-form h3 {
+    font-size: 1.72rem;
+    margin-bottom: 0.9rem;
+}
+
+.contact-section .form-row {
+    gap: 12px;
+}
+
+.contact-section .form-group {
+    margin-bottom: 10px;
+    min-width: 0;
+}
+
+.contact-section .form-group label {
+    font-size: 0.81rem;
+    margin-bottom: 4px;
+}
+
+.contact-section .form-group input,
+.contact-section .form-group select,
+.contact-section .form-group textarea {
+    min-height: 42px;
+    padding: 9px 12px;
+    font-size: 0.92rem;
+}
+
+.contact-section .form-group textarea {
+    min-height: 88px;
+    height: 88px;
+}
+
+.contact-section .btn-submit {
+    min-height: 44px;
+}
+
+.contact-section .form-note {
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+@media (max-width: 960px) {
+    .contact-section .contact-grid {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
+    }
+}
+
+@media (max-width: 560px) {
+    .contact-section .quote-steps {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    .contact-section .contact-info,
+    .contact-section .contact-form {
+        padding: 1.4rem;
+    }
+}
+
 /* İletişim sayfası: hızlı eylemler, teklif adımları, kanallar, yol tarifi */
 .quick-actions {
     display: flex;
@@ -2556,5 +2683,33 @@ footer h4 {
         height: 52px;
         left: 14px;
         bottom: 14px;
+    }
+}
+
+/* Yerel arama rehberi ve anlamlı iç bağlantılar */
+.local-guides {
+    margin-top: 1.2rem;
+    font-size: 0.94rem;
+    line-height: 1.65;
+}
+.local-guides a {
+    color: var(--forest-700);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.local-services .reach-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 920px;
+    margin-inline: auto;
+}
+.local-services .reach-card {
+    min-width: 0;
+}
+.local-services.section {
+    padding-block: clamp(2.5rem, 5vw, 4.5rem);
+}
+@media (max-width: 640px) {
+    .local-services .reach-grid {
+        grid-template-columns: minmax(0, 1fr);
     }
 }
