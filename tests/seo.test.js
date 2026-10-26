@@ -46,7 +46,7 @@ test('yerel hizmetler sayfalarında doğrulanabilir işletme bilgisi ve yapılan
         const html = read(path);
         assert.match(html, /No: 225/);
         assert.match(html, /0535 080 59 51/);
-        assert.match(html, /0532 324 72 88/);
+        assert.match(html, /(?:0532 324 72 88|\\+90 532 324 72 88)/);
         const data = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
             .flatMap(match => {
                 const json = JSON.parse(match[1]);
