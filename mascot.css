@@ -13,6 +13,8 @@
 }
 
 .magnolia-avatar {
+    appearance: none;
+    padding: 0;
     width: 60px;
     height: 60px;
     background: linear-gradient(135deg, var(--forest-700), var(--sage-500));
@@ -313,4 +315,19 @@
         left: 0;
         right: 0;
     }
+}
+/* Klavyeyle açılabilen rehber ve hareket azaltma tercihi */
+.magnolia-avatar:focus-visible,
+.magnolia-close:focus-visible,
+.magnolia-send-btn:focus-visible {
+    outline: 3px solid var(--brass);
+    outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .magnolia-avatar::before,
+    .message,
+    .typing-indicator span { animation: none !important; }
+    .magnolia-window,
+    .magnolia-avatar { transition: none !important; }
 }

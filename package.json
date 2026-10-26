@@ -6,6 +6,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test \"tests/**/*.test.js\""
+    "test": "node --test",
+    "check:layout": "python tools/build_layout.py --check"
   }
 }

@@ -5,8 +5,7 @@ import { escapeHtml } from './resend.js';
 export const FORM_TYPES = Object.freeze({
     iletisim: 'İletişim Sayfası',
     'iletisim-anasayfa': 'Ana Sayfa İletişim',
-    teklif: 'Teklif Formu (İletişim Sayfası)',
-    bulten: 'Bülten Aboneliği'
+    teklif: 'Teklif Formu (İletişim Sayfası)'
 });
 
 const SUBJECTS = Object.freeze({
@@ -55,10 +54,6 @@ export function validateSubmission(input) {
         return { ok: false, error: 'Geçerli bir e-posta adresi girin.' };
     }
 
-    if (formName === 'bulten') {
-        return { ok: true, data: { formName, email } };
-    }
-
     const name = clean(body.name);
     const message = clean(body.message);
     const phone = clean(body.phone);
@@ -100,14 +95,6 @@ export function validateSubmission(input) {
 /** Doğrulanmış veriden e-posta konusu, düz metin ve HTML gövdesi üretir. */
 export function buildEmail(data) {
     const source = FORM_TYPES[data.formName];
-
-    if (data.formName === 'bulten') {
-        return {
-            subject: `Yeni bülten aboneliği: ${data.email}`,
-            text: `Web sitesinden yeni bülten aboneliği:\n\n${data.email}`,
-            html: `<p>Web sitesinden yeni bülten aboneliği:</p><p><strong>${escapeHtml(data.email)}</strong></p>`
-        };
-    }
 
     const rows = [
         ['Kaynak', source],

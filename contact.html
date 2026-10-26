@@ -27,10 +27,10 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css?v=20261025a">
-    <link rel="stylesheet" href="motion.css?v=20261025a">
-    <script src="motion.js?v=20261025a"></script>
-    <link rel="stylesheet" href="mascot.css?v=20261025a">
+    <link rel="stylesheet" href="style.css?v=20261026b">
+    <link rel="stylesheet" href="motion.css?v=20261026b">
+    <script src="motion.js?v=20261026b"></script>
+    <link rel="stylesheet" href="mascot.css?v=20261026b">
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicon.png">
     <!-- SEO: breadcrumb -->
@@ -99,11 +99,11 @@
                 <div class="contact-info">
                     <span class="subtitle">Ücretsiz Keşif</span>
                     <h2>Teklifiniz nasıl hazırlanır?</h2>
-                    <p>Formu doldurmanız yeterli. Peyzaj, bakım ve sulama projelerinde keşif ve danışmanlık
-                        ücretsizdir.</p>
+                    <p>Peyzaj, bakım ve sulama taleplerinizi kısa formdan iletebilirsiniz. Keşif ve danışmanlık
+                        için ekibimizle görüşün.</p>
                     <ol class="quote-steps">
                         <li><strong>Formu gönderin</strong><span>İhtiyacınızı ve alanınızı kısaca anlatın.</span></li>
-                        <li><strong>Sizi arayalım</strong><span>Mesai saatlerinde 24 saat içinde dönüş yapıyoruz.</span></li>
+                        <li><strong>Sizi arayalım</strong><span>Ekibimiz ihtiyacınızı netleştirmek için sizi arar.</span></li>
                         <li><strong>Ücretsiz keşif</strong><span>Alanınızı yerinde görüp ölçülerini alıyoruz.</span></li>
                         <li><strong>Teklifiniz hazır</strong><span>Bitki seçimi ve uygulama planıyla birlikte.</span></li>
                     </ol>
@@ -125,11 +125,11 @@
                             <input type="tel" id="phone" name="phone" autocomplete="tel" maxlength="30" placeholder="05XX XXX XX XX">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="email">E-posta</label>
-                        <input type="email" id="email" name="email" autocomplete="email" maxlength="254" required>
-                    </div>
                     <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">E-posta</label>
+                            <input type="email" id="email" name="email" autocomplete="email" maxlength="254" required>
+                        </div>
                         <div class="form-group">
                             <label for="subject">Hizmet</label>
                             <select id="subject" name="subject">
@@ -141,25 +141,27 @@
                                 <option value="diger">Diğer</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group">
                             <label for="district">İlçe / konum</label>
                             <input type="text" id="district" name="district" maxlength="100" placeholder="Örn: Torbalı, Urla">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="area">Alan büyüklüğü <small>(isteğe bağlı)</small></label>
-                        <select id="area" name="area">
+                        <div class="form-group">
+                            <label for="area">Alan büyüklüğü <small>(isteğe bağlı)</small></label>
+                            <select id="area" name="area">
                             <option value="">Seçin</option>
                             <option value="kucuk">100 m²'den küçük</option>
                             <option value="orta">100–500 m²</option>
                             <option value="buyuk">500–2.000 m²</option>
                             <option value="cokbuyuk">2.000 m²'den büyük</option>
                             <option value="bilmiyorum">Bilmiyorum</option>
-                        </select>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="message">Projeniz</label>
-                        <textarea id="message" name="message" rows="5" maxlength="5000" required
+                        <textarea id="message" name="message" rows="3" maxlength="5000" required
                             placeholder="Ne yaptırmak istiyorsunuz? Bahçenin şu anki durumu nasıl?"></textarea>
                     </div>
                     <button type="submit" class="btn btn-submit">Teklif İsteyin <i class="fas fa-paper-plane" aria-hidden="true"></i></button>
@@ -190,11 +192,11 @@
                     <span>Fotoğraf ve konum gönderin</span>
                     <span class="reach-alt">+90 535 080 59 51</span>
                 </a>
-                <a class="reach-card" href="mailto:info@yesilege.com.tr">
-                    <i class="fas fa-envelope" aria-hidden="true"></i>
-                    <strong>E-posta</strong>
-                    <span>info@yesilege.com.tr</span>
-                    <span class="reach-alt">24 saat içinde dönüş</span>
+                <a class="reach-card" href="tel:+905323247288">
+                    <i class="fas fa-headset" aria-hidden="true"></i>
+                    <strong>Alternatif telefon</strong>
+                    <span>+90 532 324 72 88</span>
+                    <span class="reach-alt">Arayarak bilgi alın</span>
                 </a>
                 <div class="reach-card">
                     <i class="fas fa-clock" aria-hidden="true"></i>
@@ -284,8 +286,8 @@
     <!-- Scripts -->
     <!-- GSAP -->
     <!-- Custom Script -->
-    <script src="script.js?v=20261025a" defer></script>
-    <script src="mascot.js?v=20261025a" defer></script>
+    <script src="script.js?v=20261026b" defer></script>
+    <script src="mascot.js?v=20261026b" defer></script>
     <!-- Vercel Web Analytics (çerezsiz) -->
     <script defer src="/_vercel/insights/script.js"></script>
 </body>

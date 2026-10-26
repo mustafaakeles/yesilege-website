@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { validateSubmission, buildEmail } from '../api/_lib/contact.js';
-import { createHandler } from '../api/contact.js';
+import { createHandler, createRateLimiter, verifiedRecipients } from '../api/contact.js';
 
 const validContact = {
     'form-name': 'iletisim',
@@ -47,9 +47,8 @@ test('honeypot dolu ise spam olarak işaretlenir', () => {
     assert.deepEqual(validateSubmission({ ...validContact, 'bot-field': 'http://spam' }), { ok: true, spam: true });
 });
 
-test('bülten sadece e-posta ister', () => {
-    const r = validateSubmission({ 'form-name': 'bulten', email: 'a@b.test' });
-    assert.deepEqual(r, { ok: true, data: { formName: 'bulten', email: 'a@b.test' } });
+test('abonelik altyapısı yokken bülten isteği reddedilir', () => {
+    assert.equal(validateSubmission({ 'form-name': 'bulten', email: 'a@b.test' }).ok, false);
 });
 
 test('e-posta HTML gövdesi kullanıcı girdisini escape eder', () => {
@@ -165,4 +164,102 @@ test('iletişim e-postası ilçe/alan satırı eklemez', () => {
     const email = buildEmail(validateSubmission(validContact).data);
     assert.ok(!email.text.includes('İlçe'));
     assert.match(email.subject, /^Web sitesi mesajı/);
+});
+
+test('rate limit: aynı IP 5 başarılı isteğin ardından 429 alır', async () => {
+    let clock = 0;
+    const limiter = createRateLimiter({ max: 5, windowMs: 60_000, now: () => clock });
+    const handler = createHandler({ env: ENV, limiter, fetchImpl: async () => ({ ok: true }) });
+    for (let i = 0; i < 5; i++) {
+        const res = mockRes();
+        await handler({ ...req(validContact), headers: { 'x-forwarded-for': '192.0.2.10' } }, res);
+        assert.equal(res.statusCode, 200);
+    }
+    const blocked = mockRes();
+    await handler({ ...req(validContact), headers: { 'x-forwarded-for': '192.0.2.10' } }, blocked);
+    assert.equal(blocked.statusCode, 429);
+    assert.equal(blocked.headers['Retry-After'], '60');
+    clock = 60_001;
+    const renewed = mockRes();
+    await handler({ ...req(validContact), headers: { 'x-forwarded-for': '192.0.2.10' } }, renewed);
+    assert.equal(renewed.statusCode, 200);
+});
+
+test('rate limit: farklı IP bağımsız ve JSON olmayan içerik reddedilir', async () => {
+    const limiter = createRateLimiter({ max: 1 });
+    const handler = createHandler({ env: ENV, limiter, fetchImpl: async () => ({ ok: true }) });
+    const first = mockRes();
+    await handler({ ...req(validContact), headers: { 'x-forwarded-for': '192.0.2.11' } }, first);
+    assert.equal(first.statusCode, 200);
+    const other = mockRes();
+    await handler({ ...req(validContact), headers: { 'x-forwarded-for': '192.0.2.12' } }, other);
+    assert.equal(other.statusCode, 200);
+    const wrong = mockRes();
+    await handler({ ...req(validContact), headers: { 'content-type': 'text/plain' } }, wrong);
+    assert.equal(wrong.statusCode, 415);
+});
+
+test('gövde boyutu yanlış bildirilse bile büyük JSON reddedilir', async () => {
+    const handler = createHandler({ env: ENV, fetchImpl: async () => ({ ok: true }) });
+    const res = mockRes();
+    await handler({ ...req({ ...validContact, message: 'x'.repeat(21000) }), headers: { 'content-length': '10' } }, res);
+    assert.equal(res.statusCode, 413);
+});
+
+test('Vercel IP başlığı, dış proxy tarafından aktarılan başlığa önceliklidir', async () => {
+    const limiter = createRateLimiter({ max: 1 });
+    const handler = createHandler({ env: ENV, limiter, fetchImpl: async () => ({ ok: true }) });
+    const makeRequest = (client) => ({
+        ...req(validContact),
+        headers: { 'x-vercel-forwarded-for': '198.51.100.9', 'x-forwarded-for': client }
+    });
+    const first = mockRes();
+    await handler(makeRequest('203.0.113.1'), first);
+    assert.equal(first.statusCode, 200);
+    const second = mockRes();
+    await handler(makeRequest('203.0.113.2'), second);
+    assert.equal(second.statusCode, 429);
+});
+
+test('MX kaydı yoksa kurumsal alıcıya sahte teslim başarısı dönmez', async () => {
+    const env = { ...ENV, CONTACT_TO_EMAIL: 'form@yesilege.com.tr' };
+    let sent = false;
+    const handler = createHandler({
+        env,
+        mxLookup: async () => [],
+        fetchImpl: async () => { sent = true; return { ok: true }; }
+    });
+    const origError = console.error;
+    console.error = () => {};
+    try {
+        const res = mockRes();
+        await handler(req(validQuote), res);
+        assert.equal(res.statusCode, 503);
+        assert.equal(res.body.success, false);
+        assert.match(res.body.error, /telefon veya WhatsApp/);
+    } finally {
+        console.error = origError;
+    }
+    assert.equal(sent, false);
+});
+
+test('MX yoksa yalnızca çalışır harici e-posta alıcısına gönderir', async () => {
+    const targets = await verifiedRecipients('form@yesilege.com.tr, iletisim@gmail.com', async () => []);
+    assert.equal(targets.to, 'iletisim@gmail.com');
+    assert.deepEqual(targets.excluded, ['form@yesilege.com.tr']);
+});
+
+test('MX kayıtları düzelirse kurumsal alıcıya teslim denemesi yapılabilir', async () => {
+    const targets = await verifiedRecipients('info@yesilege.com.tr', async () => [
+        { exchange: 'mx.example.net', priority: 10 }
+    ]);
+    assert.equal(targets.to, 'info@yesilege.com.tr');
+    assert.deepEqual(targets.excluded, []);
+});
+
+test('harici e-posta alıcıları için MX sorgusuna gerek yoktur', async () => {
+    let called = false;
+    const targets = await verifiedRecipients('test@example.com', async () => { called = true; return []; });
+    assert.equal(targets.to, 'test@example.com');
+    assert.equal(called, false);
 });
