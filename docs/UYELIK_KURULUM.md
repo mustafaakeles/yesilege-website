@@ -84,7 +84,11 @@ Service role anahtarı veritabanının tamamına erişir. Sızdığından şüph
 - [ ] Vercel planı ticari kullanıma uygun (Hobby planı ticari olmayan kullanım içindir).
 - [ ] Supabase ücretsiz planında 7 gün hareketsiz kalan proje duraklatılır; canlıda Pro plan veya düzenli trafik olduğu doğrulandı.
 
-Bu maddeler tamamlanmadan navbar'daki "Giriş" bağlantısının canlı siteye (main dalına) birleştirilmemesi önerilir.
+Navbar'daki "Giriş" ikonu şu an **gizli**dir (`tools/build_layout.py` içinde `ACCOUNT_LINK_ENABLED = False`). Hesap sayfaları URL ile açılabilir ama menüde görünmez ve arama motorlarına kapalıdır. Yukarıdaki maddeler tamamlanınca:
+
+1. `tools/build_layout.py` içinde `ACCOUNT_LINK_ENABLED = True` yapın.
+2. `python tools/build_layout.py` çalıştırın (tüm sayfaların menüsü güncellenir).
+3. `npm test` ve `python tools/build_layout.py --check` geçtikten sonra commit edip main'e gönderin.
 
 ## 6. Hesap silme talepleri
 

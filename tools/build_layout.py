@@ -11,6 +11,9 @@ ROOT = Path(__file__).resolve().parent.parent
 # style.css / script.js / mascot.* / motion.* / screens.* / doctor.* değiştiğinde artırın: tarayıcı önbelleğindeki eski dosyaları geçersiz kılar
 ASSET_VERSION = "20261027c"
 
+# Navbar hesap bağlantısı: Supabase canlı ortamda kurulup doğrulanınca True yapın (docs/UYELIK_KURULUM.md).
+ACCOUNT_LINK_ENABLED = False
+
 SERVICES = [
     ("garden-materials", "Bahçe Malzemeleri"),
     ("indoor-plants", "İç Mekan Süs Bitkileri"),
@@ -50,6 +53,8 @@ def nav_html(prefix: str, active: str) -> str:
         else:
             items.append(f'                <li><a href="{prefix}{href}"{current}>{label}</a></li>')
     links = "\n".join(items)
+    account = (f'                <a href="{prefix}giris.html" class="nav-account" data-account-link aria-label="Giriş yap">'
+               '<i class="fas fa-user" aria-hidden="true"></i><span>Giriş</span></a>\n') if ACCOUNT_LINK_ENABLED else ''
     return f'''    <nav class="navbar" id="navbar" aria-label="Ana menü">
         <div class="container nav-content">
             <a href="{prefix}index.html" class="logo" aria-label="Yeşil Ege Peyzaj ana sayfa">
@@ -60,8 +65,7 @@ def nav_html(prefix: str, active: str) -> str:
             </ul>
             <div class="nav-actions">
                 <a href="tel:+905350805951" class="nav-phone" aria-label="Telefon: 0535 080 59 51"><i class="fas fa-phone-alt" aria-hidden="true"></i><span>0535 080 59 51</span></a>
-                <a href="{prefix}giris.html" class="nav-account" data-account-link aria-label="Giriş yap"><i class="fas fa-user" aria-hidden="true"></i><span>Giriş</span></a>
-                <a href="{prefix}contact.html#teklif" class="btn btn-primary btn-sm">Teklif Alın</a>
+{account}                <a href="{prefix}contact.html#teklif" class="btn btn-primary btn-sm">Teklif Alın</a>
                 <button class="hamburger" type="button" aria-label="Menüyü aç/kapat" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
             </div>
         </div>

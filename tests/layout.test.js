@@ -46,12 +46,17 @@ test('animasyonlu ekranlar temsili olduğu açıkça belirtilerek sunulur', () =
     assert.doesNotMatch(html, /500\+|100\.000\+|50\+ Uzman/);
 });
 
-test('menülü her sayfada hesap bağlantısı bulunur', () => {
+// Supabase canlıda hazır olana kadar hesap bağlantısı tools/build_layout.py içindeki bayrakla gizlenir.
+const accountLinkEnabled = /^ACCOUNT_LINK_ENABLED = True$/m.test(read('tools/build_layout.py'));
+
+test('hesap bağlantısı yerleşim bayrağına uyar', () => {
+    assert.match(read('tools/build_layout.py'), /^ACCOUNT_LINK_ENABLED = (True|False)$/m);
     for (const path of pages) {
         const html = read(path);
         if (!html.includes('aria-label="Ana menü"')) continue;
         const prefix = path.startsWith('blog-yazilari/') ? '../' : '';
-        assert.ok(html.includes(`<a href="${prefix}giris.html" class="nav-account" data-account-link aria-label="Giriş yap">`), path);
+        const link = `<a href="${prefix}giris.html" class="nav-account" data-account-link aria-label="Giriş yap">`;
+        assert.equal(html.includes(link), accountLinkEnabled, path);
     }
 });
 

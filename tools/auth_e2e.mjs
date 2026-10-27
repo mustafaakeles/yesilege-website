@@ -36,7 +36,12 @@ async function runFlow(browser, viewport) {
     const email = `e2e-${viewport.name}@test.invalid`;
     const at = (path) => page.goto(server.url + path);
     const feedbackOf = (selector) => page.locator(`${selector} .form-feedback`).first();
-    const navLabel = () => page.locator('[data-account-link] span').first().textContent();
+    // Hesap bağlantısı tools/build_layout.py bayrağıyla gizliyse navbar denetimi atlanır.
+    const expectNavLabel = async (label) => {
+        const link = page.locator('[data-account-link] span');
+        if (await link.count() === 0) return;
+        assert.equal((await link.first().textContent()).trim(), label);
+    };
     const noHorizontalScroll = async (label) => {
         const [scroll, inner] = await page.evaluate(() => [document.documentElement.scrollWidth, innerWidth]);
         assert.ok(scroll <= inner, `${label}: yatay kaydırma (${scroll} > ${inner})`);
@@ -65,7 +70,7 @@ async function runFlow(browser, viewport) {
     await page.goto(confirmLink);
     await page.waitForURL(/hesabim\.html\?dogrulandi=1/);
     await page.locator('[data-page-notice]').filter({ hasText: 'doğrulandı' }).waitFor();
-    assert.equal((await navLabel()).trim(), 'Hesabım');
+    await expectNavLabel('Hesabım');
     await noHorizontalScroll('hesabım');
     step(3, 'doğrulama bağlantısı oturum açtı');
 
@@ -86,7 +91,7 @@ async function runFlow(browser, viewport) {
 
     await page.click('.account-header [data-logout="local"]');
     await page.waitForURL(/giris\.html$/);
-    assert.equal((await navLabel()).trim(), 'Giriş');
+    await expectNavLabel('Giriş');
     await at('/hesabim.html');
     await page.waitForURL(/giris\.html\?donus=/);
     step(6, 'çıkış ve oturumsuz yönlendirme');
