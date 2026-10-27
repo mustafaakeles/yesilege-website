@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /hesabim.html
+Disallow: /giris.html
+Disallow: /kayit.html
+Disallow: /sifre-sifirla.html
+Disallow: /api/
 
 Sitemap: https://yesilege.com.tr/sitemap.xml
