@@ -2529,6 +2529,24 @@ footer h4 {
     }
 }
 
+/* Telefon numarası ve hesap etiketi asla satır kırmaz; dar masaüstünde numara yalnızca ikon olarak kalır */
+.nav-phone span,
+.nav-account span {
+    white-space: nowrap;
+}
+
+@media (max-width: 1360px) {
+    .nav-phone span {
+        display: none;
+    }
+
+    .nav-phone {
+        min-width: 44px;
+        min-height: 44px;
+        justify-content: center;
+    }
+}
+
 @media (max-width: 1100px) {
     .nav-phone span,
     .nav-account span {
