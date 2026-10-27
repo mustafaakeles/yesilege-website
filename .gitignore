@@ -19,3 +19,6 @@ __pycache__/
 
 # Arayüz denetimi çıktıları (tools/ui_smoke.mjs, tools/ui_audit.mjs)
 artifacts/
+
+# Ortam değişkenleri (anahtarlar asla depoya girmez)
+.env*

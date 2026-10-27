@@ -10,6 +10,8 @@ import { validateCredentials, validateEmailOnly, validateNewPassword, validateRe
 const REGISTER_MESSAGE = 'Doğrulama e-postası gönderildi. Lütfen gelen kutunuzu kontrol edin.';
 const LOGIN_FAILED = 'E-posta veya şifre hatalı ya da e-posta adresi henüz doğrulanmadı.';
 const PASSWORD_REJECTED = 'Bu şifre kullanılamıyor. Lütfen farklı bir şifre seçin.';
+const TOO_MANY_SIGNUPS = 'Şu anda çok fazla kayıt isteği var. Lütfen birkaç dakika sonra tekrar deneyin.';
+const LOGOUT_FAILED = 'Diğer cihazlardaki oturumlar kapatılamadı. Lütfen biraz sonra tekrar deneyin.';
 const LINK_FAILED = '/giris.html?hata=baglanti';
 const CONFIRM_TARGETS = Object.freeze({ email: '/hesabim.html?dogrulandi=1', recovery: '/sifre-sifirla.html?adim=yeni' });
 const TOKEN_HASH_RE = /^[A-Za-z0-9_-]{1,200}$/;
@@ -37,7 +39,10 @@ async function register(ctx) {
             data: { full_name: fullName, phone, kvkk: 'true', marketing: String(marketing) }
         });
     } catch (error) {
-        // Kayıtlı e-posta gibi istemci hataları da aynı yanıtı alır: hesap varlığı sızmaz.
+        // Oran sınırı ve şifre reddi hesap varlığını sızdırmaz; kullanıcıya gerçek durum söylenir.
+        if (error?.status === 429) return fail(ctx.res, 429, TOO_MANY_SIGNUPS);
+        if (error?.code === 'weak_password') return fail(ctx.res, 400, PASSWORD_REJECTED);
+        // Kayıtlı e-posta gibi diğer istemci hataları aynı yanıtı alır: hesap varlığı sızmaz.
         if (!isClientError(error)) throw error;
     }
     return ctx.res.status(200).json({ success: true, message: REGISTER_MESSAGE });
@@ -60,15 +65,37 @@ async function login(ctx) {
     return ctx.res.status(200).json({ success: true });
 }
 
-async function logout(ctx) {
-    const scope = ctx.body.scope === 'global' ? 'global' : 'local';
-    const accessToken = parseCookies(ctx.req.headers.cookie)[COOKIES.access];
+const isUnauthorized = (error) => error?.status === 400 || error?.status === 401 || error?.status === 403;
+
+// Sunucu tarafındaki oturumu kapatır. Erişim token'ı dolmuşsa refresh token ile yenileyip kapatır;
+// refresh token da geçersizse kapatılacak oturum kalmamıştır.
+async function revokeSession(supabase, cookies, scope) {
+    let accessToken = cookies[COOKIES.access];
     if (accessToken) {
         try {
-            await ctx.supabase.auth.logout(accessToken, scope);
+            return await supabase.auth.logout(accessToken, scope);
         } catch (error) {
-            console.warn('Supabase çıkışı başarısız:', error?.status ?? 'ağ hatası');
+            if (!isUnauthorized(error) || !cookies[COOKIES.refresh]) throw error;
         }
+    }
+    if (!cookies[COOKIES.refresh]) return;
+    try {
+        accessToken = (await supabase.auth.refresh(cookies[COOKIES.refresh])).access_token;
+    } catch (error) {
+        if (isUnauthorized(error)) return;
+        throw error;
+    }
+    await supabase.auth.logout(accessToken, scope);
+}
+
+async function logout(ctx) {
+    const scope = ctx.body.scope === 'global' ? 'global' : 'local';
+    try {
+        await revokeSession(ctx.supabase, parseCookies(ctx.req.headers.cookie), scope);
+    } catch (error) {
+        console.warn('Supabase çıkışı başarısız:', error?.status ?? 'ağ hatası');
+        // Tüm cihazlardan çıkış başarısızsa çerezler korunur ki kullanıcı yeniden deneyebilsin.
+        if (scope === 'global') return fail(ctx.res, 502, LOGOUT_FAILED);
     }
     appendCookies(ctx.res, clearedSessionCookies());
     return ctx.res.status(200).json({ success: true });

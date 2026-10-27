@@ -273,7 +273,11 @@ function initDialogs() {
 }
 
 async function logout(scope) {
-    await api('auth', 'logout', { body: { scope } });
+    const result = await api('auth', 'logout', { body: { scope } });
+    if (!result.ok && scope === 'global') {
+        show(document.querySelector('[data-page-notice]'), errorText(result), 'error');
+        return;
+    }
     location.assign('giris.html');
 }
 

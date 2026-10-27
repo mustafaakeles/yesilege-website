@@ -191,3 +191,35 @@ test('bilinmeyen işlem 404 döner', async () => {
     const { res } = await call('hack');
     assert.equal(res.statusCode, 404);
 });
+
+test('erişim token\'ı yokken çıkış önce oturumu yenileyip Supabase oturumunu kapatır', async () => {
+    const { res, calls } = await call('logout', {
+        body: { scope: 'global' },
+        headers: { cookie: 'ye_rt=rt-1' },
+        routes: { 'POST /auth/v1/token': { body: SESSION }, 'POST /auth/v1/logout': { status: 204 } }
+    });
+    assert.equal(res.statusCode, 200);
+    const [logout] = supabaseCalls(calls, '/auth/v1/logout');
+    assert.ok(logout, 'Supabase logout çağrılmadı');
+    assert.equal(logout.search, '?scope=global');
+    assert.equal(logout.headers.authorization, 'Bearer at-1');
+});
+
+test('tüm cihazlardan çıkış Supabase hatasında başarı bildirmez', async () => {
+    const { res } = await call('logout', {
+        body: { scope: 'global' },
+        headers: { cookie: 'ye_at=at-1; ye_rt=rt-1' },
+        routes: { 'POST /auth/v1/logout': { status: 500, body: {} } }
+    });
+    assert.equal(res.statusCode, 502);
+    assert.equal(res.body.success, false);
+});
+
+test('kayıtta Supabase oran sınırı ve zayıf şifre yanıtları başarı gibi gösterilmez', async () => {
+    const limited = await call('register', { body: REGISTER, routes: { 'POST /auth/v1/signup': { status: 429, body: { error_code: 'over_email_send_rate_limit' } } } });
+    assert.equal(limited.res.statusCode, 429);
+    assert.equal(limited.res.body.success, false);
+    const weak = await call('register', { body: REGISTER, routes: { 'POST /auth/v1/signup': { status: 422, body: { error_code: 'weak_password' } } } });
+    assert.equal(weak.res.statusCode, 400);
+    assert.equal(weak.res.body.error, 'Bu şifre kullanılamıyor. Lütfen farklı bir şifre seçin.');
+});
