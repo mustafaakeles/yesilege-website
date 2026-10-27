@@ -13,7 +13,8 @@
 3. E-posta sağlayıcının verdiği SPF, DKIM ve DMARC TXT kayıtlarını sağlayıcının yönergesine göre ekleyin. SPF kaydını rastgele iki ayrı kayıt halinde eklemeyin.
 4. Vercel > Project > Settings > Environment Variables: `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` değerlerinin gerçekten kullanılacak ve doğrulanmış adreslerle uyumlu olduğunu kontrol edin. Anahtarları kaynağa veya GitHub issue'larına yazmayın.
 5. `CONTACT_TO_EMAIL` için aktif bir **harici yedek teslimat adresi** kullanmak, kurumsal posta kurulumu tamamlanana kadar teklif kaybını önlemeye yardımcı olur.
-6. DNS MX görünür olduktan sonra harici Gmail hesabından `info@` ve `form@` adreslerine gerçek test e-postası gönderin. Gelen kutusuna ulaştığını doğrulayın. Ardından test teklif formu göndererek formun *gerçekten* hedef gelen kutuya ulaştığını kontrol edin.
+6. Üyelik sistemindeki doğrulama ve şifre sıfırlama e-postaları da bu DNS kayıtlarına bağlıdır; kurulum adımları için `docs/UYELIK_KURULUM.md`.
+7. DNS MX görünür olduktan sonra harici Gmail hesabından `info@` ve `form@` adreslerine gerçek test e-postası gönderin. Gelen kutusuna ulaştığını doğrulayın. Ardından test teklif formu göndererek formun *gerçekten* hedef gelen kutuya ulaştığını kontrol edin.
 
 ## Google ve Bing
 1. Google Search Console'da **domain property** ekleyin; verilen TXT doğrulama değerini Cloudflare DNS'e yerleştirin. `https://yesilege.com.tr/sitemap.xml` gönderin.
