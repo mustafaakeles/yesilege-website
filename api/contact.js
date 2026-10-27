@@ -4,48 +4,12 @@
 import { validateSubmission, buildEmail } from './_lib/contact.js';
 import { resolveMx } from 'node:dns/promises';
 import { sendEmail } from './_lib/resend.js';
+import { createRateLimiter, getClientIp } from './_lib/http.js';
 
-export { sendEmail };
+export { sendEmail, createRateLimiter, getClientIp };
 
 const MAX_BODY_BYTES = 20_000;
-const WINDOW_MS = 10 * 60_000;
-const MAX_REQUESTS = 5;
-
-// Aynı serverless örneğinde ek koruma sağlar; dağıtık limit için Vercel WAF gerekir.
-export function createRateLimiter({ max = MAX_REQUESTS, windowMs = WINDOW_MS, now = Date.now } = {}) {
-    const buckets = new Map();
-    return {
-        check(ip) {
-            if (!ip) return { allowed: true };
-            const time = now();
-            if (buckets.size > 500) {
-                for (const [key, bucket] of buckets) {
-                    if (bucket.resetAt <= time) buckets.delete(key);
-                }
-                if (buckets.size > 500) buckets.clear();
-            }
-            let bucket = buckets.get(ip);
-            if (!bucket || bucket.resetAt <= time) {
-                buckets.set(ip, { count: 1, resetAt: time + windowMs });
-                return { allowed: true };
-            }
-            if (bucket.count >= max) {
-                return { allowed: false, retryAfter: Math.max(1, Math.ceil((bucket.resetAt - time) / 1000)) };
-            }
-            bucket.count++;
-            return { allowed: true };
-        }
-    };
-}
-
 const sharedLimiter = createRateLimiter();
-
-export function getClientIp(req) {
-    // Vercel edge tarafından sağlanan başlık, proxy zincirine göre daha güvenilir.
-    const forwarded = req.headers['x-vercel-forwarded-for'] || req.headers['x-forwarded-for'];
-    const ip = Array.isArray(forwarded) ? forwarded[0] : forwarded;
-    return (typeof ip === 'string' ? ip.split(',')[0].trim() : '') || req.socket?.remoteAddress || '';
-}
 
 function readConfig(env) {
     const config = {
