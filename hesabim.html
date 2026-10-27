@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hesabım | Yeşil Ege Peyzaj</title>
+    <meta name="description" content="Yeşil Ege Peyzaj müşteri hesabınız: profil, adresler ve güvenlik ayarları.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#1f3d33">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="style.css?v=20261027c">
+    <link rel="stylesheet" href="motion.css?v=20261027c">
+    <script src="motion.js?v=20261027c"></script>
+    <link rel="stylesheet" href="account.css?v=20261027c">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+
+<body>
+    <a class="skip-link" href="#main">İçeriğe geç</a>
+    <nav class="navbar" id="navbar" aria-label="Ana menü">
+        <div class="container nav-content">
+            <a href="index.html" class="logo" aria-label="Yeşil Ege Peyzaj ana sayfa">
+                <img src="images/logo-dark.png" alt="Yeşil Ege Peyzaj" width="398" height="160">
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Ana Sayfa</a></li>
+                <li class="dropdown">
+                    <a href="services.html" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Hizmetler<span class="nav-extra"> &amp; Ürünler</span> <i class="fas fa-chevron-down" aria-hidden="true"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="services.html#garden-materials">Bahçe Malzemeleri</a></li>
+                        <li><a href="services.html#indoor-plants">İç Mekan Süs Bitkileri</a></li>
+                        <li><a href="services.html#outdoor-plants">Dış Mekan Süs Bitkileri</a></li>
+                        <li><a href="services.html#cactus">Kaktüs ve Sukulentler</a></li>
+                        <li><a href="services.html#pots">Saksı Grupları</a></li>
+                        <li><a href="services.html#landscape">Peyzaj Tasarım</a></li>
+                        <li><a href="services.html#project">Proje Uygulama</a></li>
+                    </ul>
+                </li>
+                <li><a href="care.html">Bakım Rehberi</a></li>
+                <li><a href="bitki-doktoru.html">Bitki Doktoru</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="index.html#projeler">Projeler</a></li>
+                <li><a href="contact.html">İletişim</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="tel:+905350805951" class="nav-phone" aria-label="Telefon: 0535 080 59 51"><i class="fas fa-phone-alt" aria-hidden="true"></i><span>0535 080 59 51</span></a>
+                <a href="giris.html" class="nav-account" data-account-link aria-label="Giriş yap"><i class="fas fa-user" aria-hidden="true"></i><span>Giriş</span></a>
+                <a href="contact.html#teklif" class="btn btn-primary btn-sm">Teklif Alın</a>
+                <button class="hamburger" type="button" aria-label="Menüyü aç/kapat" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main">
+        <section class="section account-section" data-account-page>
+            <div class="container account-shell">
+                <header class="account-header">
+                    <div>
+                        <h1>Hesabım</h1>
+                        <p class="account-greeting" data-user-greeting>Hesap bilgileriniz yükleniyor…</p>
+                    </div>
+                    <button type="button" class="btn btn-ghost" data-logout="local">Çıkış Yap <i class="fas fa-sign-out-alt" aria-hidden="true"></i></button>
+                </header>
+                <p class="form-feedback page-notice" data-page-notice role="status" aria-live="polite"></p>
+
+                <div class="account-body" data-account-body hidden>
+                    <div class="account-tabs" role="tablist" aria-label="Hesap bölümleri">
+                        <button type="button" role="tab" id="tab-profil" aria-controls="panel-profil" aria-selected="true" data-tab="profil"><i class="fas fa-user" aria-hidden="true"></i> Profil</button>
+                        <button type="button" role="tab" id="tab-adresler" aria-controls="panel-adresler" aria-selected="false" tabindex="-1" data-tab="adresler"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Adreslerim</button>
+                        <button type="button" role="tab" id="tab-guvenlik" aria-controls="panel-guvenlik" aria-selected="false" tabindex="-1" data-tab="guvenlik"><i class="fas fa-shield-alt" aria-hidden="true"></i> Güvenlik</button>
+                    </div>
+
+                    <section class="account-panel contact-form" role="tabpanel" id="panel-profil" aria-labelledby="tab-profil" tabindex="0">
+                        <h2>Profil bilgileri</h2>
+                        <form data-account-form="profile" novalidate>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="fullName">Adınız Soyadınız</label>
+                                    <input type="text" id="fullName" name="fullName" autocomplete="name" minlength="2" maxlength="100" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Telefon <small>(isteğe bağlı)</small></label>
+                                    <input type="tel" id="phone" name="phone" autocomplete="tel" maxlength="30" placeholder="05XX XXX XX XX">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-posta</label>
+                                <input type="email" id="email" name="email" autocomplete="email" readonly aria-describedby="email-hint">
+                                <small class="field-hint" id="email-hint">E-posta adresinizi değiştirmek için bizimle iletişime geçin.</small>
+                            </div>
+                            <button type="submit" class="btn btn-submit">Kaydet <i class="fas fa-check" aria-hidden="true"></i></button>
+                            <p class="form-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+                        </form>
+
+                        <div class="account-subsection">
+                            <h3>İletişim tercihleri</h3>
+                            <label class="check-group">
+                                <input type="checkbox" name="marketing" data-consent-toggle>
+                                <span>Kampanya ve yeni ürün duyurularını e-posta ile almak istiyorum.</span>
+                            </label>
+                            <p class="form-feedback" data-consent-feedback role="status" aria-live="polite" aria-atomic="true"></p>
+                        </div>
+                    </section>
+
+                    <section class="account-panel contact-form" role="tabpanel" id="panel-adresler" aria-labelledby="tab-adresler" tabindex="0" hidden>
+                        <div class="panel-heading">
+                            <h2>Adreslerim</h2>
+                            <button type="button" class="btn btn-ghost btn-sm" data-address-new><i class="fas fa-plus" aria-hidden="true"></i> Yeni adres</button>
+                        </div>
+                        <p class="account-empty" data-address-empty hidden>Henüz kayıtlı adresiniz yok.</p>
+                        <ul class="address-list" data-address-list></ul>
+                        <p class="form-feedback" data-address-feedback role="status" aria-live="polite" aria-atomic="true"></p>
+
+                        <form class="address-form" data-account-form="address" hidden novalidate aria-labelledby="address-form-title">
+                            <h3 id="address-form-title">Adres</h3>
+                            <input type="hidden" name="id">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="addr-title">Adres başlığı</label>
+                                    <input type="text" id="addr-title" name="title" maxlength="40" placeholder="Ev, İş…" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addr-recipient">Alıcı adı soyadı</label>
+                                    <input type="text" id="addr-recipient" name="recipientName" autocomplete="name" maxlength="100" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="addr-phone">Telefon</label>
+                                    <input type="tel" id="addr-phone" name="phone" autocomplete="tel" maxlength="30" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addr-city">İl</label>
+                                    <input type="text" id="addr-city" name="city" autocomplete="address-level1" maxlength="60" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="addr-district">İlçe</label>
+                                    <input type="text" id="addr-district" name="district" autocomplete="address-level2" maxlength="60" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addr-neighbourhood">Mahalle</label>
+                                    <input type="text" id="addr-neighbourhood" name="neighbourhood" autocomplete="address-level3" maxlength="60" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="addr-line">Cadde, sokak, bina ve daire</label>
+                                    <input type="text" id="addr-line" name="line" autocomplete="street-address" maxlength="250" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addr-postal">Posta kodu <small>(isteğe bağlı)</small></label>
+                                    <input type="text" id="addr-postal" name="postalCode" autocomplete="postal-code" inputmode="numeric" maxlength="5" pattern="[0-9]{5}">
+                                </div>
+                            </div>
+                            <label class="check-group">
+                                <input type="checkbox" name="isDefault">
+                                <span>Varsayılan adresim olsun</span>
+                            </label>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-submit">Adresi Kaydet</button>
+                                <button type="button" class="btn btn-ghost" data-address-cancel>Vazgeç</button>
+                            </div>
+                            <p class="form-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+                        </form>
+                    </section>
+
+                    <section class="account-panel contact-form" role="tabpanel" id="panel-guvenlik" aria-labelledby="tab-guvenlik" tabindex="0" hidden>
+                        <h2>Şifre değiştir</h2>
+                        <form data-account-form="password" novalidate>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="new-password">Yeni şifre</label>
+                                    <div class="password-field">
+                                        <input type="password" id="new-password" name="password" autocomplete="new-password" maxlength="128" required aria-describedby="new-password-hint">
+                                        <button type="button" class="password-toggle" data-password-toggle aria-controls="new-password" aria-pressed="false" aria-label="Şifreyi göster"><i class="fas fa-eye" aria-hidden="true"></i></button>
+                                    </div>
+                                    <small class="field-hint" id="new-password-hint">En az 10 karakter.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-passwordConfirm">Yeni şifre (tekrar)</label>
+                                    <input type="password" id="new-passwordConfirm" name="passwordConfirm" autocomplete="new-password" maxlength="128" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-submit">Şifreyi Güncelle</button>
+                            <p class="form-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+                        </form>
+
+                        <div class="account-subsection">
+                            <h3>Oturumlar</h3>
+                            <p>Başka bir cihazda açık kalan oturumlarınızı da kapatabilirsiniz.</p>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-ghost" data-logout="local">Bu cihazdan çık</button>
+                                <button type="button" class="btn btn-ghost" data-logout="global">Tüm cihazlardan çık</button>
+                            </div>
+                        </div>
+
+                        <div class="account-subsection account-danger">
+                            <h3>Hesabı sil</h3>
+                            <p>Hesabınızın ve kişisel verilerinizin silinmesini talep edebilirsiniz.</p>
+                            <button type="button" class="btn btn-ghost" data-open-dialog="delete-dialog">Hesap silme talebi</button>
+                        </div>
+                    </section>
+                </div>
+
+                <dialog id="delete-dialog" class="account-dialog" aria-labelledby="delete-title">
+                    <form data-account-form="delete-request" novalidate>
+                        <h2 id="delete-title">Hesap silme talebi</h2>
+                        <p>Talebiniz en geç 30 gün içinde işlenir. Yasal saklama yükümlülüğü olan sipariş ve fatura kayıtları,
+                            süre dolana kadar kimliğinizle ilişkilendirilmeden saklanır.</p>
+                        <div class="form-group">
+                            <label for="delete-password">Onay için şifreniz</label>
+                            <input type="password" id="delete-password" name="password" autocomplete="current-password" maxlength="128" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-submit">Talebi Gönder</button>
+                            <button type="button" class="btn btn-ghost" data-close-dialog>Vazgeç</button>
+                        </div>
+                        <p class="form-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+                    </form>
+                </dialog>
+
+                <dialog id="address-delete-dialog" class="account-dialog" aria-labelledby="address-delete-title">
+                    <h2 id="address-delete-title">Adres silinsin mi?</h2>
+                    <p data-address-delete-name></p>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-submit" data-address-delete-confirm>Sil</button>
+                        <button type="button" class="btn btn-ghost" data-close-dialog>Vazgeç</button>
+                    </div>
+                </dialog>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="index.html" class="logo-footer" aria-label="Yeşil Ege Peyzaj ana sayfa">
+                    <img src="images/logo-light.png" alt="Yeşil Ege Peyzaj" width="398" height="160" loading="lazy">
+                </a>
+                <p>1996'dan beri Bayındır'da sera ve fidanlık üretimi, İzmir ve Ege'de peyzaj tasarımı ve bahçe bakımı.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/yesilegepeyzaj/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    <a href="https://wa.me/905350805951" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+                    <a href="https://linkedin.com/company/yesilege-peyzaj" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Keşfedin</h4>
+                <ul>
+                    <li><a href="services.html">Hizmetler &amp; Ürünler</a></li>
+                    <li><a href="index.html#projeler">Projeler</a></li>
+                    <li><a href="care.html">Bitki Bakım Rehberi</a></li>
+                    <li><a href="bitki-doktoru.html">Bitki Doktoru</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="index.html#sss">Sıkça Sorulanlar</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>İletişim</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i><a href="https://maps.app.goo.gl/BhpF9Gh1Xto5Y9368" target="_blank" rel="noopener">Karaveliler, Kazım Dirik Cd. No: 225, 35847 Bayındır/İzmir</a></li>
+                    <li><i class="fas fa-phone-alt" aria-hidden="true"></i><a href="tel:+905350805951">+90 535 080 59 51</a></li>
+                    <li><i class="fas fa-phone-alt" aria-hidden="true"></i><a href="tel:+905323247288">+90 532 324 72 88</a></li>
+                    <li><i class="fas fa-clock" aria-hidden="true"></i><span>Hafta içi 09:00 – 18:00</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Yeşil Ege Peyzaj. Tüm hakları saklıdır. · <a href="kvkk.html">KVKK Aydınlatma Metni</a></p>
+            <div class="codera-signature">
+                Software &amp; Design by <a href="https://www.codera.com.tr" target="_blank" rel="noopener">CODERA</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js?v=20261027c" defer></script>
+    <script type="module" src="account.js?v=20261027c"></script>
+</body>
+
+</html>

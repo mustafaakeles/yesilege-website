@@ -70,3 +70,23 @@ test('robots.txt hesap sayfalarını ve API\'yi taramaya kapatır, site haritas�
 test('hesap betikleri kullanıcı verisini innerHTML ile yazmaz', () => {
     assert.doesNotMatch(read('account.js'), /innerHTML/);
 });
+
+test('Hesabım sayfası dizine eklenmez ve erişilebilir sekme yapısı kullanır', () => {
+    const html = read('hesabim.html');
+    assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
+    assert.doesNotMatch(html, /rel="canonical"/);
+    assert.match(html, /role="tablist"/);
+    assert.equal((html.match(/role="tab"/g) || []).length, 3);
+    assert.equal((html.match(/role="tabpanel"/g) || []).length, 3);
+    for (const form of ['profile', 'address', 'password', 'delete-request']) {
+        assert.match(html, new RegExp(`data-account-form="${form}"`), form);
+    }
+    assert.match(html, /<dialog[^>]*id="delete-dialog"/);
+});
+
+test('KVKK metni üyelik verilerini kapsar ve taslak notunu korur', () => {
+    const html = read('kvkk.html');
+    assert.match(html, /<h2>[^<]*Üyelik[^<]*<\/h2>/);
+    assert.match(html, /TASLAK/);
+    assert.match(html, /Supabase/);
+});

@@ -165,3 +165,200 @@
         gap: 0;
     }
 }
+
+/* ---------- Hesabım ---------- */
+
+.account-shell {
+    max-width: 1040px;
+}
+
+.account-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 1.25rem;
+}
+
+.account-header h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    line-height: 1.05;
+    color: var(--forest-900);
+}
+
+.account-greeting {
+    color: var(--ink-soft);
+    margin-top: 0.25rem;
+}
+
+.account-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+}
+
+.account-tabs [role="tab"] {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--forest-700);
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.account-tabs [role="tab"][aria-selected="true"] {
+    background: var(--forest-700);
+    border-color: var(--forest-700);
+    color: var(--white);
+}
+
+.account-tabs [role="tab"]:focus-visible,
+.account-panel:focus-visible {
+    outline: 2px solid var(--forest-600);
+    outline-offset: 2px;
+}
+
+.account-panel h2 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.account-subsection {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+}
+
+.account-subsection h3,
+.address-form h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--forest-800);
+    margin-bottom: 0.75rem;
+}
+
+.account-subsection p {
+    color: var(--ink-soft);
+    margin-bottom: 0.75rem;
+}
+
+.account-danger h3 {
+    color: #9a3928;
+}
+
+.panel-heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+}
+
+.panel-heading h2 {
+    margin-bottom: 0;
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.address-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    padding: 0;
+    list-style: none;
+}
+
+.address-card {
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--cream);
+}
+
+.address-card h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.address-card p {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.4rem;
+}
+
+.address-card .form-actions {
+    margin-top: 0.75rem;
+}
+
+.address-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--sage-100);
+    color: var(--forest-700);
+    font-size: 0.75rem;
+    vertical-align: middle;
+}
+
+.address-form {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+}
+
+.account-empty {
+    color: var(--ink-soft);
+}
+
+.account-dialog {
+    width: min(520px, calc(100vw - 32px));
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border: 0;
+    border-radius: var(--radius-lg);
+    color: var(--ink);
+}
+
+.account-dialog::backdrop {
+    background: rgba(18, 38, 31, 0.55);
+}
+
+.account-dialog h2 {
+    font-family: var(--font-heading);
+    font-size: 1.7rem;
+    margin-bottom: 0.75rem;
+}
+
+.account-dialog p {
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 560px) {
+    .account-tabs [role="tab"] {
+        flex: 1 1 0;
+        justify-content: center;
+        padding: 10px 8px;
+        font-size: 0.9rem;
+    }
+
+    .account-tabs [role="tab"] i {
+        display: none;
+    }
+}
