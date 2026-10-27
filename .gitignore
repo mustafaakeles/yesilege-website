@@ -16,3 +16,6 @@ node_modules/
 __pycache__/
 
 .vercel
+
+# Arayüz denetimi çıktıları (tools/ui_smoke.mjs, tools/ui_audit.mjs)
+artifacts/

@@ -188,7 +188,10 @@
 }
 
 .svc-text h3 {
-    font-size: clamp(1.8rem, 3.2vw, 2.7rem);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    font-size: clamp(2rem, 3.4vw, 3rem);
     line-height: 1.05;
     color: var(--white);
 }
@@ -209,7 +212,7 @@
     padding: 6px 12px;
     border: 1px solid var(--scr-line);
     border-radius: 999px;
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     color: var(--sage-300);
     background: rgba(255, 255, 255, 0.03);
 }

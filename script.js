@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroSlider(prefersReducedMotion);
     initForms();
     initLightbox();
+    initServiceSubnav();
+    initBlogFilter();
+    initScrollStrips();
 });
 
 // 1. Navbar: kaydırınca gölge
@@ -280,5 +283,106 @@ function initLightbox() {
             e.preventDefault();
             closeBtn.focus();
         }
+    });
+}
+
+// 8. Hizmetler: kategori şeridinde bulunulan bölümü vurgula, etkin düğmeyi şeritte görünür tut
+function initServiceSubnav() {
+    const nav = document.querySelector('.svc-subnav');
+    if (!nav) return;
+
+    const strip = nav.querySelector('ul');
+    const links = [...nav.querySelectorAll('a[href^="#"]')];
+    const sections = links.map(link => document.getElementById(link.hash.slice(1))).filter(Boolean);
+
+    const activate = (id) => {
+        links.forEach(link => {
+            const on = link.hash === '#' + id;
+            if (on) link.setAttribute('aria-current', 'true');
+            else link.removeAttribute('aria-current');
+            // Yalnızca şeridi yatay kaydır; sayfanın dikey konumuna dokunma
+            if (on && strip.scrollWidth > strip.clientWidth) {
+                strip.scrollTo({ left: link.offsetLeft - (strip.clientWidth - link.offsetWidth) / 2, behavior: 'smooth' });
+            }
+        });
+        if (!id) strip.scrollTo({ left: 0, behavior: 'smooth' });
+    };
+
+    // Ekranın üst %40'ını geçmiş son bölüm etkindir; ilk bölüme gelinmeden hiçbiri seçili değildir
+    let current = null;
+    let ticking = false;
+    const update = () => {
+        ticking = false;
+        const line = window.innerHeight * 0.4;
+        const passed = sections.filter(section => section.getBoundingClientRect().top <= line);
+        const id = passed.length ? passed[passed.length - 1].id : null;
+        if (id !== current) {
+            current = id;
+            activate(id);
+        }
+    };
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+        }
+    }, { passive: true });
+    update();
+}
+
+// 9. Blog: kartlardaki kategorilerden filtre düğmeleri üret
+function initBlogFilter() {
+    const bar = document.querySelector('.blog-filters');
+    const grid = document.querySelector('.blog-grid');
+    if (!bar || !grid) return;
+
+    const status = document.querySelector('.blog-filter-status');
+    const cards = [...grid.querySelectorAll('.blog-card')];
+    const categoryOf = (card) => card.querySelector('.blog-category')?.textContent.trim() || 'Diğer';
+    const counts = cards.reduce((acc, card) => {
+        const name = categoryOf(card);
+        return { ...acc, [name]: (acc[name] || 0) + 1 };
+    }, {});
+    const names = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b, 'tr'));
+
+    const makeButton = (label, value) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'filter-chip';
+        button.dataset.value = value;
+        button.setAttribute('aria-pressed', String(value === ''));
+        button.textContent = label;
+        return button;
+    };
+    bar.append(makeButton(`Tümü (${cards.length})`, ''), ...names.map(name => makeButton(name, name)));
+
+    bar.addEventListener('click', (e) => {
+        const button = e.target.closest('.filter-chip');
+        if (!button) return;
+        const value = button.dataset.value;
+        bar.querySelectorAll('.filter-chip').forEach(chip => chip.setAttribute('aria-pressed', String(chip === button)));
+        let shown = 0;
+        cards.forEach(card => {
+            const match = !value || categoryOf(card) === value;
+            card.hidden = !match;
+            if (match) shown++;
+        });
+        grid.classList.toggle('is-filtered', Boolean(value));
+        if (status) status.textContent = `${shown} yazı gösteriliyor`;
+    });
+}
+
+// 10. Yatay kayan şeritler: devamı varsa kenarda solma göster (taşma yalnızca şerit içinde)
+function initScrollStrips() {
+    document.querySelectorAll('.svc-subnav ul, .blog-filters').forEach(strip => {
+        const update = () => {
+            const max = strip.scrollWidth - strip.clientWidth;
+            strip.classList.toggle('fade-end', max > 2 && strip.scrollLeft < max - 2);
+            strip.classList.toggle('fade-start', strip.scrollLeft > 2);
+        };
+        strip.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        // Blog düğmeleri DOMContentLoaded'da üretildiği için bir kare sonra ölç
+        requestAnimationFrame(update);
     });
 }
