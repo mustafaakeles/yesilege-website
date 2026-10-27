@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 
 import {
     validateRegistration, validateCredentials, validateEmailOnly, validateNewPassword,
-    validateProfile, validateConsent, validateAddress, normalizeEmail
+    validateProfile, validateConsent, validateAddress, validateAddressId, normalizeEmail
 } from '../api/_lib/validate.js';
 
 const registration = {
@@ -116,4 +116,11 @@ test('adres doğrulama', () => {
 test('normalizeEmail büyük harf ve boşlukları giderir', () => {
     assert.equal(normalizeEmail('  Ayse@Example.TEST '), 'ayse@example.test');
     assert.equal(normalizeEmail(42), '');
+});
+
+test('adres kimliği yalnızca UUID olarak kabul edilir', () => {
+    const id = '5b0c3f0e-8a5e-4c1e-9f1d-2f0f1c6f9a11';
+    assert.deepEqual(validateAddressId({ id }), { ok: true, data: { id } });
+    assert.deepEqual(validateAddressId({ id: '1 OR 1=1' }), { ok: false, error: 'Adres bilgilerini kontrol edin.' });
+    assert.equal(validateAddressId({}).ok, false);
 });

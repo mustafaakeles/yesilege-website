@@ -102,10 +102,17 @@ export function validateConsent(input) {
     return typeof marketing === 'boolean' ? { ok: true, data: { marketing } } : invalid(ERRORS.consent);
 }
 
+const isUuid = (value) => typeof value === 'string' && UUID_RE.test(value);
+
+export function validateAddressId(input) {
+    const { id } = bag(input);
+    return isUuid(id) ? { ok: true, data: { id } } : invalid(ERRORS.address);
+}
+
 export function validateAddress(input) {
     const body = bag(input);
     const id = body.id === undefined || body.id === null || body.id === '' ? null : body.id;
-    if (id !== null && !(typeof id === 'string' && UUID_RE.test(id))) return invalid(ERRORS.address);
+    if (id !== null && !isUuid(id)) return invalid(ERRORS.address);
 
     const data = {
         id,
