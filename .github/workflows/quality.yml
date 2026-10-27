@@ -18,6 +18,8 @@ jobs:
           node-version: '22'
       - run: npm test
       - run: python tools/build_layout.py --check
+      - run: npm install --no-save --package-lock=false @electric-sql/pglite@0.3.15
+      - run: node tools/db_test.mjs
   browser-smoke:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -32,6 +34,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: node tools/ui_smoke.mjs
       - run: node tools/auth_e2e.mjs
+      - run: node tools/shop_e2e.mjs
       - name: Görsel denetim ekran görüntüleri
         if: always()
         uses: actions/upload-artifact@v4
@@ -40,4 +43,5 @@ jobs:
           path: |
             artifacts/ui-smoke/
             artifacts/auth-e2e/
+            artifacts/shop-e2e/
           if-no-files-found: ignore

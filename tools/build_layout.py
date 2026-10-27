@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 # style.css / script.js / mascot.* / motion.* / screens.* / doctor.* değiştiğinde artırın: tarayıcı önbelleğindeki eski dosyaları geçersiz kılar
-ASSET_VERSION = "20261028a"
+ASSET_VERSION = "20261028b"
 
 # Navbar hesap bağlantısı: Supabase canlı ortamda kurulup doğrulanınca True yapın (docs/UYELIK_KURULUM.md).
 ACCOUNT_LINK_ENABLED = True
@@ -177,9 +177,9 @@ def process(path: Path, check_only: bool = False) -> bool:
     # Betikleri ertele, CSS/JS adreslerine sürüm ekle (önbellek kırma)
     text = re.sub(r'<script src="((?:\.\./)?(?:script|mascot|screens|doctor)\.js)(?:\?v=\w+)?"( defer)?></script>',
                   rf'<script src="\1?v={ASSET_VERSION}" defer></script>', text)
-    text = re.sub(r'<script type="module" src="((?:\.\./)?account\.js)(?:\?v=\w+)?"></script>',
+    text = re.sub(r'<script type="module" src="((?:\.\./)?(?:account|account-shop|shop|checkout|yonetim)\.js)(?:\?v=\w+)?"></script>',
                   rf'<script type="module" src="\1?v={ASSET_VERSION}"></script>', text)
-    text = re.sub(r'href="((?:\.\./)?(?:style|mascot|motion|screens|doctor|account)\.css)(?:\?v=\w+)?"', rf'href="\1?v={ASSET_VERSION}"', text)
+    text = re.sub(r'href="((?:\.\./)?(?:style|mascot|motion|screens|doctor|account|shop)\.css)(?:\?v=\w+)?"', rf'href="\1?v={ASSET_VERSION}"', text)
     text = re.sub(r'<script src="((?:\.\./)?motion\.js)(?:\?v=\w+)?"></script>', rf'<script src="\1?v={ASSET_VERSION}"></script>', text)
 
     # Motion katmanı: style.css'in hemen ardından, <head> içinde senkron (ilk boyamadan önce html sınıflarını kurar)

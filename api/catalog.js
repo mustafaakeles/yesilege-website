@@ -1,0 +1,96 @@
+// Vercel Function: herkese açık ürün kataloğu ve oturum açmış kullanıcının favorileri.
+// Katalog yalnızca yayındaki ürünleri döndürür; stok adedi değil, yalnızca stok durumu paylaşılır.
+
+import { fail } from './_lib/http.js';
+import { authed, createEndpoint } from './_lib/endpoint.js';
+import { eq } from './_lib/supabase.js';
+import {
+    PRODUCT_COLUMNS, SLUG_RE, UUID_RE, activeCategories, activeProductBySlug, inList, publicCategory, publicProduct
+} from './_lib/shop.js';
+
+const RELATED_LIMIT = 4;
+const MAX_FAVORITES = 200;
+const ok = (res, extra = {}) => res.status(200).json({ success: true, ...extra });
+const cachePublic = (res) => res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=300');
+
+async function list(ctx) {
+    const categorySlug = String(ctx.req.query?.category || '');
+    if (categorySlug && !SLUG_RE.test(categorySlug)) return fail(ctx.res, 400, 'Kategori geçersiz.');
+
+    const categories = await activeCategories(ctx.supabase);
+    let filter = 'is_active=eq.true';
+    if (categorySlug) {
+        const category = [...categories.values()].find(row => row.slug === categorySlug);
+        if (!category) return fail(ctx.res, 404, 'Kategori bulunamadı.');
+        filter += `&category_id=${eq(category.id)}`;
+    }
+    const rows = await ctx.supabase.db.select('products', `${filter}&select=${PRODUCT_COLUMNS}&order=sort_order.asc,name.asc`);
+    cachePublic(ctx.res);
+    return ok(ctx.res, {
+        categories: [...categories.values()].map(publicCategory),
+        products: rows.map(row => publicProduct(row, categories))
+    });
+}
+
+async function product(ctx) {
+    const slug = String(ctx.req.query?.slug || '');
+    if (!SLUG_RE.test(slug) || slug.length > 80) return fail(ctx.res, 404, 'Ürün bulunamadı.');
+    const row = await activeProductBySlug(ctx.supabase, slug);
+    if (!row) return fail(ctx.res, 404, 'Ürün bulunamadı.');
+
+    const categories = await activeCategories(ctx.supabase);
+    let related = [];
+    if (row.category_id) {
+        const rows = await ctx.supabase.db.select('products',
+            `is_active=eq.true&category_id=${eq(row.category_id)}&select=${PRODUCT_COLUMNS}&order=sort_order.asc,name.asc&limit=${RELATED_LIMIT + 1}`);
+        related = rows.filter(item => item.id !== row.id).slice(0, RELATED_LIMIT).map(item => publicProduct(item, categories));
+    }
+    cachePublic(ctx.res);
+    return ok(ctx.res, { product: publicProduct(row, categories), related });
+}
+
+async function favorites(ctx) {
+    const rows = await ctx.supabase.db.select('favorites', `user_id=${eq(ctx.uid)}&select=product_id&order=created_at.desc&limit=${MAX_FAVORITES}`);
+    if (rows.length === 0) return ok(ctx.res, { products: [] });
+    const ids = rows.map(row => row.product_id);
+    const [products, categories] = await Promise.all([
+        ctx.supabase.db.select('products', `id=${inList(ids)}&is_active=eq.true&select=${PRODUCT_COLUMNS}`),
+        activeCategories(ctx.supabase)
+    ]);
+    const byId = new Map(products.map(row => [row.id, row]));
+    return ok(ctx.res, { products: ids.filter(id => byId.has(id)).map(id => publicProduct(byId.get(id), categories)) });
+}
+
+async function favorite(ctx) {
+    const productId = String(ctx.body.productId || '');
+    if (!UUID_RE.test(productId) || typeof ctx.body.on !== 'boolean') return fail(ctx.res, 400, 'Ürün seçimi geçersiz.');
+    const owned = `user_id=${eq(ctx.uid)}&product_id=${eq(productId)}`;
+
+    if (!ctx.body.on) {
+        await ctx.supabase.db.remove('favorites', owned);
+        return ok(ctx.res, { on: false });
+    }
+    const [product] = await ctx.supabase.db.select('products', `id=${eq(productId)}&is_active=eq.true&select=id`);
+    if (!product) return fail(ctx.res, 404, 'Ürün bulunamadı.');
+    const existing = await ctx.supabase.db.select('favorites', `${owned}&select=product_id`);
+    if (existing.length === 0) {
+        const count = await ctx.supabase.db.select('favorites', `user_id=${eq(ctx.uid)}&select=product_id`);
+        if (count.length >= MAX_FAVORITES) return fail(ctx.res, 400, `En fazla ${MAX_FAVORITES} ürünü favorilere ekleyebilirsiniz.`);
+        await ctx.supabase.db.insert('favorites', { user_id: ctx.uid, product_id: productId });
+    }
+    return ok(ctx.res, { on: true });
+}
+
+const GET = ['GET'];
+export const ACTIONS = Object.freeze({
+    list: { methods: GET, run: list },
+    product: { methods: GET, run: product },
+    favorites: { methods: GET, run: authed(favorites) },
+    favorite: { methods: ['POST'], run: authed(favorite) }
+});
+
+export function createHandler(options = {}) {
+    return createEndpoint('catalog', ACTIONS, options);
+}
+
+export default createHandler();

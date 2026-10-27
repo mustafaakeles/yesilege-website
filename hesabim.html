@@ -17,10 +17,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="style.css?v=20261028a">
-    <link rel="stylesheet" href="motion.css?v=20261028a">
-    <script src="motion.js?v=20261028a"></script>
-    <link rel="stylesheet" href="account.css?v=20261028a">
+    <link rel="stylesheet" href="style.css?v=20261028b">
+    <link rel="stylesheet" href="motion.css?v=20261028b">
+    <script src="motion.js?v=20261028b"></script>
+    <link rel="stylesheet" href="account.css?v=20261028b">
+    <link rel="stylesheet" href="shop.css?v=20261028b">
     <link rel="icon" type="image/png" href="images/favicon.png">
 </head>
 
@@ -76,6 +77,7 @@
                     <div class="account-tabs" role="tablist" aria-label="Hesap bölümleri">
                         <button type="button" role="tab" id="tab-profil" aria-controls="panel-profil" aria-selected="true" data-tab="profil"><i class="fas fa-user" aria-hidden="true"></i> Profil</button>
                         <button type="button" role="tab" id="tab-adresler" aria-controls="panel-adresler" aria-selected="false" tabindex="-1" data-tab="adresler"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Adreslerim</button>
+                        <button type="button" role="tab" id="tab-favoriler" aria-controls="panel-favoriler" aria-selected="false" tabindex="-1" data-tab="favoriler"><i class="fas fa-heart" aria-hidden="true"></i> Favorilerim</button>
                         <button type="button" role="tab" id="tab-guvenlik" aria-controls="panel-guvenlik" aria-selected="false" tabindex="-1" data-tab="guvenlik"><i class="fas fa-shield-alt" aria-hidden="true"></i> Güvenlik</button>
                     </div>
 
@@ -173,6 +175,14 @@
                             </div>
                             <p class="form-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
                         </form>
+                    </section>
+
+                    <section class="account-panel" role="tabpanel" id="panel-favoriler" aria-labelledby="tab-favoriler" tabindex="0" hidden data-shop-panel="favoriler">
+                        <div class="account-panel-head">
+                            <h2>Favorilerim</h2>
+                            <a href="magaza.html" class="btn btn-ghost btn-sm">Mağazaya git</a>
+                        </div>
+                        <div class="product-grid" data-favorite-grid aria-busy="true"></div>
                     </section>
 
                     <section class="account-panel contact-form" role="tabpanel" id="panel-guvenlik" aria-labelledby="tab-guvenlik" tabindex="0" hidden>
@@ -284,8 +294,9 @@
         </div>
     </footer>
 
-    <script src="script.js?v=20261028a" defer></script>
-    <script type="module" src="account.js?v=20261028a"></script>
+    <script src="script.js?v=20261028b" defer></script>
+    <script type="module" src="account-shop.js?v=20261028b"></script>
+    <script type="module" src="account.js?v=20261028b"></script>
 </body>
 
 </html>

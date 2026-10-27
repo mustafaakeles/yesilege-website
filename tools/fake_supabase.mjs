@@ -8,6 +8,14 @@ import { randomBytes, randomUUID } from 'node:crypto';
 export const FAKE_KEYS = Object.freeze({ anon: 'fake-anon-key', service: 'fake-service-key' });
 
 const ACCESS_TTL_SECONDS = 3600;
+// supabase/migrations/0002_catalog.sql ile aynı varsayılanlar
+const DEFAULT_SETTINGS = [
+    { key: 'shipping', value: { fee: 15000, free_threshold: 200000, weekly_capacity: 20, order_cutoff_hour: 18 } },
+    { key: 'loyalty', value: { points_per_lira: 1, points_per_unit: 100, unit_value: 500, max_ratio: 0.3, activation_days: 14, valid_months: 12 } },
+    { key: 'bank', value: { bank_name: '', account_holder: '', iban: '' } },
+    { key: 'store', value: { pickup_address: 'Karaveliler, Kazım Dirik Cd. No: 225, 35847 Bayındır/İzmir', pickup_hours: 'Hafta içi 09:00 – 18:00' } }
+];
+const COMPOSITE_KEYS = { favorites: ['user_id', 'product_id'], settings: ['key'] };
 const token = () => randomBytes(18).toString('base64url');
 
 function send(res, status, body) {
@@ -22,20 +30,24 @@ async function readJson(req) {
     return text ? JSON.parse(text) : {};
 }
 
-// PostgREST sorgusundan yalnızca eq filtreleri, select ve order desteklenir.
+// PostgREST sorgusundan yalnızca eq / in / is.null filtreleri, select, order ve limit desteklenir.
 function parseQuery(search) {
     const filters = [];
     let select = null;
     let order = [];
+    let limit = Infinity;
     for (const [key, value] of new URLSearchParams(search)) {
         if (key === 'select') select = value.split(',');
         else if (key === 'order') order = value.split(',').map(part => { const [col, dir] = part.split('.'); return { col, desc: dir === 'desc' }; });
-        else if (value.startsWith('eq.')) filters.push([key, value.slice(3)]);
+        else if (key === 'limit') limit = Number(value);
+        else if (value.startsWith('eq.')) filters.push([key, (cell) => String(cell) === value.slice(3)]);
+        else if (value.startsWith('in.(')) { const set = new Set(value.slice(4, -1).split(',')); filters.push([key, (cell) => set.has(String(cell))]); }
+        else if (value === 'is.null') filters.push([key, (cell) => cell === null || cell === undefined]);
     }
-    return { filters, select, order };
+    return { filters, select, order, limit };
 }
 
-const matches = (row, filters) => filters.every(([col, value]) => String(row[col]) === value);
+const matches = (row, filters) => filters.every(([col, test]) => test(row[col]));
 const pick = (row, select) => (select ? Object.fromEntries(select.map(col => [col, row[col]])) : { ...row });
 
 function sortRows(rows, order) {
@@ -56,7 +68,10 @@ export function createFakeState({ onMail = () => {} } = {}) {
         refresh: new Map(),        // refresh token'ı → userId
         otps: new Map(),           // token_hash → { userId, type }
         mailbox: [],
-        tables: { profiles: [], addresses: [], audit_log: [] },
+        tables: {
+            profiles: [], addresses: [], audit_log: [], categories: [], products: [], favorites: [],
+            settings: structuredClone(DEFAULT_SETTINGS)
+        },
         limits: new Map()
     };
 
@@ -170,11 +185,13 @@ export function createFakeState({ onMail = () => {} } = {}) {
     function rest(method, table, url, body) {
         const rows = state.tables[table];
         if (!rows) return [404, { code: 'PGRST205' }];
-        const { filters, select, order } = parseQuery(url.search);
-        if (method === 'GET') return [200, sortRows(rows.filter(row => matches(row, filters)), order).map(row => pick(row, select))];
+        const { filters, select, order, limit } = parseQuery(url.search);
+        if (method === 'GET') return [200, sortRows(rows.filter(row => matches(row, filters)), order).slice(0, limit).map(row => pick(row, select))];
         if (method === 'POST') {
             const now = new Date().toISOString();
-            const row = { id: table === 'audit_log' ? rows.length + 1 : randomUUID(), created_at: now, updated_at: now, ...body };
+            const keys = COMPOSITE_KEYS[table];
+            if (keys && rows.some(row => keys.every(key => row[key] === body[key]))) return [409, { code: '23505' }];
+            const row = { ...(keys ? {} : { id: table === 'audit_log' ? rows.length + 1 : randomUUID() }), created_at: now, updated_at: now, ...body };
             rows.push(row);
             return [201, [row]];
         }
@@ -226,8 +243,31 @@ export function createFakeState({ onMail = () => {} } = {}) {
     return { state, handle };
 }
 
-export async function startFakeSupabase({ port = 0, onMail } = {}) {
+/** Yalnızca yerel geliştirme ve uçtan uca testler için örnek katalog (canlı veriye asla yazılmaz). */
+export function seedDemoCatalog(state) {
+    const now = new Date().toISOString();
+    const categories = [
+        { id: randomUUID(), slug: 'ic-mekan', name: 'İç Mekan Bitkileri', description: null, sort_order: 0, is_active: true },
+        { id: randomUUID(), slug: 'dis-mekan', name: 'Dış Mekan Bitkileri', description: null, sort_order: 1, is_active: true }
+    ];
+    const product = (category, slug, name, price, stock, extra = {}) => ({
+        id: randomUUID(), slug, category_id: category.id, name, summary: `${name} için örnek açıklama.`, description: null,
+        price, compare_at_price: null, stock, shippable: true, images: [], is_active: true, sort_order: 0,
+        created_at: now, updated_at: now, ...extra
+    });
+    state.tables.categories.push(...categories.map(row => ({ ...row, created_at: now, updated_at: now })));
+    state.tables.products.push(
+        product(categories[0], 'ornek-monstera', 'Örnek Monstera', 45000, 12, { compare_at_price: 52000 }),
+        product(categories[0], 'ornek-sukulent', 'Örnek Sukulent Seti', 18000, 2),
+        product(categories[0], 'ornek-orkide', 'Örnek Orkide', 39000, 0),
+        product(categories[1], 'ornek-zeytin', 'Örnek Zeytin Fidanı', 125000, 5, { shippable: false }),
+        product(categories[1], 'ornek-lavanta', 'Örnek Lavanta', 9000, 40)
+    );
+}
+
+export async function startFakeSupabase({ port = 0, onMail, demoCatalog = false } = {}) {
     const { state, handle } = createFakeState({ onMail });
+    if (demoCatalog) seedDemoCatalog(state);
     const server = createServer((req, res) => {
         handle(req, res).catch(() => send(res, 500, { error_code: 'unexpected_failure' }));
     });

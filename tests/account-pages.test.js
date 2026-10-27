@@ -76,8 +76,12 @@ test('Hesabım sayfası dizine eklenmez ve erişilebilir sekme yapısı kullanı
     assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
     assert.doesNotMatch(html, /rel="canonical"/);
     assert.match(html, /role="tablist"/);
-    assert.equal((html.match(/role="tab"/g) || []).length, 3);
-    assert.equal((html.match(/role="tabpanel"/g) || []).length, 3);
+    const tabs = (html.match(/role="tab"/g) || []).length;
+    assert.ok(tabs >= 3);
+    assert.equal((html.match(/role="tabpanel"/g) || []).length, tabs);
+    for (const name of ['profil', 'adresler', 'guvenlik', 'favoriler']) {
+        assert.match(html, new RegExp(`aria-controls="panel-${name}"[\\s\\S]*id="panel-${name}"`), name);
+    }
     for (const form of ['profile', 'address', 'password', 'delete-request']) {
         assert.match(html, new RegExp(`data-account-form="${form}"`), form);
     }

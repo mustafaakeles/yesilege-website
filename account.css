@@ -195,9 +195,9 @@
 
 .account-tabs {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 16px;
-    overflow-x: auto;
 }
 
 .account-tabs [role="tab"] {
@@ -360,5 +360,31 @@
 
     .account-tabs [role="tab"] i {
         display: none;
+    }
+}
+
+.account-panel-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 1rem;
+}
+
+.account-panel-head h2 {
+    margin: 0;
+}
+
+/* Telefonda sekmeler yatay kaydırma yerine iki sütunlu ızgaraya dizilir */
+@media (max-width: 560px) {
+    .account-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .account-tabs [role="tab"] {
+        justify-content: center;
+        padding: 10px 12px;
     }
 }

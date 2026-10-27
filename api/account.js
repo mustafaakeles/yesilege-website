@@ -2,8 +2,7 @@
 // Her sorgu oturumdaki kullanıcı kimliğiyle sınırlanır; kullanıcı kimliği istemciden asla okunmaz.
 
 import { fail } from './_lib/http.js';
-import { requireUser } from './_lib/session.js';
-import { createEndpoint, rateLimited } from './_lib/endpoint.js';
+import { authed, createEndpoint, rateLimited } from './_lib/endpoint.js';
 import { eq } from './_lib/supabase.js';
 import { LIMITS } from './_lib/ratelimit.js';
 import { sendEmail, escapeHtml } from './_lib/resend.js';
@@ -24,15 +23,6 @@ function toAddressRow(data) {
 
 function fromAddressRow(row) {
     return { id: row.id, ...Object.fromEntries(Object.entries(ADDRESS_FIELDS).map(([key, column]) => [key, row[column]])) };
-}
-
-// İşlemi oturum doğrulamasıyla sarar; ctx.user ve ctx.accessToken eklenir.
-function authed(run) {
-    return async function withUser(ctx) {
-        const session = await requireUser(ctx.req, ctx.res, ctx.supabase);
-        if (!session) return;
-        return run({ ...ctx, user: session.user, uid: session.user.id, accessToken: session.accessToken });
-    };
 }
 
 async function me(ctx) {

@@ -2,52 +2,11 @@
 // Oturum HttpOnly çerezlerde tutulur; bu betik token görmez. Kullanıcı verisi DOM'a yalnızca textContent ile yazılır.
 
 import { safeReturnPath } from './account-utils.js';
+import { api, bindForm, errorText, show } from './api-client.js';
 
-const NETWORK_ERROR = 'Bağlantı kurulamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.';
-const GENERIC_ERROR = 'Şu anda işleminizi tamamlayamıyoruz, lütfen biraz sonra tekrar deneyin.';
+export { api, bindForm, errorText, show };
+
 const params = new URLSearchParams(location.search);
-
-export async function api(endpoint, action, { method = 'POST', body } = {}) {
-    try {
-        const response = await fetch(`/api/${endpoint}?action=${encodeURIComponent(action)}`, {
-            method,
-            credentials: 'same-origin',
-            headers: body === undefined ? {} : { 'Content-Type': 'application/json' },
-            body: body === undefined ? undefined : JSON.stringify(body)
-        });
-        const data = await response.json().catch(() => ({}));
-        return { ok: response.ok && data.success === true, status: response.status, data };
-    } catch {
-        return { ok: false, status: 0, data: { error: NETWORK_ERROR } };
-    }
-}
-
-export const errorText = (result) => result.data?.error || (result.status === 0 ? NETWORK_ERROR : GENERIC_ERROR);
-
-export function show(feedback, message, state) {
-    feedback.textContent = message;
-    feedback.dataset.state = state;
-}
-
-/** Formu çift gönderime karşı kilitler; submit(values) { ok, message } döndürür. */
-export function bindForm(form, submit) {
-    const button = form.querySelector('button[type="submit"]');
-    const feedback = form.querySelector('.form-feedback');
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        if (button.disabled) return;
-        button.disabled = true;
-        form.setAttribute('aria-busy', 'true');
-        show(feedback, 'İşleniyor…', 'sending');
-        try {
-            const outcome = await submit(new FormData(form));
-            if (outcome?.message) show(feedback, outcome.message, outcome.ok ? 'success' : 'error');
-        } finally {
-            button.disabled = false;
-            form.removeAttribute('aria-busy');
-        }
-    });
-}
 
 function initPasswordToggles() {
     document.querySelectorAll('[data-password-toggle]').forEach(button => {
@@ -127,8 +86,6 @@ function initAuthPages() {
 
 // ---------- Hesabım ----------
 
-const TABS = ['profil', 'adresler', 'guvenlik'];
-
 function initTabs(root) {
     const tabs = [...root.querySelectorAll('[role="tab"]')];
     const select = (tab, focus = false) => {
@@ -139,6 +96,7 @@ function initTabs(root) {
             document.getElementById(other.getAttribute('aria-controls')).hidden = !active;
         }
         if (focus) tab.focus();
+        root.dispatchEvent(new CustomEvent('account:tab', { detail: tab.dataset.tab }));
         history.replaceState(null, '', `${location.pathname}${location.search}#${tab.dataset.tab}`);
     };
     tabs.forEach((tab, index) => {
@@ -150,7 +108,8 @@ function initTabs(root) {
             select(tabs[(moves[event.key] + tabs.length) % tabs.length], true);
         });
     });
-    const initial = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'profil';
+    const names = tabs.map(tab => tab.dataset.tab);
+    const initial = names.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'profil';
     const start = tabs.find(tab => tab.dataset.tab === initial);
     if (start) select(start);
 }

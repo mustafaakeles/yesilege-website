@@ -4,6 +4,7 @@
 import { allowedOrigins, fail, getClientIp, guardRequest } from './http.js';
 import { createSupabase, readSupabaseConfig } from './supabase.js';
 import { hitLimit, limitKey } from './ratelimit.js';
+import { requireUser } from './session.js';
 
 export const UNAVAILABLE = 'Şu anda işleminizi tamamlayamıyoruz, lütfen biraz sonra tekrar deneyin.';
 const TOO_MANY = 'Çok fazla deneme yaptınız. Lütfen biraz sonra tekrar deneyin.';
@@ -14,7 +15,7 @@ export function createEndpoint(name, actions, { env = process.env, fetchImpl = f
         const action = String(req.query?.action || '');
         const spec = Object.hasOwn(actions, action) ? actions[action] : null;
         if (!spec) return fail(res, 404, 'İşlem bulunamadı.');
-        if (!guardRequest(req, res, { methods: spec.methods, origins: allowedOrigins(env) })) return;
+        if (!guardRequest(req, res, { methods: spec.methods, origins: allowedOrigins(env), maxBytes: spec.maxBytes })) return;
 
         const { config, missing } = readSupabaseConfig(env);
         if (missing.length > 0) {
@@ -31,6 +32,15 @@ export function createEndpoint(name, actions, { env = process.env, fetchImpl = f
             console.error(`${name}/${action} başarısız:`, error?.status ?? error?.name ?? 'bilinmeyen hata');
             if (!res.headersSent && !res.writableEnded && !res.ended) return fail(res, 502, UNAVAILABLE);
         }
+    };
+}
+
+/** İşlemi oturum doğrulamasıyla sarar; ctx.user, ctx.uid ve ctx.accessToken eklenir. */
+export function authed(run) {
+    return async function withUser(ctx) {
+        const session = await requireUser(ctx.req, ctx.res, ctx.supabase);
+        if (!session) return;
+        return run({ ...ctx, user: session.user, uid: session.user.id, accessToken: session.accessToken });
     };
 }
 
