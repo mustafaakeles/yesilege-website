@@ -1,0 +1,59 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "yesilege-dev",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/dev_server.mjs",
+        "--fake-supabase"
+      ],
+      "port": 8090
+    },
+    {
+      "name": "yesilege-static",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--yes",
+        "http-server@14.1.1",
+        "-p",
+        "8080",
+        "-c-1"
+      ],
+      "port": 8080
+    },
+    {
+      "name": "codera-reference",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--yes",
+        "http-server@14.1.1",
+        "../www.codera.com.tr",
+        "-p",
+        "8765",
+        "-c-1"
+      ],
+      "port": 8765
+    },
+    {
+      "name": "yesilege-doctor-dev",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:/Users/KLAUS/AppData/Local/Temp/claude/C--Users-KLAUS-Documents-GitHub-yesilege-website/cff4770c-506c-42de-92c5-ba3559dc0fca/scratchpad/doctor-dev-server.mjs",
+        ".",
+        "8091"
+      ],
+      "port": 8091
+    },
+    {
+      "name": "yesilege-vercel-like",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:/Users/KLAUS/AppData/Local/Temp/claude/C--Users-KLAUS-Documents-GitHub-yesilege-website/ac3a24c5-00bb-4f32-aff9-a6f9f59ee9ee/scratchpad/vercel-like-server.mjs",
+        ".",
+        "8090"
+      ],
+      "port": 8090
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+/* Hesap sayfaları: giriş, kayıt, şifre sıfırlama ve Hesabım. style.css belirteçlerini kullanır. */
+
+.account-section {
+    padding: clamp(40px, 7vw, 88px) 0;
+}
+
+.auth-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: start;
+    max-width: 1040px;
+}
+
+.auth-card h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    line-height: 1.1;
+    color: var(--forest-900);
+    margin-bottom: 0.5rem;
+}
+
+.auth-card .auth-lead {
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+}
+
+.auth-aside {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border-radius: var(--radius-lg);
+    background: var(--sage-100);
+    color: var(--forest-800);
+}
+
+.auth-aside h2 {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+}
+
+.auth-aside ul {
+    display: grid;
+    gap: 10px;
+    padding: 0;
+    list-style: none;
+}
+
+.auth-aside li {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+}
+
+.auth-aside li i {
+    color: var(--forest-600);
+}
+
+.auth-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-top: 1rem;
+    font-size: 0.92rem;
+}
+
+.auth-links a,
+.auth-inline-link {
+    color: var(--forest-700);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 56px;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    width: 44px;
+    height: 44px;
+    transform: translateY(-50%);
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--forest-700);
+    cursor: pointer;
+}
+
+.password-toggle:focus-visible {
+    outline: 2px solid var(--forest-600);
+    outline-offset: 2px;
+}
+
+.field-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+}
+
+.check-group {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+.check-group input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: var(--forest-700);
+}
+
+.page-notice:empty {
+    display: none;
+}
+
+.page-notice {
+    margin: 0 0 1rem;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    background: #fbeee9;
+}
+
+.auth-details {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+}
+
+.auth-details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--forest-700);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+.auth-details form {
+    margin-top: 0.75rem;
+}
+
+@media (max-width: 860px) {
+    .auth-shell {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .account-section .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}

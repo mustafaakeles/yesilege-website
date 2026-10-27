@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     initNavbar();
+    initAccountLink();
     initMobileMenu();
     initCounters(prefersReducedMotion);
     initHeroSlider(prefersReducedMotion);
@@ -14,6 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
     initBlogFilter();
     initScrollStrips();
 });
+
+// Hesap bağlantısı: ye_session yalnızca arayüz ipucudur; yetki kararı sunucuda verilir.
+function initAccountLink() {
+    if (!/(?:^|;\s*)ye_session=1(?:;|$)/.test(document.cookie)) return;
+    document.querySelectorAll('[data-account-link]').forEach(link => {
+        link.setAttribute('href', link.getAttribute('href').replace(/giris\.html$/, 'hesabim.html'));
+        link.setAttribute('aria-label', 'Hesabım');
+        const label = link.querySelector('span');
+        if (label) label.textContent = 'Hesabım';
+    });
+}
 
 // 1. Navbar: kaydırınca gölge
 function initNavbar() {

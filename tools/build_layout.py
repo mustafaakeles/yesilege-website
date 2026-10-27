@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 # style.css / script.js / mascot.* / motion.* / screens.* / doctor.* değiştiğinde artırın: tarayıcı önbelleğindeki eski dosyaları geçersiz kılar
-ASSET_VERSION = "20261027b"
+ASSET_VERSION = "20261027c"
 
 SERVICES = [
     ("garden-materials", "Bahçe Malzemeleri"),
@@ -60,6 +60,7 @@ def nav_html(prefix: str, active: str) -> str:
             </ul>
             <div class="nav-actions">
                 <a href="tel:+905350805951" class="nav-phone" aria-label="Telefon: 0535 080 59 51"><i class="fas fa-phone-alt" aria-hidden="true"></i><span>0535 080 59 51</span></a>
+                <a href="{prefix}giris.html" class="nav-account" data-account-link aria-label="Giriş yap"><i class="fas fa-user" aria-hidden="true"></i><span>Giriş</span></a>
                 <a href="{prefix}contact.html#teklif" class="btn btn-primary btn-sm">Teklif Alın</a>
                 <button class="hamburger" type="button" aria-label="Menüyü aç/kapat" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
             </div>
@@ -172,7 +173,9 @@ def process(path: Path, check_only: bool = False) -> bool:
     # Betikleri ertele, CSS/JS adreslerine sürüm ekle (önbellek kırma)
     text = re.sub(r'<script src="((?:\.\./)?(?:script|mascot|screens|doctor)\.js)(?:\?v=\w+)?"( defer)?></script>',
                   rf'<script src="\1?v={ASSET_VERSION}" defer></script>', text)
-    text = re.sub(r'href="((?:\.\./)?(?:style|mascot|motion|screens|doctor)\.css)(?:\?v=\w+)?"', rf'href="\1?v={ASSET_VERSION}"', text)
+    text = re.sub(r'<script type="module" src="((?:\.\./)?account\.js)(?:\?v=\w+)?"></script>',
+                  rf'<script type="module" src="\1?v={ASSET_VERSION}"></script>', text)
+    text = re.sub(r'href="((?:\.\./)?(?:style|mascot|motion|screens|doctor|account)\.css)(?:\?v=\w+)?"', rf'href="\1?v={ASSET_VERSION}"', text)
     text = re.sub(r'<script src="((?:\.\./)?motion\.js)(?:\?v=\w+)?"></script>', rf'<script src="\1?v={ASSET_VERSION}"></script>', text)
 
     # Motion katmanı: style.css'in hemen ardından, <head> içinde senkron (ilk boyamadan önce html sınıflarını kurar)

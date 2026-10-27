@@ -45,3 +45,18 @@ test('animasyonlu ekranlar temsili olduğu açıkça belirtilerek sunulur', () =
     assert.match(html, /canlı sera veya stok verisi değildir/);
     assert.doesNotMatch(html, /500\+|100\.000\+|50\+ Uzman/);
 });
+
+test('menülü her sayfada hesap bağlantısı bulunur', () => {
+    for (const path of pages) {
+        const html = read(path);
+        if (!html.includes('aria-label="Ana menü"')) continue;
+        const prefix = path.startsWith('blog-yazilari/') ? '../' : '';
+        assert.ok(html.includes(`<a href="${prefix}giris.html" class="nav-account" data-account-link aria-label="Giriş yap">`), path);
+    }
+});
+
+test('script.js oturum ipucu çerezine göre hesap bağlantısını günceller', () => {
+    const script = read('script.js');
+    assert.match(script, /ye_session=1/);
+    assert.match(script, /hesabim\.html/);
+});
