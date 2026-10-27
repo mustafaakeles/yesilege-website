@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ASSET_VERSION = "20261027c"
 
 # Navbar hesap bağlantısı: Supabase canlı ortamda kurulup doğrulanınca True yapın (docs/UYELIK_KURULUM.md).
-ACCOUNT_LINK_ENABLED = False
+ACCOUNT_LINK_ENABLED = True
 
 SERVICES = [
     ("garden-materials", "Bahçe Malzemeleri"),
