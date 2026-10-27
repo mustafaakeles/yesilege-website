@@ -27,8 +27,8 @@ const AREAS = Object.freeze({
 });
 
 const LIMITS = Object.freeze({ name: 100, email: 254, phone: 30, district: 100, message: 5000 });
-const EMAIL_RE = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[^\s@<>()[\]\\,;:"]{2,}$/;
-const PHONE_RE = /^[0-9+()\s-]{7,30}$/;
+export const EMAIL_RE = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[^\s@<>()[\]\\,;:"]{2,}$/;
+export const PHONE_RE = /^[0-9+()\s-]{7,30}$/;
 
 const clean = (value) => (typeof value === 'string' ? value.trim() : '');
 
