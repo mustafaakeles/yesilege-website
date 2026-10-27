@@ -202,7 +202,7 @@ p {
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--clay-600);
+    color: var(--clay-700);
     margin-bottom: 1rem;
 }
 
@@ -350,6 +350,12 @@ p {
     align-items: center;
     justify-content: space-between;
     gap: 24px;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
 }
 
 .logo img {
@@ -794,6 +800,7 @@ p {
     margin-top: auto;
     display: inline-flex;
     align-items: center;
+    min-height: 44px;
     gap: 8px;
     font-weight: 600;
     font-size: 0.93rem;
@@ -923,6 +930,7 @@ p {
 
 .gallery-overlay p {
     color: #e8d3ad;
+    overflow-wrap: anywhere;
     font-size: 0.82rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -985,12 +993,39 @@ p {
     align-items: center;
 }
 
-.area-map {
+.area-map,
+.route-map {
+    position: relative;
     border-radius: var(--radius-lg);
     overflow: hidden;
     border: 1px solid var(--line);
-    background: var(--sand-200);
+    background:
+        radial-gradient(circle at 50% 46%, rgba(163, 90, 51, 0.16) 0 14px, transparent 15px),
+        linear-gradient(rgba(31, 61, 51, 0.06) 1px, transparent 1px) 0 0 / 28px 28px,
+        linear-gradient(90deg, rgba(31, 61, 51, 0.06) 1px, transparent 1px) 0 0 / 28px 28px,
+        var(--sand-200);
+}
+
+.area-map {
     aspect-ratio: 4 / 3;
+}
+
+/* Harita iframe'i yüklenince bu yazının üstünü örter */
+.area-map::before,
+.route-map::before {
+    content: 'Harita yükleniyor…';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(46% + 24px);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+}
+
+.area-map iframe,
+.route-map iframe {
+    position: relative;
 }
 
 .area-map iframe {
@@ -1373,7 +1408,7 @@ p {
 }
 
 #iletisim .form-group label {
-    font-size: 0.84rem;
+    font-size: 0.875rem;
     margin-bottom: 4px;
 }
 
@@ -1511,7 +1546,7 @@ p {
 }
 
 .contact-section .form-group label {
-    font-size: 0.81rem;
+    font-size: 0.875rem;
     margin-bottom: 4px;
 }
 
@@ -1621,6 +1656,7 @@ p {
 }
 
 .contact-form label small {
+    font-size: 0.95em;
     font-weight: 400;
     color: var(--ink-soft);
 }
@@ -1908,12 +1944,13 @@ a.reach-card:hover {
    17. Care guide
    =========================== */
 .care-section {
-    padding: clamp(3.5rem, 7vw, 6rem) 0;
+    /* Yalnızca dikey boşluk: .container'ın yan boşluğunu ezmesin */
+    padding-block: clamp(3.5rem, 7vw, 6rem);
 }
 
 .care-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
     gap: 24px;
 }
 
@@ -2070,7 +2107,7 @@ a.reach-card:hover {
 .read-btn {
     margin-top: auto;
     align-self: flex-start;
-    min-height: 0;
+    min-height: 44px;
     padding: 0;
     color: var(--forest-700);
     border-radius: 0;
@@ -2200,6 +2237,7 @@ img.content-img {
 .back-link {
     display: inline-flex;
     align-items: center;
+    min-height: 44px;
     gap: 8px;
     margin-top: 2rem;
     font-weight: 600;
@@ -2277,11 +2315,15 @@ footer h4 {
 
 .footer-links ul {
     display: grid;
-    gap: 10px;
+    /* Bağlantılar 44px dokunma alanı taşıdığı için ek aralık gerekmiyor */
+    gap: 0;
 }
 
 .footer-links a,
 .footer-contact a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: rgba(255, 255, 255, 0.75);
     font-size: 0.93rem;
 }
@@ -2294,8 +2336,8 @@ footer h4 {
 .footer-contact li {
     display: flex;
     gap: 10px;
-    align-items: flex-start;
-    margin-bottom: 12px;
+    align-items: center;
+    margin-bottom: 2px;
     font-size: 0.93rem;
 }
 
@@ -2724,5 +2766,197 @@ footer h4 {
 @media (max-width: 640px) {
     .local-services .reach-grid {
         grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Koyu footer zemininde ikincil buton görünür olsun */
+footer .btn-ghost {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: var(--white);
+}
+
+footer .btn-ghost:hover {
+    background: var(--white);
+    border-color: var(--white);
+    color: var(--forest-800);
+}
+
+/* ===========================
+   Erişilebilirlik yardımcıları
+   =========================== */
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ===========================
+   Hizmetler: yapışkan kategori şeridi
+   =========================== */
+html:has(.svc-subnav) {
+    scroll-padding-top: calc(var(--nav-h) + 76px);
+}
+
+.svc-subnav {
+    position: sticky;
+    top: var(--nav-h);
+    z-index: calc(var(--z-nav) - 1);
+    margin-top: 16px;
+    background: rgba(247, 244, 238, 0.92);
+    backdrop-filter: saturate(140%) blur(12px);
+    -webkit-backdrop-filter: saturate(140%) blur(12px);
+    border-bottom: 1px solid var(--line);
+}
+
+.svc-subnav ul {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    padding-block: 12px;
+    /* Taşan çipler yalnızca şerit içinde kayar, sayfayı genişletmez */
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+}
+
+.svc-subnav ul::-webkit-scrollbar {
+    display: none;
+}
+
+.svc-subnav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--forest-800);
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.svc-subnav a:hover {
+    border-color: var(--sage-500);
+}
+
+.svc-subnav a[aria-current="true"] {
+    background: var(--forest-700);
+    border-color: var(--forest-700);
+    color: var(--white);
+}
+
+/* ===========================
+   Blog: kategori filtresi ve öne çıkan yazı
+   =========================== */
+.blog-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 2rem;
+    /* Odak çerçevesi kırpılmasın */
+    padding: 6px 6px;
+    /* Tek satır: sığmazsa yalnızca şerit içinde yana kayar */
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+}
+
+.blog-filters::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-chip {
+    flex: none;
+}
+
+@media (min-width: 1024px) {
+    .blog-filters {
+        justify-content: safe center;
+    }
+
+    .blog-filters .filter-chip {
+        padding: 0 14px;
+    }
+}
+
+/* Şerit sığmıyorsa kenarlarda solarak devamı olduğunu gösterir */
+.fade-end {
+    mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent);
+}
+
+.fade-start {
+    mask-image: linear-gradient(90deg, transparent, #000 48px);
+}
+
+.fade-start.fade-end {
+    mask-image: linear-gradient(90deg, transparent, #000 48px, #000 calc(100% - 48px), transparent);
+}
+
+.blog-filters:empty {
+    display: none;
+}
+
+.filter-chip {
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--forest-800);
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.filter-chip:hover {
+    border-color: var(--sage-500);
+}
+
+.filter-chip[aria-pressed="true"] {
+    background: var(--forest-700);
+    border-color: var(--forest-700);
+    color: var(--white);
+}
+
+.filter-chip:focus-visible,
+.svc-subnav a:focus-visible {
+    outline: 3px solid rgba(111, 143, 114, 0.5);
+    outline-offset: 2px;
+}
+
+.blog-card[hidden] {
+    display: none;
+}
+
+.blog-card .blog-img {
+    overflow: hidden;
+}
+
+/* Filtre yokken ilk yazı geniş, yatay kart olarak öne çıkar */
+@media (min-width: 1024px) {
+    .blog-grid:not(.is-filtered) .blog-card:first-child {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+    }
+
+    .blog-grid:not(.is-filtered) .blog-card:first-child .blog-img {
+        aspect-ratio: auto;
+        min-height: 100%;
+    }
+
+    .blog-grid:not(.is-filtered) .blog-card:first-child h3 {
+        font-size: clamp(1.6rem, 2.2vw, 2.1rem);
     }
 }

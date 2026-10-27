@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 # style.css / script.js / mascot.* / motion.* / screens.* / doctor.* değiştiğinde artırın: tarayıcı önbelleğindeki eski dosyaları geçersiz kılar
-ASSET_VERSION = "20261026b"
+ASSET_VERSION = "20261027b"
 
 SERVICES = [
     ("garden-materials", "Bahçe Malzemeleri"),
