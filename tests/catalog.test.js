@@ -8,7 +8,8 @@ const ENV = {
     SUPABASE_URL: 'https://p.supabase.co',
     SUPABASE_ANON_KEY: 'anon-key',
     SUPABASE_SERVICE_ROLE_KEY: 'service-key',
-    SITE_URL: 'https://yesilege.com.tr'
+    SITE_URL: 'https://yesilege.com.tr',
+    ORDERS_OPEN: 'true'
 };
 const UID = '11111111-1111-4111-8111-111111111111';
 const CAT = '33333333-3333-4333-8333-333333333333';
@@ -21,10 +22,10 @@ const product = (id, extra = {}) => ({
     price: 45000, compare_at_price: null, stock: 7, shippable: true, images: [], sort_order: 0, ...extra
 });
 
-async function call(action, { routes = {}, body = {}, method = 'GET', query = {}, cookie = '' } = {}) {
+async function call(action, { routes = {}, body = {}, method = 'GET', query = {}, cookie = '', env = ENV } = {}) {
     const fetchImpl = fakeFetch({ 'GET /auth/v1/user': { body: USER }, 'GET /rest/v1/categories': { body: [CATEGORY] }, ...routes });
     const res = mockRes();
-    await createHandler({ env: ENV, fetchImpl })(makeReq({ method, body, headers: cookie ? { cookie } : {}, query: { action, ...query } }), res);
+    await createHandler({ env, fetchImpl })(makeReq({ method, body, headers: cookie ? { cookie } : {}, query: { action, ...query } }), res);
     return { res, calls: fetchImpl.calls };
 }
 const restCalls = (calls, method, table) => calls.filter(c => c.method === method && c.path === `/rest/v1/${table}`);
@@ -60,6 +61,32 @@ test('ürün sayfası benzer ürünleri kendisi hariç döndürür; yayında de�
     const missing = await call('product', { query: { slug: 'urun-yok' }, routes: { 'GET /rest/v1/products': { body: [] } } });
     assert.equal(missing.res.statusCode, 404);
     assert.equal((await call('product', { query: { slug: '../etc' } })).res.statusCode, 404);
+});
+
+test('sipariş kapalıyken vitrin: yayındaki ürünler ve taslaklar stoksuz, taslağın fiyatı ve kimliği yok', async () => {
+    const closed = { ...ENV, ORDERS_OPEN: undefined };
+    const { res } = await call('list', { env: closed, routes: { 'GET /rest/v1/products': { body: [product(P1, { slug: 'orkide-phalaenopsis' })] } } });
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.body.ordersOpen, false);
+    assert.ok(res.body.products.length > 30);
+    assert.ok(res.body.products.every(item => item.inStock === false));
+    assert.equal(res.body.products.filter(item => item.slug === 'orkide-phalaenopsis').length, 1, 'yayındaki ürün taslakla çiftlenmez');
+    const draft = res.body.products.find(item => item.slug === 'starlice-strelitzia');
+    assert.equal(draft.id, null);
+    assert.equal(draft.price, null);
+    assert.deepEqual(draft.images, ['images/urunler/starlice-strelitzia.webp']);
+    assert.ok(res.body.categories.some(item => item.slug === 'kaktus-ve-sukulent'));
+
+    const page = await call('product', { env: closed, query: { slug: 'starlice-strelitzia' }, routes: { 'GET /rest/v1/products': { body: [] } } });
+    assert.equal(page.res.statusCode, 200);
+    assert.equal(page.res.body.product.name, 'Starliçe (Strelitzia)');
+    assert.ok(page.res.body.related.every(item => item.category.slug === 'ic-mekan-bitkileri' && item.slug !== 'starlice-strelitzia'));
+
+    const live = await call('product', { env: closed, query: { slug: 'urun-4444' }, routes: { 'GET /rest/v1/products': { body: [product(P1)] } } });
+    assert.equal(live.res.body.product.inStock, false);
+
+    const openMissing = await call('product', { query: { slug: 'starlice-strelitzia' }, routes: { 'GET /rest/v1/products': { body: [] } } });
+    assert.equal(openMissing.res.statusCode, 404, 'sipariş açıkken taslak gösterilmez');
 });
 
 test('favoriler oturum ister', async () => {

@@ -5,7 +5,7 @@ import { fail } from './_lib/http.js';
 import { authed, createEndpoint, rateLimited } from './_lib/endpoint.js';
 import { parseCookies, COOKIES, requireUser } from './_lib/session.js';
 import { eq } from './_lib/supabase.js';
-import { UUID_RE, inList, loadSettings } from './_lib/shop.js';
+import { UUID_RE, inList, loadSettings, ordersOpen } from './_lib/shop.js';
 import { ORDER_CODE_RE, orderEmail, orderError, publicOrder } from './_lib/orders.js';
 import { sendEmail } from './_lib/resend.js';
 
@@ -30,6 +30,10 @@ export function cartItems(input) {
 const DELIVERY = new Set(['cargo', 'pickup']);
 const PAYMENT = new Set(['bank_transfer', 'pay_at_store']);
 const pointsOf = (value) => (Number.isInteger(value) && value >= 0 && value <= 1_000_000 ? value : null);
+export const ORDERS_CLOSED = 'Mağazamız şu anda çevrim içi sipariş almıyor. Ürünlerimiz için bize telefonla ya da iletişim formundan ulaşabilirsiniz.';
+
+/** Sipariş kapalıyken sepet fiyatı ve sipariş işlemlerini reddeder. */
+const whenOpen = (run) => (ctx) => (ordersOpen(ctx.env) ? run(ctx) : fail(ctx.res, 403, ORDERS_CLOSED));
 
 function publicQuote(quote) {
     return {
@@ -54,6 +58,7 @@ async function options(ctx) {
     const { shipping, bank, store, loyalty } = await loadSettings(ctx.supabase);
     ctx.res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=60');
     return ok(ctx.res, {
+        ordersOpen: ordersOpen(ctx.env),
         bankEnabled: Boolean(bank?.iban),
         shipping: { fee: shipping.fee, freeThreshold: shipping.free_threshold },
         store: { pickupAddress: store.pickup_address, pickupHours: store.pickup_hours },
@@ -206,8 +211,8 @@ const GET = ['GET'];
 const POST = ['POST'];
 export const ACTIONS = Object.freeze({
     options: { methods: GET, run: options },
-    quote: { methods: POST, run: quote },
-    place: { methods: POST, run: authed(place) },
+    quote: { methods: POST, run: whenOpen(quote) },
+    place: { methods: POST, run: whenOpen(authed(place)) },
     orders: { methods: GET, run: authed(orders) },
     order: { methods: GET, run: authed(order) },
     cancel: { methods: POST, run: authed(cancel) }

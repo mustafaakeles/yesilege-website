@@ -117,6 +117,8 @@ export async function startDevServer({ port = 8090, env = process.env, fakeSupab
             SUPABASE_ANON_KEY: FAKE_KEYS.anon,
             SUPABASE_SERVICE_ROLE_KEY: FAKE_KEYS.service,
             SITE_URL: origin,
+            // Uçtan uca testler sipariş akışını sınar; vitrin modu için ORDERS_OPEN=false verin
+            ORDERS_OPEN: env.ORDERS_OPEN ?? 'true',
             ALLOWED_DEV_ORIGINS: `http://127.0.0.1:${server.address().port}`
         };
     }

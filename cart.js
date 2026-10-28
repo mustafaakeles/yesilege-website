@@ -111,11 +111,24 @@ function emptyCart() {
     ]);
 }
 
+// Vitrin modu: sunucu siparişi kapattığında sepet ve ödeme yerine bilgi gösterilir
+function ordersClosed() {
+    return el('div', { className: 'shop-empty' }, [
+        icon('seedling'), el('h2', { text: 'Çevrim içi siparişler çok yakında' }),
+        el('p', { text: 'Şu anda çevrim içi sipariş almıyoruz. Ürünlerimiz için bize telefonla ya da iletişim formundan ulaşabilirsiniz.' }),
+        el('a', { className: 'btn btn-primary', text: 'Bize ulaşın', attrs: { href: 'contact.html#teklif' } })
+    ]);
+}
+
 // ---------- Sepet ----------
 
 async function initCart(root) {
     const body = root.querySelector('[data-cart-body]');
     const optionsResult = await api('checkout', 'options', { method: 'GET' });
+    if (optionsResult.ok && optionsResult.data.ordersOpen === false) {
+        body.removeAttribute('aria-busy');
+        return body.replaceChildren(ordersClosed());
+    }
     const store = optionsResult.ok ? optionsResult.data.store : null;
     let delivery = readDelivery();
 
@@ -218,6 +231,7 @@ async function initCheckout(root) {
         api('account', 'addresses', { method: 'GET' })
     ]);
     if (me.status === 401) return location.assign(loginUrl());
+    if (options.ok && options.data.ordersOpen === false) return holder.replaceChildren(ordersClosed());
     if (!me.ok || !options.ok) return holder.replaceChildren(el('p', { className: 'form-feedback', text: errorText(me.ok ? options : me), attrs: { 'data-state': 'error' } }));
     if (!me.data.user.emailVerified) {
         return holder.replaceChildren(el('div', { className: 'shop-empty' }, [icon('envelope'), el('h2', { text: 'E-posta adresinizi doğrulayın' }),

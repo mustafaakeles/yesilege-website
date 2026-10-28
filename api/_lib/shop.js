@@ -1,6 +1,7 @@
 // Katalog, sipariş ve yönetim uç noktalarının ortak yardımcıları (saf fonksiyonlar + ayar okuma).
 
 import { eq } from './supabase.js';
+import { DRAFT_CATEGORIES, PRODUCT_DRAFTS } from '../../product-drafts.js';
 
 export const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 export const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -36,6 +37,57 @@ export function publicProduct(row, categories = new Map()) {
 export function publicCategory(row) {
     return { slug: row.slug, name: row.name, description: row.description || '' };
 }
+
+/**
+ * Çevrim içi sipariş yalnızca ORDERS_OPEN=true ortam değişkeniyle açılır. Kapalıyken mağaza vitrin olarak çalışır:
+ * ürünler "Stokta yok" görünür, sepet fiyatı ve sipariş reddedilir. Açarken tools/build_layout.py → ORDERING_ENABLED da True olmalı.
+ */
+export const ordersOpen = (env) => env?.ORDERS_OPEN === 'true';
+
+const DRAFT_CATEGORY_BY_SLUG = new Map(DRAFT_CATEGORIES.map(category => [category.slug, category]));
+
+/** Vitrindeki taslak ürün: fiyatı ve kimliği yoktur, satın alınamaz. */
+export function showcaseProduct(draft) {
+    const category = DRAFT_CATEGORY_BY_SLUG.get(draft.category);
+    return {
+        id: null,
+        slug: draft.slug,
+        name: draft.name,
+        summary: draft.summary,
+        description: draft.description,
+        price: null,
+        compareAtPrice: null,
+        inStock: false,
+        lowStock: false,
+        shippable: draft.shippable,
+        images: [draft.image],
+        category: category ? { slug: category.slug, name: category.name } : null
+    };
+}
+
+/** Sipariş kapalıyken: yayındaki ürünler stoksuz gösterilir, panelde henüz eklenmemiş taslaklar vitrine eklenir. */
+export function showcaseCatalog(products, categories) {
+    const known = new Set(products.map(product => product.slug));
+    const all = [
+        ...products.map(product => ({ ...product, inStock: false, lowStock: false })),
+        ...PRODUCT_DRAFTS.filter(draft => !known.has(draft.slug)).map(showcaseProduct)
+    ];
+    const categoryList = [...categories];
+    for (const meta of DRAFT_CATEGORIES) {
+        if (!categoryList.some(category => category.slug === meta.slug)) categoryList.push({ slug: meta.slug, name: meta.name, description: '' });
+    }
+    return { products: all, categories: categoryList };
+}
+
+export const showcaseDraft = (slug) => {
+    const draft = PRODUCT_DRAFTS.find(item => item.slug === slug);
+    return draft ? showcaseProduct(draft) : null;
+};
+
+export const showcaseRelated = (product, limit) => PRODUCT_DRAFTS
+    .filter(draft => draft.category === product.category?.slug && draft.slug !== product.slug)
+    .slice(0, limit)
+    .map(showcaseProduct);
 
 export const SETTING_KEYS = Object.freeze(['shipping', 'loyalty', 'bank', 'store']);
 

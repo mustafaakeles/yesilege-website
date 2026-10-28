@@ -5,6 +5,8 @@ import { addToCart, MAX_QTY } from './cart-store.js';
 
 const params = new URLSearchParams(location.search);
 const PLACEHOLDER = 'images/favicon.png';
+// Sunucu siparişi kapattığında (vitrin) ürünler "Stokta yok" görünür, sepet düğmeleri çıkmaz
+let ordersOpen = true;
 
 function productImage(product, { large = false } = {}) {
     const [src] = product.images;
@@ -19,6 +21,7 @@ function productImage(product, { large = false } = {}) {
 }
 
 function priceBlock(product) {
+    if (product.price == null) return null;
     const block = el('p', { className: 'product-price' }, [el('span', { text: formatPrice(product.price) })]);
     if (product.compareAtPrice) {
         block.append(el('s', { text: formatPrice(product.compareAtPrice), attrs: { 'aria-label': `Eski fiyat ${formatPrice(product.compareAtPrice)}` } }));
@@ -26,7 +29,10 @@ function priceBlock(product) {
     return block;
 }
 
+const outOfStock = () => el('span', { className: 'stock-badge is-out', text: 'Stokta yok' });
+
 function stockBadge(product) {
+    if (!ordersOpen) return null;
     if (!product.inStock) return el('span', { className: 'stock-badge is-out', text: 'Tükendi' });
     if (product.lowStock) return el('span', { className: 'stock-badge is-low', text: 'Son birkaç adet' });
     return null;
@@ -73,6 +79,7 @@ async function toggleFavorite(button, product) {
 }
 
 function favoriteButton(product, favorites) {
+    if (!product.id) return null;
     const on = favorites.has(product.id);
     const button = el('button', {
         className: 'favorite-toggle',
@@ -91,7 +98,7 @@ export function productCard(product, favorites = new Set()) {
         product.category ? el('span', { className: 'product-card-category', text: product.category.name }) : null,
         stockBadge(product)
     ]);
-    const footer = el('div', { className: 'product-card-footer' }, [priceBlock(product), addButton(product)]);
+    const footer = el('div', { className: 'product-card-footer' }, [priceBlock(product), ordersOpen ? addButton(product) : outOfStock()]);
     return el('article', { className: 'product-card' }, [link, favoriteButton(product, favorites), el('div', { className: 'product-card-body' }, [meta, title, footer])]);
 }
 
@@ -124,6 +131,15 @@ async function initCatalog(root) {
         return;
     }
     const { products = [], categories = [] } = result.data;
+    ordersOpen = result.data.ordersOpen !== false;
+    if (!ordersOpen) {
+        grid.before(el('p', { className: 'shop-notice', attrs: { role: 'note' } }, [
+            icon('info-circle'),
+            el('span', { text: 'Çevrim içi siparişlerimiz çok yakında açılıyor. Şimdilik ürünlerimiz için ' }),
+            el('a', { text: 'bize ulaşabilirsiniz', attrs: { href: 'contact.html#teklif' } }),
+            el('span', { text: '.' })
+        ]));
+    }
     if (products.length === 0) {
         grid.replaceChildren(emptyState('Mağazamız hazırlanıyor', 'Çevrim içi satışa sunacağımız ürünleri yakında burada bulabilirsiniz. O zamana kadar ürünlerimiz için bize ulaşabilirsiniz.'));
         return;
@@ -170,15 +186,17 @@ function setMeta(product) {
         name: product.name,
         description: product.summary || product.description || product.name,
         image: product.images.map(src => new URL(src, location.href).href),
-        brand: { '@type': 'Brand', name: 'Yeşil Ege Peyzaj' },
-        offers: {
+        brand: { '@type': 'Brand', name: 'Yeşil Ege Peyzaj' }
+    };
+    if (product.price != null) {
+        data.offers = {
             '@type': 'Offer',
             priceCurrency: 'TRY',
             price: (product.price / 100).toFixed(2),
             availability: product.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
             url: location.href
-        }
-    };
+        };
+    }
     const script = el('script', { attrs: { type: 'application/ld+json' } });
     script.textContent = JSON.stringify(data);
     document.head.append(script);
@@ -225,6 +243,7 @@ async function initProduct(root) {
         return;
     }
     const { product, related = [] } = result.data;
+    ordersOpen = result.data.ordersOpen !== false;
     setMeta(product);
     const crumb = root.querySelector('[data-product-crumb]');
     crumb.textContent = product.name;
@@ -245,17 +264,23 @@ async function initProduct(root) {
         product.summary ? el('p', { className: 'product-summary', text: product.summary }) : null,
         priceBlock(product),
         stockBadge(product),
-        el('div', { className: 'product-buy' }, [
-            el('label', { className: 'visually-hidden', text: 'Adet', attrs: { for: 'qty' } }),
-            qty.wrapper,
-            addButton(product, qty.value),
-            favoriteButton(product, favorites)
-        ]),
-        el('ul', { className: 'product-perks' }, [
+        ordersOpen
+            ? el('div', { className: 'product-buy' }, [
+                el('label', { className: 'visually-hidden', text: 'Adet', attrs: { for: 'qty' } }),
+                qty.wrapper,
+                addButton(product, qty.value),
+                favoriteButton(product, favorites)
+            ])
+            : el('div', { className: 'product-buy' }, [
+                outOfStock(),
+                el('a', { className: 'btn btn-ghost btn-sm', attrs: { href: 'contact.html#teklif' } }, [el('span', { text: 'Bilgi almak için bize ulaşın' })]),
+                favoriteButton(product, favorites)
+            ]),
+        el('ul', { className: 'product-perks' }, ordersOpen ? [
             delivery,
             el('li', {}, [icon('university'), el('span', { text: 'Havale/EFT veya mağazada ödeme.' })]),
             el('li', {}, [icon('seedling'), el('span', { text: 'Her siparişte sadakat puanı kazanırsınız.' })])
-        ]),
+        ] : [delivery]),
         product.description ? el('div', { className: 'product-description' }, product.description.split(/\n{2,}/).map(text => el('p', { text }))) : null
     ]);
     holder.replaceChildren(gallery(product), info);

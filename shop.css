@@ -258,6 +258,27 @@ img.is-placeholder {
     outline-offset: 2px;
 }
 
+/* Vitrin modu: sipariş kapalıyken mağaza listesinin üstündeki bilgi notu */
+.shop-notice {
+    margin: 0 0 20px;
+    padding: 12px 16px;
+    border: 1px solid var(--sand-200);
+    border-radius: var(--radius-sm);
+    background: var(--sand-100);
+    color: var(--forest-800);
+    font-size: 0.95rem;
+}
+
+.shop-notice i {
+    margin-right: 8px;
+    color: var(--forest-600);
+}
+
+.shop-notice a {
+    color: var(--forest-700);
+    text-decoration: underline;
+}
+
 .shop-empty {
     grid-column: 1 / -1;
     display: grid;

@@ -11,7 +11,8 @@ const ENV = {
     SITE_URL: 'https://yesilege.com.tr',
     RESEND_API_KEY: 'resend-key',
     CONTACT_TO_EMAIL: 'isletme@x.test',
-    CONTACT_FROM_EMAIL: 'Site <form@x.test>'
+    CONTACT_FROM_EMAIL: 'Site <form@x.test>',
+    ORDERS_OPEN: 'true'
 };
 const UID = '11111111-1111-4111-8111-111111111111';
 const P1 = '44444444-4444-4444-8444-444444444444';
@@ -42,15 +43,28 @@ const base = {
 };
 const validPlace = { items: [{ id: P1, qty: 1 }], delivery: 'cargo', payment: 'bank_transfer', addressId: ADDR, accept: true };
 
-async function call(action, { routes = {}, body = {}, method = 'POST', query = {}, cookie = 'ye_at=at-1' } = {}) {
+async function call(action, { routes = {}, body = {}, method = 'POST', query = {}, cookie = 'ye_at=at-1', env = ENV } = {}) {
     const fetchImpl = fakeFetch({ ...base, ...routes });
     const res = mockRes();
     const sent = [];
-    await createHandler({ env: ENV, fetchImpl, sendEmailImpl: async (config, email) => { sent.push({ config, email }); } })(
+    await createHandler({ env, fetchImpl, sendEmailImpl: async (config, email) => { sent.push({ config, email }); } })(
         makeReq({ method, body, headers: cookie ? { cookie } : {}, query: { action, ...query } }), res);
     return { res, calls: fetchImpl.calls, sent };
 }
 const rpcCalls = (calls, fn) => calls.filter(c => c.path === `/rest/v1/rpc/${fn}`);
+
+test('sipariş kapalıyken sepet fiyatı ve sipariş veritabanına gitmeden reddedilir', async () => {
+    const closed = { ...ENV, ORDERS_OPEN: 'false' };
+    const quoted = await call('quote', { env: closed, body: { items: [{ id: P1, qty: 1 }] } });
+    assert.equal(quoted.res.statusCode, 403);
+    assert.match(quoted.res.body.error, /sipariş almıyor/);
+    const placed = await call('place', { env: closed, body: validPlace });
+    assert.equal(placed.res.statusCode, 403);
+    assert.equal(rpcCalls(placed.calls, 'place_order').length, 0);
+    assert.equal(rpcCalls(quoted.calls, 'quote_order').length, 0);
+    const options = await call('options', { env: closed, method: 'GET' });
+    assert.equal(options.res.body.ordersOpen, false);
+});
 
 test('sepet satırları yalnızca kimlik ve adet olarak okunur', () => {
     assert.deepEqual(cartItems([{ id: P1, qty: 2, price: 1, unitPrice: 1 }]), [{ product_id: P1, qty: 2 }]);

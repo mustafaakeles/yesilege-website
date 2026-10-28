@@ -9,14 +9,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 # style.css / script.js / mascot.* / motion.* / screens.* / doctor.* değiştiğinde artırın: tarayıcı önbelleğindeki eski dosyaları geçersiz kılar
-ASSET_VERSION = "20261028g"
+ASSET_VERSION = "20261028h"
 
 # Navbar hesap bağlantısı: Supabase canlı ortamda kurulup doğrulanınca True yapın (docs/UYELIK_KURULUM.md).
 ACCOUNT_LINK_ENABLED = True
 
-# Mağaza: işletme ürünleri yönetim panelinden girince True yapın. Menüde "Projeler" yerine "Mağaza",
-# sağda sepet simgesi ve footer'da mesafeli satış bağlantıları görünür (docs/superpowers/plans/2026-10-28-eticaret-alt-proje-2-5.md).
-SHOP_LINK_ENABLED = False
+# Mağaza: menüde "Projeler" yerine "Mağaza" görünür (docs/superpowers/plans/2026-10-28-eticaret-alt-proje-2-5.md).
+SHOP_LINK_ENABLED = True
+# Çevrim içi sipariş: sağda sepet simgesi ve footer'da mesafeli satış bağlantıları. Vercel'de ORDERS_OPEN=true ile
+# birlikte açılır; kapalıyken mağaza vitrindir (ürünler "Stokta yok"), yasal metinler hukukçu onayını bekler.
+ORDERING_ENABLED = False
 
 SERVICES = [
     ("garden-materials", "Bahçe Malzemeleri"),
@@ -66,7 +68,7 @@ def nav_html(prefix: str, active: str) -> str:
     account = (f'                <a href="{prefix}giris.html" class="nav-account" data-account-link aria-label="Giriş yap">'
                '<i class="fas fa-user" aria-hidden="true"></i><span>Giriş</span></a>\n') if ACCOUNT_LINK_ENABLED else ''
     cart = (f'                <a href="{prefix}sepet.html" class="nav-cart" aria-label="Sepetim">'
-            '<i class="fas fa-shopping-basket" aria-hidden="true"></i><span class="nav-cart-count" data-cart-count hidden>0</span></a>\n') if SHOP_LINK_ENABLED else ''
+            '<i class="fas fa-shopping-basket" aria-hidden="true"></i><span class="nav-cart-count" data-cart-count hidden>0</span></a>\n') if ORDERING_ENABLED else ''
     return f'''    <nav class="navbar" id="navbar" aria-label="Ana menü">
         <div class="container nav-content">
             <a href="{prefix}index.html" class="logo" aria-label="Yeşil Ege Peyzaj ana sayfa">
@@ -92,7 +94,7 @@ def footer_html(prefix: str, with_newsletter: bool) -> str:
                 <a href="{prefix}blog.html" class="btn btn-ghost">Blogu keşfedin <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
             </div>''' if with_newsletter else ''
     legal = (f' · <a href="{prefix}mesafeli-satis-sozlesmesi.html">Mesafeli Satış Sözleşmesi</a>'
-             f' · <a href="{prefix}iade-ve-cayma.html">İade ve Cayma</a>') if SHOP_LINK_ENABLED else ''
+             f' · <a href="{prefix}iade-ve-cayma.html">İade ve Cayma</a>') if ORDERING_ENABLED else ''
     return f'''    <footer>
         <div class="container footer-content">
             <div class="footer-brand">
