@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "createdAt": "2026-10-28T00:32:02.170Z",
+        "reason": "Claude: sipariş e-postası HTML'inde e-posta istemcileri için güvenli yedek yazı tipi (api/_lib/orders.js), site arayüzü değil"
+      }
+    ]
+  }
+}

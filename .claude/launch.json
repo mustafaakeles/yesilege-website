@@ -6,7 +6,8 @@
       "runtimeExecutable": "node",
       "runtimeArgs": [
         "tools/dev_server.mjs",
-        "--fake-supabase"
+        "--fake-supabase",
+        "--demo-catalog"
       ],
       "port": 8090
     },
