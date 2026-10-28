@@ -546,7 +546,7 @@
 
 .legal-draft {
     padding: 12px 16px;
-    border-left: 4px solid var(--brass);
+    border: 1px solid var(--sand-200);
     border-radius: var(--radius-sm);
     background: var(--sand-100);
 }
