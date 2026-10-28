@@ -2496,8 +2496,9 @@ footer h4 {
     align-items: center;
     max-width: var(--container);
     margin: 0 auto;
-    padding-left: var(--gutter);
-    padding-right: var(--gutter);
+    /* Sabit WhatsApp (sol) ve maskot (sağ) düğmeleri ekran kenarından ~100px yer kaplar */
+    padding-left: max(var(--gutter), calc(108px - max(0px, (100vw - var(--container)) / 2)));
+    padding-right: max(var(--gutter), calc(108px - max(0px, (100vw - var(--container)) / 2)));
     font-size: 0.85rem;
 }
 
@@ -2814,6 +2815,10 @@ footer h4 {
     .footer-bottom {
         flex-direction: column;
         text-align: center;
+        /* Son satır sabit maskot/WhatsApp düğmelerinin altında kalmasın */
+        padding-bottom: 96px;
+        padding-left: var(--gutter);
+        padding-right: var(--gutter);
     }
 
     .whatsapp-float {

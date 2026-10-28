@@ -54,8 +54,28 @@
     outline-offset: 2px;
 }
 
-.shop-filters {
+/* Mağaza: kategoriler ve arama tek satırda */
+.shop-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
     margin-bottom: 20px;
+}
+
+/* Sığmazsa düğmeler kesilmesin; arama alt satıra iner */
+.shop-toolbar .shop-filters {
+    flex: 0 1 auto;
+    min-width: 0;
+    margin: 0;
+    justify-content: flex-start;
+}
+
+.shop-toolbar .shop-search {
+    flex: 1 1 260px;
+    max-width: 380px;
+    min-width: 0;
 }
 
 .product-grid {
@@ -565,6 +585,19 @@ img.is-placeholder {
 
     .shop-search {
         flex-basis: 100%;
+    }
+}
+
+@media (max-width: 760px) {
+    .shop-toolbar {
+        flex-direction: column-reverse;
+        flex-wrap: nowrap;
+        align-items: stretch;
+    }
+
+    .shop-toolbar .shop-search {
+        flex-basis: auto;
+        max-width: none;
     }
 }
 

@@ -71,6 +71,9 @@
 .magnolia-window {
     width: 350px;
     height: 500px;
+    /* Kısa ekranlarda pencere üstten taşmasın: avatar + boşluklar ≈ 130px */
+    max-height: calc(100vh - 130px);
+    max-height: calc(100dvh - 130px);
     background: #fff;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);

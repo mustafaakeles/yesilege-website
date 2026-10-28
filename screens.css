@@ -274,6 +274,7 @@
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
     font-size: 0.8rem;
     color: var(--scr-text);
+    min-width: 0;
     transform: translate3d(0, 0, 0);
     transition: transform 0.6s var(--ease);
 }
@@ -431,7 +432,7 @@
 /* 4c. İç mekan bitki kartı: ışık ve nem göstergeleri */
 .indoor {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto minmax(0, 1fr);
     gap: 16px;
     align-items: center;
 }
@@ -734,6 +735,15 @@
         --r: 86px;
         width: 200px;
         height: 200px;
+    }
+
+    /* Dar ekranda göstergeler yan yana, bitki kartı altta: içerik kesilmesin */
+    .indoor {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .gauges {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 

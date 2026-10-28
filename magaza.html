@@ -17,10 +17,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="style.css?v=20261028h">
-    <link rel="stylesheet" href="motion.css?v=20261028h">
-    <script src="motion.js?v=20261028h"></script>
-    <link rel="stylesheet" href="shop.css?v=20261028h">
+    <link rel="stylesheet" href="style.css?v=20261028i">
+    <link rel="stylesheet" href="motion.css?v=20261028i">
+    <script src="motion.js?v=20261028i"></script>
+    <link rel="stylesheet" href="shop.css?v=20261028i">
     <link rel="icon" type="image/png" href="images/favicon.png">
 </head>
 
@@ -63,19 +63,15 @@
     <main id="main">
         <section class="section shop-section" data-shop="catalog">
             <div class="container">
-                <header class="shop-header">
-                    <div>
-                        <p class="section-eyebrow">Çevrim içi mağaza</p>
-                        <h1>Mağaza</h1>
-                        <p class="shop-lead">Bayındır'daki seralarımızda yetiştirdiğimiz bitkiler ve bahçe ürünleri. Siparişler cumartesi toplu kargoyla gönderilir ya da fidanlığımızdan teslim alınır.</p>
-                    </div>
+                <h1 class="visually-hidden">Mağaza</h1>
+                <div class="shop-toolbar">
+                    <div class="blog-filters shop-filters" role="group" aria-label="Kategoriye göre süz" data-category-chips hidden></div>
                     <div class="shop-search">
                         <label for="product-search" class="visually-hidden">Ürün ara</label>
                         <i class="fas fa-search" aria-hidden="true"></i>
                         <input type="search" id="product-search" placeholder="Ürün ara" autocomplete="off" data-product-search>
                     </div>
-                </header>
-                <div class="blog-filters shop-filters" role="group" aria-label="Kategoriye göre süz" data-category-chips hidden></div>
+                </div>
                 <p class="visually-hidden" aria-live="polite" data-shop-status></p>
                 <div class="product-grid" data-product-grid aria-busy="true">
                     <div class="shop-loading" role="status">Ürünler yükleniyor…</div>
@@ -126,8 +122,8 @@
         </div>
     </footer>
 
-    <script src="script.js?v=20261028h" defer></script>
-    <script type="module" src="shop.js?v=20261028h"></script>
+    <script src="script.js?v=20261028i" defer></script>
+    <script type="module" src="shop.js?v=20261028i"></script>
 </body>
 
 </html>
