@@ -50,6 +50,8 @@ try {
     await page.reload();
     await page.locator('button', { hasText: 'Doğrulama uygulamasını kur' }).click();
     const secret = (await page.locator('.admin-secret').textContent()).trim();
+    const qrLoaded = await page.locator('.admin-qr').evaluate(img => img.decode().then(() => img.naturalWidth > 0, () => false));
+    if (!qrLoaded) throw new Error('QR kodu görseli açılamadı');
     await page.fill('.admin-mfa input', '000000');
     await page.click('.admin-mfa button[type="submit"]');
     await page.locator('.admin-mfa .form-feedback', { hasText: 'Kod hatalı' }).waitFor();

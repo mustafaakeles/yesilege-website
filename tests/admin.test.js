@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createHandler, tokenAal } from '../api/admin.js';
+import { createHandler, qrImage, tokenAal } from '../api/admin.js';
 import { validateSettings, decodeImage } from '../api/_lib/admin-validate.js';
 import { fakeFetch, makeReq, mockRes } from './helpers/http.js';
 
@@ -49,6 +49,26 @@ test('tokenAal yalnızca aal2 yükünü kabul eder', () => {
     assert.equal(tokenAal(AAL2), 'aal2');
     assert.equal(tokenAal(AAL1), 'aal1');
     assert.equal(tokenAal('bozuk'), 'aal1');
+});
+
+test('QR kodu ham SVG veya önekli SVG olsa da açılabilir base64 veri adresine çevrilir', async () => {
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg"><rect style="fill:#000000"/></svg>';
+    const expected = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
+    assert.equal(qrImage(svg), expected);
+    assert.equal(qrImage(`data:image/svg+xml;utf-8,${svg}`), expected);
+    assert.equal(qrImage(`data:image/svg+xml;utf-8,${encodeURIComponent(svg)}`), expected);
+    assert.equal(qrImage('data:image/png;base64,AAAA'), 'data:image/png;base64,AAAA');
+    assert.equal(qrImage(undefined), null);
+
+    const enrolled = await call('mfa-enroll', {
+        token: AAL1,
+        routes: {
+            'GET /auth/v1/user': { body: { ...USER, factors: [] } },
+            'POST /auth/v1/factors': { body: { id: FACTOR, totp: { qr_code: svg, secret: 'ABC' } } }
+        }
+    });
+    assert.equal(enrolled.res.statusCode, 200);
+    assert.equal(enrolled.res.body.qr, expected);
 });
 
 test('oturumsuz 401, müşteri rolü 403', async () => {

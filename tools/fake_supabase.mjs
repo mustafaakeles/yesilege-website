@@ -210,8 +210,9 @@ export function createFakeState({ onMail = () => {}, sql = null } = {}) {
             const secret = Array.from(randomBytes(20), byte => BASE32[byte % 32]).join('');
             const factor = { id: randomUUID(), factor_type: 'totp', status: 'unverified', secret };
             state.factors.set(session.user.id, [...(state.factors.get(session.user.id) || []), factor]);
-            const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="120" height="120" fill="#eee"/></svg>';
-            return [200, { id: factor.id, type: 'totp', totp: { secret, qr_code: `data:image/svg+xml;utf-8,${encodeURIComponent(svg)}`, uri: `otpauth://totp/YesilEge?secret=${secret}` } }];
+            // Gerçek Supabase Auth gibi önek eklenmemiş ham SVG ("#" renkleriyle) döner
+            const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="120" height="120" style="fill:#eee"/></svg>';
+            return [200, { id: factor.id, type: 'totp', totp: { secret, qr_code: svg, uri: `otpauth://totp/YesilEge?secret=${secret}` } }];
         },
         'GET /auth/v1/user'(body, req) {
             const session = bearerUser(req);

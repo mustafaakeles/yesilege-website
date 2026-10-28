@@ -26,6 +26,18 @@ export function tokenAal(accessToken) {
     }
 }
 
+/**
+ * Supabase Auth QR kodunu ham SVG olarak döndürür (data: önekini normalde supabase-js ekler).
+ * SVG'deki "#" renkleri düz bir veri adresini keseceği için base64 veri adresine çevrilir.
+ */
+export function qrImage(qr) {
+    const text = String(qr || '');
+    if (!text || /^data:[^,]*;base64,/i.test(text)) return text || null;
+    const svg = text.replace(/^data:image\/svg\+xml[^,]*,/i, '');
+    const decoded = svg.startsWith('%3C') ? decodeURIComponent(svg) : svg;
+    return `data:image/svg+xml;base64,${Buffer.from(decoded, 'utf8').toString('base64')}`;
+}
+
 function admin(run, { mfa = true } = {}) {
     return authed(async (ctx) => {
         const [profile] = await ctx.supabase.db.select('profiles', `id=${eq(ctx.uid)}&select=role,full_name`);
@@ -59,7 +71,7 @@ async function mfaEnroll(ctx) {
     for (const factor of factors) await ctx.supabase.auth.unenroll(ctx.accessToken, factor.id).catch(() => {});
     const enrolled = await ctx.supabase.auth.enrollTotp(ctx.accessToken);
     await audit(ctx, 'admin.mfa_enroll', `user:${ctx.uid}`);
-    return ok(ctx.res, { factorId: enrolled.id, qr: enrolled.totp?.qr_code, secret: enrolled.totp?.secret });
+    return ok(ctx.res, { factorId: enrolled.id, qr: qrImage(enrolled.totp?.qr_code), secret: enrolled.totp?.secret });
 }
 
 async function mfaVerify(ctx) {
