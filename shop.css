@@ -1483,3 +1483,31 @@ img.is-placeholder {
         font-size: 11pt;
     }
 }
+
+.admin-drafts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+    gap: 12px;
+}
+
+.admin-draft {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--cream);
+}
+
+.admin-draft img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+}
+
+.admin-draft p {
+    margin: 2px 0 0;
+}

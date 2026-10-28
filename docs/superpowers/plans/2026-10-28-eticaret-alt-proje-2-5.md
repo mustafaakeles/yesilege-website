@@ -27,7 +27,16 @@
 5. **Son adım (kullanıcı isteği):** Ürün kartlarında boş yer tutucu kalmasın; `images/` altındaki gerçek fidanlık/ürün fotoğrafları kullanılarak örnek ve taslak ürünlere birebir gerçek görseller yerleştirilir.
 6. Her adım sonunda: `npm test`, `node tools/db_test.mjs`, `python tools/build_layout.py --check`, UI denetimi → commit → main → canlı Supabase'te migration + SQL testi.
 
+## Durum (2026-10-28 sabahı)
+
+Dört alt proje uygulandı, testleri geçti ve canlıya gönderildi; 0002–0004 migration'ları canlı Supabase'te çalıştırıldı ve SQL testleri orada da geçti.
+Mağaza menüde gizli (`SHOP_LINK_ENABLED = False`). Yönetim panelinde gerçek site fotoğraflarıyla 10 hazır ürün taslağı var; fiyat ve stok girilince yayına çıkar.
+
 ## İşletme sahibine kalanlar
+
+- Kendi hesabını yönetici yapmak (Supabase SQL Editor):
+  `update public.profiles set role = 'admin' where id = (select id from auth.users where lower(email) = 'mustafaakeles@gmail.com');`
+- yesilege.com.tr/yonetim.html → doğrulama uygulamasını (TOTP) kurmak.
 
 - Ürünleri, fiyatları, stokları ve görselleri panelden girmek; ardından `SHOP_LINK_ENABLED = True`.
 - Ayarlar: banka/IBAN bilgisi, kargo ücreti, ücretsiz kargo eşiği, haftalık kapasite.

@@ -123,7 +123,7 @@ async function initCatalog(root) {
         grid.replaceChildren(emptyState('Ürünler yüklenemedi', errorText(result)));
         return;
     }
-    const { products, categories } = result.data;
+    const { products = [], categories = [] } = result.data;
     if (products.length === 0) {
         grid.replaceChildren(emptyState('Mağazamız hazırlanıyor', 'Çevrim içi satışa sunacağımız ürünleri yakında burada bulabilirsiniz. O zamana kadar ürünlerimiz için bize ulaşabilirsiniz.'));
         return;
@@ -169,7 +169,7 @@ function setMeta(product) {
         '@type': 'Product',
         name: product.name,
         description: product.summary || product.description || product.name,
-        image: product.images,
+        image: product.images.map(src => new URL(src, location.href).href),
         brand: { '@type': 'Brand', name: 'Yeşil Ege Peyzaj' },
         offers: {
             '@type': 'Offer',
@@ -219,12 +219,12 @@ async function initProduct(root) {
     const holder = root.querySelector('[data-product-detail]');
     const [result, favorites] = await Promise.all([api('catalog', 'product', { method: 'GET', query: { slug } }), loadFavorites()]);
     holder.removeAttribute('aria-busy');
-    if (!result.ok) {
+    if (!result.ok || !result.data.product) {
         holder.replaceChildren(emptyState(result.status === 404 ? 'Ürün bulunamadı' : 'Ürün yüklenemedi',
             result.status === 404 ? 'Bu ürün satıştan kaldırılmış olabilir.' : errorText(result)));
         return;
     }
-    const { product, related } = result.data;
+    const { product, related = [] } = result.data;
     setMeta(product);
     const crumb = root.querySelector('[data-product-crumb]');
     crumb.textContent = product.name;

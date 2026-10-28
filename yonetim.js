@@ -1,6 +1,7 @@
 // Yeşil Ege — yönetim paneli. Yetki sunucuda denetlenir (rol + TOTP); bu betik yalnızca arayüzdür.
 
 import { api, el, errorText, formatDate, formatDateTime, formatPrice, icon, loginUrl, show } from './api-client.js';
+import { DRAFT_CATEGORIES, PRODUCT_DRAFTS } from './product-drafts.js';
 
 const root = document.querySelector('[data-admin]');
 const STATUS = {
@@ -362,7 +363,8 @@ function productForm(product, categories, onSaved, onCancel) {
         });
         submit.disabled = false;
         if (!result.ok) return show(feedback, errorText(result), 'error');
-        onSaved(result.data.id, isNew);
+        // Görselsiz yeni ürün görsel eklemek için açık kalır; görseli olan ürün listeye döner
+        onSaved(result.data.id, isNew && images.length === 0);
     });
     return form;
 }
@@ -394,6 +396,39 @@ async function renderProducts(panel, { editId } = {}) {
             el('td', {}, [edit])
         ]);
     });
+    // Hazır taslaklar: gerçek fotoğraf, ad, kategori ve açıklama hazır; fiyat ve stok işletme tarafından girilir
+    const useDraft = async (draft, trigger) => {
+        trigger.disabled = true;
+        let category = categories.find(item => item.slug === draft.category);
+        if (!category) {
+            const meta = DRAFT_CATEGORIES.find(item => item.slug === draft.category);
+            const created = await call('category-save', { body: { name: meta.name, slug: meta.slug, sortOrder: meta.sortOrder, isActive: true, description: '' } });
+            if (!created.ok) {
+                trigger.disabled = false;
+                return window.alert(errorText(created));
+            }
+            category = { id: created.data.id, slug: meta.slug, name: meta.name };
+            categories.push(category);
+        }
+        open({ name: draft.name, slug: draft.slug, categoryId: category.id, summary: draft.summary, description: draft.description,
+            shippable: draft.shippable, isActive: true, stock: 0, images: [draft.image] });
+    };
+    const existing = new Set(products.map(item => item.slug));
+    const drafts = PRODUCT_DRAFTS.filter(draft => !existing.has(draft.slug));
+    const draftSection = drafts.length ? el('section', { className: 'admin-card' }, [
+        el('h3', { text: 'Hazır taslaklar' }),
+        el('p', { className: 'field-hint', text: 'Fotoğrafı, adı ve açıklaması hazır ürünler. Seçtiğiniz taslakta yalnızca fiyatı ve stoğu girip kaydedin.' }),
+        el('div', { className: 'admin-drafts' }, drafts.map(draft => {
+            const use = button('Fiyat gir ve ekle', {}, 'btn btn-primary btn-sm');
+            use.addEventListener('click', () => useDraft(draft, use));
+            return el('article', { className: 'admin-draft' }, [
+                el('img', { attrs: { src: draft.image, alt: draft.name, width: 160, height: 160, loading: 'lazy' } }),
+                el('div', {}, [el('strong', { text: draft.name }), el('p', { className: 'order-item-meta', text: draft.summary })]),
+                use
+            ]);
+        }))
+    ]) : null;
+
     panel.replaceChildren(
         el('div', { className: 'admin-toolbar' }, [el('p', { className: 'field-hint', text: `${products.length} ürün · ${products.filter(item => item.isActive).length} yayında` }), create]),
         products.length
@@ -401,7 +436,8 @@ async function renderProducts(panel, { editId } = {}) {
                 el('thead', {}, [el('tr', {}, ['Ürün', 'Fiyat', 'Stok', 'Durum', ''].map(text => el('th', { text, attrs: { scope: 'col' } })))]),
                 el('tbody', {}, rows)
             ])])
-            : el('p', { className: 'field-hint', text: 'Henüz ürün yok. "Yeni ürün" ile ilk ürününüzü ekleyin.' })
+            : el('p', { className: 'field-hint', text: 'Henüz ürün yok. Aşağıdaki hazır taslaklardan başlayabilir ya da "Yeni ürün" ile ekleyebilirsiniz.' }),
+        draftSection
     );
 }
 

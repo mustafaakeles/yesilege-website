@@ -83,6 +83,24 @@ try {
     await shot('urunler');
     step(3, 'kategori ve ürün oluşturma, TL → kuruş, görsel yükleme');
 
+    // Hazır taslak: gerçek fotoğraf ve açıklama hazır, yalnızca fiyat/stok girilir
+    const draft = page.locator('.admin-draft', { hasText: 'Orkide (Phalaenopsis)' });
+    await draft.locator('button').click();
+    const draftForm = page.locator('form.admin-form');
+    assert.equal(await draftForm.getByLabel('Bağlantı adı', { exact: true }).inputValue(), 'orkide-phalaenopsis');
+    await draftForm.getByLabel('Fiyat (₺, KDV dahil)', { exact: true }).fill('590');
+    await draftForm.getByLabel('Stok (adet)', { exact: true }).fill('3');
+    await draftForm.locator('button[type="submit"]').click();
+    await page.locator('.admin-table td', { hasText: 'Orkide (Phalaenopsis)' }).waitFor();
+    const { rows: [orchid] } = await server.fake.sql.db.query(`select price, images, (select slug from public.categories c where c.id = p.category_id) as category from public.products p where slug = 'orkide-phalaenopsis'`);
+    assert.deepEqual({ ...orchid }, { price: 59000, images: ['images/orchid_care_blooming.webp'], category: 'ic-mekan-bitkileri' });
+    await page.goto(server.url + '/urun.html?u=orkide-phalaenopsis');
+    await page.locator('.product-gallery-main img[src="images/orchid_care_blooming.webp"]').waitFor();
+    assert.ok(await page.locator('.product-gallery-main img').evaluate(img => img.complete && img.naturalWidth > 0));
+    await page.goto(server.url + '/yonetim.html#urunler');
+    await page.locator('.admin-table').waitFor();
+    step('3b', 'hazır taslaktan gerçek fotoğraflı ürün; kategori otomatik oluşur');
+
     // Ayarlar: banka bilgisi
     await page.click('#admin-tab-ayarlar');
     await page.getByLabel('IBAN', { exact: true }).fill('TR33 0006 1005 1978 6457 8413 26');

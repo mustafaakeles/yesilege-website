@@ -54,7 +54,7 @@ async function runFlow(browser, viewport) {
     await page.click('[data-category="dis-mekan"]');
     assert.equal(await page.locator('.product-card').count(), 2);
     assert.match(page.url(), /kategori=dis-mekan/);
-    await page.fill('[data-product-search]', 'lavanta');
+    await page.fill('[data-product-search]', 'sıklamen');
     assert.equal(await page.locator('.product-card').count(), 1);
     await noHorizontalScroll(page, 'mağaza');
     await shot('magaza');
@@ -86,7 +86,7 @@ async function runFlow(browser, viewport) {
     await page.locator('.favorite-toggle').first().click();
     await page.waitForURL(/giris\.html\?donus=/);
     await signIn(page, `magaza-${viewport.name}@test.invalid`);
-    await page.goto(server.url + '/urun.html?u=ornek-lavanta');
+    await page.goto(server.url + '/urun.html?u=ornek-siklamen');
     const heart = page.locator('.product-buy .favorite-toggle');
     await heart.click();
     await page.waitForFunction(() => document.querySelector('.product-buy .favorite-toggle')?.getAttribute('aria-pressed') === 'true');

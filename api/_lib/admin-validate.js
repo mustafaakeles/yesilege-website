@@ -4,6 +4,7 @@ import { SLUG_RE, UUID_RE } from './shop.js';
 
 const CONTROL_RE = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/;
 const invalid = (error) => ({ ok: false, error });
+const SITE_IMAGE_RE = /^images\/[A-Za-z0-9._-]+\.(?:webp|jpe?g|png)$/;
 const bag = (input) => (input && typeof input === 'object' && !Array.isArray(input) ? input : {});
 const text = (value, max, { min = 0, multiline = false } = {}) => {
     if (value === undefined || value === null) return min ? undefined : '';
@@ -41,7 +42,10 @@ export function validateProduct(input, { imageBase }) {
     const isActive = bool(body.isActive);
     if (sortOrder === undefined || shippable === undefined || isActive === undefined) return invalid('Ürün seçenekleri geçersiz.');
     const images = Array.isArray(body.images) ? body.images : [];
-    if (images.length > 6 || !images.every(url => typeof url === 'string' && url.startsWith(imageBase) && /^[A-Za-z0-9/._-]+$/.test(url.slice(imageBase.length)))) {
+    // Görsel ya Supabase Storage kovasındandır ya da sitenin kendi images/ klasöründeki bir fotoğraftır
+    const allowed = (url) => typeof url === 'string'
+        && ((url.startsWith(imageBase) && /^[A-Za-z0-9/._-]+$/.test(url.slice(imageBase.length))) || SITE_IMAGE_RE.test(url));
+    if (images.length > 6 || !images.every(allowed)) {
         return invalid('Görsel listesi geçersiz.');
     }
     return {

@@ -352,11 +352,11 @@ export function seedDemoCatalog(state) {
     });
     state.tables.categories.push(...categories.map(row => ({ ...row, created_at: now, updated_at: now })));
     state.tables.products.push(
-        product(categories[0], 'ornek-monstera', 'Örnek Monstera', 45000, 12, { compare_at_price: 52000 }),
-        product(categories[0], 'ornek-sukulent', 'Örnek Sukulent Seti', 18000, 2),
-        product(categories[0], 'ornek-orkide', 'Örnek Orkide', 39000, 0),
-        product(categories[1], 'ornek-zeytin', 'Örnek Zeytin Fidanı', 125000, 5, { shippable: false }),
-        product(categories[1], 'ornek-lavanta', 'Örnek Lavanta', 9000, 40)
+        product(categories[0], 'ornek-monstera', 'Örnek Monstera', 45000, 12, { compare_at_price: 52000, images: ['images/chris-lee-70l1tDAI6rM-unsplash.webp'] }),
+        product(categories[0], 'ornek-sukulent', 'Örnek Sukulent Seti', 18000, 2, { images: ['images/cactus_gen.webp'] }),
+        product(categories[0], 'ornek-orkide', 'Örnek Orkide', 39000, 0, { images: ['images/orchid_care_blooming.webp'] }),
+        product(categories[1], 'ornek-zeytin', 'Örnek Zeytin Fidanı', 125000, 5, { shippable: false, images: ['images/xeriscape_mediterranean_garden_olive.webp'] }),
+        product(categories[1], 'ornek-siklamen', 'Örnek Sıklamen', 9000, 40, { images: ['images/winter_garden_flowers_cyclamen_primula.webp'] })
     );
 }
 
