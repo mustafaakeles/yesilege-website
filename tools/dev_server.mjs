@@ -23,13 +23,17 @@ const TYPES = {
 const vercelHeaders = JSON.parse(readFileSync(join(ROOT, 'vercel.json'), 'utf8')).headers
     .map(rule => ({ pattern: new RegExp(`^${rule.source}$`), headers: rule.headers }));
 
+// Sahte Supabase'in görsel deposu (yalnızca yerel); CSP img-src'ye eklenir.
+let devImageOrigin = '';
+
 function applyHeaders(res, pathname) {
     for (const { pattern, headers } of vercelHeaders) {
         if (!pattern.test(pathname)) continue;
         for (const { key, value } of headers) {
             // http://localhost üzerinde HTTPS'e yükseltme ve HSTS yerel geliştirmeyi bozar.
             if (key === 'Strict-Transport-Security') continue;
-            res.setHeader(key, key === 'Content-Security-Policy' ? value.replace(/;\s*upgrade-insecure-requests/, '') : value);
+            const csp = () => value.replace(/;\s*upgrade-insecure-requests/, '').replace(/img-src ([^;]*)/, `img-src $1${devImageOrigin ? ` ${devImageOrigin}` : ''}`);
+            res.setHeader(key, key === 'Content-Security-Policy' ? csp() : value);
         }
     }
 }
@@ -106,6 +110,7 @@ export async function startDevServer({ port = 8090, env = process.env, fakeSupab
             sqlBackend,
             onMail: (mail) => onMail?.({ ...mail, link: `${origin}/api/auth?action=confirm&token_hash=${mail.tokenHash}&type=${mail.type}` })
         });
+        devImageOrigin = fake.url;
         effectiveEnv = {
             ...env,
             SUPABASE_URL: fake.url,

@@ -3,11 +3,27 @@
 // refresh token rotasyonu, migration'daki kayıt tetikleyicisi kuralları ve rate_limit_hit.
 
 import { createServer } from 'node:http';
-import { randomBytes, randomUUID } from 'node:crypto';
+import { createHmac, randomBytes, randomUUID } from 'node:crypto';
 
 export const FAKE_KEYS = Object.freeze({ anon: 'fake-anon-key', service: 'fake-service-key' });
 
 const ACCESS_TTL_SECONDS = 3600;
+const BASE32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+
+/** RFC 6238 TOTP (SHA-1, 30 sn, 6 hane); sahte Supabase ve uçtan uca testler ortak kullanır. */
+export function totpCode(secret, time = Date.now()) {
+    let bits = '';
+    for (const char of secret.replace(/=+$/, '')) bits += BASE32.indexOf(char).toString(2).padStart(5, '0');
+    const key = Buffer.from(bits.match(/.{8}/g).map(byte => parseInt(byte, 2)));
+    const counter = Buffer.alloc(8);
+    counter.writeBigUInt64BE(BigInt(Math.floor(time / 30000)));
+    const hmac = createHmac('sha1', key).update(counter).digest();
+    const offset = hmac[hmac.length - 1] & 0xf;
+    return String((hmac.readUInt32BE(offset) & 0x7fffffff) % 1_000_000).padStart(6, '0');
+}
+
+// Gerçek Supabase gibi "aal" alanı taşıyan JWT biçimli erişim token'ı (imzasız; yalnızca yerel)
+const jwtLike = (payload) => `${Buffer.from('{"alg":"none"}').toString('base64url')}.${Buffer.from(JSON.stringify(payload)).toString('base64url')}.${randomBytes(12).toString('base64url')}`;
 // supabase/migrations/0002_catalog.sql ile aynı varsayılanlar
 const DEFAULT_SETTINGS = [
     { key: 'shipping', value: { fee: 15000, free_threshold: 200000, weekly_capacity: 20, order_cutoff_hour: 18 } },
@@ -67,6 +83,9 @@ export function createFakeState({ onMail = () => {}, sql = null } = {}) {
         access: new Map(),         // erişim token'ı → { userId, exp }
         refresh: new Map(),        // refresh token'ı → userId
         otps: new Map(),           // token_hash → { userId, type }
+        factors: new Map(),        // kullanıcı kimliği → [{ id, factor_type, status, secret }]
+        challenges: new Map(),     // challenge id → factor id
+        objects: new Map(),        // storage yolu → { buffer, contentType }
         mailbox: [],
         tables: {
             profiles: [], addresses: [], audit_log: [], categories: [], products: [], favorites: [],
@@ -76,7 +95,10 @@ export function createFakeState({ onMail = () => {}, sql = null } = {}) {
     };
 
     const userById = (id) => [...state.users.values()].find(user => user.id === id);
-    const publicUser = (user) => ({ id: user.id, email: user.email, email_confirmed_at: user.confirmedAt, user_metadata: {} });
+    const publicUser = (user) => ({
+        id: user.id, email: user.email, email_confirmed_at: user.confirmedAt, user_metadata: {},
+        factors: (state.factors.get(user.id) || []).map(({ id, factor_type, status }) => ({ id, factor_type, status }))
+    });
 
     function mail(user, type) {
         const tokenHash = token();
@@ -86,8 +108,8 @@ export function createFakeState({ onMail = () => {}, sql = null } = {}) {
         onMail(entry);
     }
 
-    function issueSession(user) {
-        const accessToken = token();
+    function issueSession(user, aal = 'aal1') {
+        const accessToken = jwtLike({ sub: user.id, aal });
         const refreshToken = token();
         state.access.set(accessToken, { userId: user.id, exp: Date.now() + ACCESS_TTL_SECONDS * 1000 });
         state.refresh.set(refreshToken, user.id);
@@ -182,6 +204,15 @@ export function createFakeState({ onMail = () => {}, sql = null } = {}) {
             }
             return [204];
         },
+        'POST /auth/v1/factors'(body, req) {
+            const session = bearerUser(req);
+            if (!session) return [401, { error_code: 'bad_jwt' }];
+            const secret = Array.from(randomBytes(20), byte => BASE32[byte % 32]).join('');
+            const factor = { id: randomUUID(), factor_type: 'totp', status: 'unverified', secret };
+            state.factors.set(session.user.id, [...(state.factors.get(session.user.id) || []), factor]);
+            const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="120" height="120" fill="#eee"/></svg>';
+            return [200, { id: factor.id, type: 'totp', totp: { secret, qr_code: `data:image/svg+xml;utf-8,${encodeURIComponent(svg)}`, uri: `otpauth://totp/YesilEge?secret=${secret}` } }];
+        },
         'GET /auth/v1/user'(body, req) {
             const session = bearerUser(req);
             return session ? [200, publicUser(session.user)] : [401, { error_code: 'bad_jwt' }];
@@ -228,8 +259,52 @@ export function createFakeState({ onMail = () => {}, sql = null } = {}) {
         return next.count <= max;
     }
 
+    function factorAction(req, factorId, action, body) {
+        const session = bearerUser(req);
+        if (!session) return [401, { error_code: 'bad_jwt' }];
+        const list = state.factors.get(session.user.id) || [];
+        const factor = list.find(item => item.id === factorId);
+        if (!factor) return [404, { error_code: 'mfa_factor_not_found' }];
+        if (action === 'delete' && req.method === 'DELETE') {
+            state.factors.set(session.user.id, list.filter(item => item !== factor));
+            return [200, { id: factor.id }];
+        }
+        if (action === 'challenge') {
+            const id = randomUUID();
+            state.challenges.set(id, factor.id);
+            return [200, { id, type: 'totp', expires_at: Math.floor(Date.now() / 1000) + 300 }];
+        }
+        if (action === 'verify') {
+            if (state.challenges.get(body.challenge_id) !== factor.id) return [422, { error_code: 'mfa_challenge_expired' }];
+            state.challenges.delete(body.challenge_id);
+            const valid = [-30000, 0, 30000].some(skew => totpCode(factor.secret, Date.now() + skew) === String(body.code));
+            if (!valid) return [422, { error_code: 'mfa_verification_failed' }];
+            factor.status = 'verified';
+            return [200, issueSession(session.user, 'aal2')];
+        }
+        return [405, {}];
+    }
+
+    async function storage(req, res, url) {
+        if (req.headers.apikey !== FAKE_KEYS.service && !url.pathname.startsWith('/storage/v1/object/public/')) return send(res, 401, { message: 'Invalid API key' });
+        const chunks = [];
+        for await (const chunk of req) chunks.push(chunk);
+        const path = url.pathname.replace(/^\/storage\/v1\/object\/(?:public\/)?/, '');
+        if (req.method === 'POST') {
+            state.objects.set(path, { buffer: Buffer.concat(chunks), contentType: req.headers['content-type'] });
+            return send(res, 200, { Key: path });
+        }
+        const object = state.objects.get(path);
+        if (req.method === 'GET' && object) {
+            res.writeHead(200, { 'content-type': object.contentType, 'access-control-allow-origin': '*' });
+            return res.end(object.buffer);
+        }
+        return send(res, 404, { message: 'not found' });
+    }
+
     async function handle(req, res) {
         const url = new URL(req.url, 'http://fake');
+        if (url.pathname.startsWith('/storage/v1/')) return storage(req, res, url);
         let body;
         try {
             body = await readJson(req);
@@ -239,6 +314,8 @@ export function createFakeState({ onMail = () => {}, sql = null } = {}) {
         const key = `${req.method} ${url.pathname}`;
         if (url.pathname.startsWith('/auth/v1/')) {
             if (req.headers.apikey !== FAKE_KEYS.anon) return send(res, 401, { error_code: 'invalid_api_key' });
+            const factorRoute = /^\/auth\/v1\/factors\/([^/]+)(?:\/(challenge|verify))?$/.exec(url.pathname);
+            if (factorRoute) return send(res, ...factorAction(req, factorRoute[1], factorRoute[2] || 'delete', body));
             const route = auth[key];
             if (!route) return send(res, 404, { error_code: 'not_found' });
             const [status, payload] = await route(body, req, url);

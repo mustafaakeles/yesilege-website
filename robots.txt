@@ -4,6 +4,9 @@ Disallow: /hesabim.html
 Disallow: /giris.html
 Disallow: /kayit.html
 Disallow: /sifre-sifirla.html
+Disallow: /sepet.html
+Disallow: /odeme.html
+Disallow: /yonetim.html
 Disallow: /api/
 
 Sitemap: https://yesilege.com.tr/sitemap.xml

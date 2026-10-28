@@ -39,7 +39,7 @@ export function fakeFetch(routes) {
             path: parsed.pathname,
             search: parsed.search,
             headers: Object.fromEntries(Object.entries(init.headers || {}).map(([k, v]) => [k.toLowerCase(), v])),
-            body: init.body ? JSON.parse(init.body) : undefined
+            body: typeof init.body === 'string' ? JSON.parse(init.body) : init.body
         };
         calls.push(call);
         const handler = routes[`${method} ${parsed.pathname}`];

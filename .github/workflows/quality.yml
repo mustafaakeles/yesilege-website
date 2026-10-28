@@ -35,6 +35,7 @@ jobs:
       - run: node tools/ui_smoke.mjs
       - run: node tools/auth_e2e.mjs
       - run: node tools/shop_e2e.mjs
+      - run: node tools/admin_e2e.mjs
       - name: Görsel denetim ekran görüntüleri
         if: always()
         uses: actions/upload-artifact@v4
@@ -44,4 +45,5 @@ jobs:
             artifacts/ui-smoke/
             artifacts/auth-e2e/
             artifacts/shop-e2e/
+            artifacts/admin-e2e/
           if-no-files-found: ignore

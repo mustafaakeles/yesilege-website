@@ -29,13 +29,13 @@ export const eq = (value) => 'eq.' + encodeURIComponent(String(value));
 export function createSupabase({ url, anonKey, serviceKey, fetchImpl = fetch }) {
     const base = String(url).replace(/\/+$/, '');
 
-    async function request(method, path, { headers = {}, body } = {}) {
+    async function request(method, path, { headers = {}, body, raw } = {}) {
         let response;
         try {
             response = await fetchImpl(base + path, {
                 method,
                 headers: { 'Content-Type': 'application/json', ...headers },
-                body: body === undefined ? undefined : JSON.stringify(body),
+                body: raw ?? (body === undefined ? undefined : JSON.stringify(body)),
                 signal: AbortSignal.timeout(TIMEOUT_MS)
             });
         } catch {
@@ -70,7 +70,19 @@ export function createSupabase({ url, anonKey, serviceKey, fetchImpl = fetch }) 
             resend: (email) => request('POST', '/auth/v1/resend', { headers: anon(), body: { type: 'signup', email } }),
             logout: (accessToken, scope = 'local') => request('POST', `/auth/v1/logout?scope=${encodeURIComponent(scope)}`, { headers: user(accessToken) }),
             getUser: (accessToken) => request('GET', '/auth/v1/user', { headers: user(accessToken) }),
-            updatePassword: (accessToken, password) => request('PUT', '/auth/v1/user', { headers: user(accessToken), body: { password } })
+            updatePassword: (accessToken, password) => request('PUT', '/auth/v1/user', { headers: user(accessToken), body: { password } }),
+            // TOTP iki adımlı doğrulama (kullanıcının kendi token'ıyla)
+            enrollTotp: (accessToken) => request('POST', '/auth/v1/factors', { headers: user(accessToken), body: { factor_type: 'totp', friendly_name: `Yeşil Ege yönetim ${Date.now()}` } }),
+            unenroll: (accessToken, factorId) => request('DELETE', `/auth/v1/factors/${encodeURIComponent(factorId)}`, { headers: user(accessToken) }),
+            challenge: (accessToken, factorId) => request('POST', `/auth/v1/factors/${encodeURIComponent(factorId)}/challenge`, { headers: user(accessToken), body: {} }),
+            verifyTotp: (accessToken, factorId, challengeId, code) => request('POST', `/auth/v1/factors/${encodeURIComponent(factorId)}/verify`,
+                { headers: user(accessToken), body: { challenge_id: challengeId, code } })
+        },
+        storage: {
+            upload: (bucket, path, buffer, contentType) => request('POST', `/storage/v1/object/${bucket}/${path}`,
+                { headers: service({ 'Content-Type': contentType, 'x-upsert': 'false', 'cache-control': '31536000' }), raw: buffer }),
+            remove: (bucket, paths) => request('DELETE', `/storage/v1/object/${bucket}`, { headers: service(), body: { prefixes: paths } }),
+            publicUrl: (bucket, path) => `${base}/storage/v1/object/public/${bucket}/${path}`
         },
         db: {
             select: (table, query = '') => request('GET', `/rest/v1/${table}?${query}`, { headers: service() }),
