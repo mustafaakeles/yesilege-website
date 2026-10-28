@@ -95,9 +95,9 @@ try {
     await draftForm.locator('button[type="submit"]').click();
     await page.locator('.admin-table td', { hasText: 'Orkide (Phalaenopsis)' }).waitFor();
     const { rows: [orchid] } = await server.fake.sql.db.query(`select price, images, (select slug from public.categories c where c.id = p.category_id) as category from public.products p where slug = 'orkide-phalaenopsis'`);
-    assert.deepEqual({ ...orchid }, { price: 59000, images: ['images/orchid_care_blooming.webp'], category: 'ic-mekan-bitkileri' });
+    assert.deepEqual({ ...orchid }, { price: 59000, images: ['images/urunler/orkide-phalaenopsis.webp'], category: 'ic-mekan-bitkileri' });
     await page.goto(server.url + '/urun.html?u=orkide-phalaenopsis');
-    await page.locator('.product-gallery-main img[src="images/orchid_care_blooming.webp"]').waitFor();
+    await page.locator('.product-gallery-main img[src="images/urunler/orkide-phalaenopsis.webp"]').waitFor();
     assert.ok(await page.locator('.product-gallery-main img').evaluate(img => img.complete && img.naturalWidth > 0));
     await page.goto(server.url + '/yonetim.html#urunler');
     await page.locator('.admin-table').waitFor();

@@ -4,7 +4,8 @@ import { SLUG_RE, UUID_RE } from './shop.js';
 
 const CONTROL_RE = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/;
 const invalid = (error) => ({ ok: false, error });
-const SITE_IMAGE_RE = /^images\/[A-Za-z0-9._-]+\.(?:webp|jpe?g|png)$/;
+// Sitenin kendi görselleri: images/ ya da tek düzey alt klasörü (ör. images/urunler/); klasör adında nokta yok
+const SITE_IMAGE_RE = /^images\/(?:[a-z0-9-]+\/)?[A-Za-z0-9._-]+\.(?:webp|jpe?g|png)$/;
 const bag = (input) => (input && typeof input === 'object' && !Array.isArray(input) ? input : {});
 const text = (value, max, { min = 0, multiline = false } = {}) => {
     if (value === undefined || value === null) return min ? undefined : '';

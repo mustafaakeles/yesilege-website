@@ -1,5 +1,6 @@
-// Yeşil Ege — yönetim panelindeki hazır ürün taslakları. Fotoğraflar sitedeki gerçek görsellerdir;
-// fiyat ve stok bilgisi işletme tarafından girilir (taslaklarda bilerek yoktur).
+// Yeşil Ege — yönetim panelindeki hazır ürün taslakları. Fotoğraflar Unsplash lisanslı gerçek bitki fotoğraflarıdır
+// (images/urunler/, kaynak: source alanı); işletme kendi fotoğrafını panelden yükleyerek değiştirebilir.
+// Fiyat ve stok bilgisi işletme tarafından girilir (taslaklarda bilerek yoktur).
 
 export const DRAFT_CATEGORIES = Object.freeze([
     { slug: 'ic-mekan-bitkileri', name: 'İç Mekan Bitkileri', sortOrder: 0 },
@@ -10,65 +11,139 @@ export const DRAFT_CATEGORIES = Object.freeze([
     { slug: 'bahce-malzemeleri', name: 'Bahçe Malzemeleri', sortOrder: 5 }
 ]);
 
+const PICKUP_ONLY = 'Boyutu nedeniyle yalnızca fidanlığımızdan teslim alınabilir.';
+
+const draft = (slug, name, category, shippable, source, summary, description) => Object.freeze({
+    slug, name, category, shippable, summary, description,
+    image: `images/urunler/${slug}.webp`,
+    source: `https://unsplash.com/photos/${source}`
+});
+
 export const PRODUCT_DRAFTS = Object.freeze([
-    {
-        slug: 'orkide-phalaenopsis', name: 'Orkide (Phalaenopsis)', category: 'ic-mekan-bitkileri', shippable: true,
-        image: 'images/orchid_care_blooming.webp',
-        summary: 'Uzun süre çiçekte kalan, saksılı salon orkidesi.',
-        description: 'Aydınlık ama doğrudan güneş almayan bir köşeyi sever. Kökleri kuruyunca, haftada bir kez saksıyı suya batırarak sulayın.\n\nÇiçek sapı soldukça boğumun hemen üzerinden kesilirse yeniden çiçeklenebilir.'
-    },
-    {
-        slug: 'baris-cicegi-spathiphyllum', name: 'Barış Çiçeği (Spathiphyllum)', category: 'ic-mekan-bitkileri', shippable: true,
-        image: 'images/peace_lily_spathiphyllum.webp',
-        summary: 'Az ışıkta da yaşayan, beyaz çiçekli kolay bakımlı salon bitkisi.',
-        description: 'Yarı gölgeye dayanıklıdır. Toprağın üst kısmı kurudukça sulayın; yaprakları sarktığında su ihtiyacını hemen belli eder.'
-    },
-    {
-        slug: 'pasa-kilici-sansevieria', name: 'Paşa Kılıcı (Sansevieria)', category: 'ic-mekan-bitkileri', shippable: true,
-        image: 'images/sansevieria_snake_plant.webp',
-        summary: 'Dik yapraklı, susuzluğa dayanıklı iç mekân bitkisi.',
-        description: 'Az sulama ister; toprak tamamen kuruduktan sonra sulayın. Düşük ışıkta da büyümeye devam eder.'
-    },
-    {
-        slug: 'deve-tabani-monstera', name: 'Deve Tabanı (Monstera)', category: 'ic-mekan-bitkileri', shippable: true,
-        image: 'images/chris-lee-70l1tDAI6rM-unsplash.webp',
-        summary: 'Delikli büyük yapraklarıyla salonların gözdesi.',
-        description: 'Aydınlık, dolaylı ışık ve nemli ortam sever. Toprağın üst 2-3 cm\'si kuruyunca sulayın.'
-    },
-    {
-        slug: 'sukulent-ve-kaktus-kasesi', name: 'Sukulent ve Kaktüs Kasesi', category: 'kaktus-ve-sukulent', shippable: true,
-        image: 'images/cactus_gen.webp',
-        summary: 'Farklı sukulent ve kaktüslerle hazırlanmış dekoratif kase.',
-        description: 'Bol ışıklı bir pencere önünü sever. Toprak tamamen kuruduğunda az miktarda sulayın.'
-    },
-    {
-        slug: 'siklamen-ve-cuha-cicegi', name: 'Sıklamen ve Çuha Çiçeği', category: 'mevsimlik-cicekler', shippable: true,
-        image: 'images/winter_garden_flowers_cyclamen_primula.webp',
-        summary: 'Kış aylarında balkon ve bahçeye renk katan mevsimlik çiçekler.',
-        description: 'Serin ortamı sever. Saksı altlığında su bırakmadan, toprağı hafif nemli tutun.'
-    },
-    {
-        slug: 'zeytin-fidani', name: 'Zeytin Fidanı', category: 'dis-mekan-bitkileri', shippable: false,
-        image: 'images/xeriscape_mediterranean_garden_olive.webp',
-        summary: 'Ege bahçelerinin simgesi, güneşli alanlar için zeytin fidanı.',
-        description: 'Tam güneş ve iyi drene olan toprak ister. Dikimden sonraki ilk yıl düzenli, sonra seyrek sulama yeterlidir.\n\nBoyutu nedeniyle yalnızca fidanlığımızdan teslim alınabilir.'
-    },
-    {
-        slug: 'bambu-cit-bitkisi', name: 'Bambu Çit Bitkisi', category: 'dis-mekan-bitkileri', shippable: false,
-        image: 'images/villa_garden_privacy_hedge_bamboo.webp',
-        summary: 'Hızlı büyüyen, doğal mahremiyet sağlayan çit bitkisi.',
-        description: 'Yarı gölge ve güneşte yetişir. Yayılmaması için köklerin sınırlandırılması önerilir.\n\nBoyutu nedeniyle yalnızca fidanlığımızdan teslim alınabilir.'
-    },
-    {
-        slug: 'toprak-saksi-seti', name: 'Toprak Saksı Seti', category: 'saksilar', shippable: true,
-        image: 'images/pots_gen.webp',
-        summary: 'Farklı boyutlarda pişmiş toprak ve sırlı saksılar.',
-        description: 'Pişmiş toprak saksılar kökün nefes almasını sağlar. Ölçü ve adet seçenekleri için bize ulaşabilirsiniz.'
-    },
-    {
-        slug: 'bahce-bakim-seti', name: 'Bahçe Bakım Seti', category: 'bahce-malzemeleri', shippable: true,
-        image: 'images/garden_supplies.webp',
-        summary: 'Dikim ve budama için temel bahçe aletleri.',
-        description: 'Küçük bahçe ve balkon bakımında kullanılan el aletlerinden oluşur.'
-    }
+    // İç mekân
+    draft('orkide-phalaenopsis', 'Orkide (Phalaenopsis)', 'ic-mekan-bitkileri', true, 'WFrWF1f3nLA',
+        'Uzun süre çiçekte kalan, saksılı salon orkidesi.',
+        'Aydınlık ama doğrudan güneş almayan bir köşeyi sever. Kökleri kuruyunca, haftada bir kez saksıyı suya batırarak sulayın.\n\nÇiçek sapı soldukça boğumun hemen üzerinden kesilirse yeniden çiçeklenebilir.'),
+    draft('baris-cicegi-spathiphyllum', 'Barış Çiçeği (Spathiphyllum)', 'ic-mekan-bitkileri', true, 'ouqmMLghHr0',
+        'Az ışıkta da yaşayan, beyaz çiçekli kolay bakımlı salon bitkisi.',
+        'Yarı gölgeye dayanıklıdır. Toprağın üst kısmı kurudukça sulayın; yaprakları sarktığında su ihtiyacını hemen belli eder.'),
+    draft('pasa-kilici-sansevieria', 'Paşa Kılıcı (Sansevieria)', 'ic-mekan-bitkileri', true, '-Lh6tVzDdMg',
+        'Dik yapraklı, susuzluğa dayanıklı iç mekân bitkisi.',
+        'Az sulama ister; toprak tamamen kuruduktan sonra sulayın. Düşük ışıkta da büyümeye devam eder.'),
+    draft('deve-tabani-monstera', 'Deve Tabanı (Monstera)', 'ic-mekan-bitkileri', true, 'oViZwzA0qI0',
+        'Delikli büyük yapraklarıyla salonların gözdesi.',
+        'Aydınlık, dolaylı ışık ve nemli ortam sever. Toprağın üst 2-3 cm\'si kuruyunca sulayın.'),
+    draft('starlice-strelitzia', 'Starliçe (Strelitzia)', 'ic-mekan-bitkileri', false, 'AbpOHUbUzsw',
+        'Geniş, kürek biçimli yapraklarıyla tropik görünümlü büyük salon bitkisi.',
+        `Bol, dolaylı ışık ister; günün bir bölümünde doğrudan güneşe de dayanır. Toprağın üst 3-5 cm'si kuruyunca sulayın, kışın sulamayı azaltın.\n\n${PICKUP_ONLY}`),
+    draft('kaucuk-ficus-elastica', 'Kauçuk (Ficus elastica)', 'ic-mekan-bitkileri', true, 'VjdII_v1_6w',
+        'Parlak, koyu yeşil kalın yapraklı dayanıklı salon bitkisi.',
+        'Aydınlık, dolaylı ışık sever. Toprak yüzeyi kuruyunca sulayın; yapraklarını nemli bezle silmek parlaklığını korur.'),
+    draft('keman-yaprakli-ficus-lyrata', 'Keman Yapraklı Ficus (Ficus lyrata)', 'ic-mekan-bitkileri', true, 'HCMBWG2VuaI',
+        'Büyük, keman biçimli yapraklarıyla dekoratif iç mekân bitkisi.',
+        'Bol, dolaylı ışık ve sabit bir yer ister; cereyanda ve ani sıcaklık değişiminde yaprak dökebilir. Toprağın üst kısmı kuruyunca sulayın.'),
+    draft('benjamin-ficus-benjamina', 'Benjamin (Ficus benjamina)', 'ic-mekan-bitkileri', true, '7LMXZF4TD2M',
+        'Küçük, parlak yapraklı klasik iç mekân ficusu.',
+        'Aydınlık bir köşeyi sever; yer değişikliğine ve cereyana yaprak dökerek tepki verebilir. Toprak hafif kuruyunca sulayın.'),
+    draft('zamia-zamioculcas', 'Zamia (Zamioculcas)', 'ic-mekan-bitkileri', true, 'L7_hELzWajw',
+        'Parlak yapraklı, az ışığa ve susuzluğa çok dayanıklı bitki.',
+        'Yumru kökleri su depolar; toprak tamamen kuruduktan sonra sulayın. Az ışıklı ofis ve koridorlarda da yaşar, fazla su ise köklerini çürütür.'),
+    draft('areka-palmiyesi', 'Areka Palmiyesi (Dypsis lutescens)', 'ic-mekan-bitkileri', false, 'zzS4r5iAoS0',
+        'İnce, kavisli yapraklarıyla ferah bir salon palmiyesi.',
+        `Aydınlık, dolaylı ışık ve nemli ortam sever. Toprağı hafif nemli tutun ama saksı altlığında su bırakmayın.\n\n${PICKUP_ONLY}`),
+    draft('antoryum-anthurium', 'Antoryum (Anthurium)', 'ic-mekan-bitkileri', true, '2_e65TkDO6Y',
+        'Parlak renkli çiçekleri uzun süre açık kalan salon bitkisi.',
+        'Aydınlık, dolaylı ışık ve nemli ortam ister. Toprağın üst kısmı kuruyunca sulayın; yapraklarına ara sıra su püskürtebilirsiniz.'),
+    draft('salon-sarmasigi-pothos', 'Salon Sarmaşığı (Pothos)', 'ic-mekan-bitkileri', true, '5PFskYdiYFo',
+        'Sarkarak büyüyen, kolay bakımlı sarmaşık; askılı saksılar için ideal.',
+        'Az ışıkta da büyür, aydınlık ortamda yaprak alacası belirginleşir. Toprak yüzeyi kuruyunca sulayın. Uzayan dallar budanarak gürleştirilebilir.'),
+    draft('kurdele-cicegi-chlorophytum', 'Kurdele Çiçeği (Chlorophytum)', 'ic-mekan-bitkileri', true, 'bdWv-ZTBIic',
+        'Şerit gibi yapraklı, yavru vererek çoğalan kolay bakımlı bitki.',
+        'Aydınlık, dolaylı ışık sever. Toprağı hafif nemli tutun. Uçlarda oluşan yavruları ayrı saksıya dikerek çoğaltabilirsiniz.'),
+    draft('kalatya-calathea', 'Kalatya (Calathea)', 'ic-mekan-bitkileri', true, 'ZbQRKeyzXqQ',
+        'Desenli yapraklarıyla dikkat çeken, akşamları yapraklarını kaldıran bitki.',
+        'Doğrudan güneş almayan, nemli bir ortam ister. Toprağı sürekli hafif nemli tutun; mümkünse kireçsiz, oda sıcaklığında su kullanın.'),
+    draft('yuka-yucca', 'Yuka (Yucca)', 'ic-mekan-bitkileri', true, 'cswQa8G0NJ0',
+        'Gövdeli, sivri yapraklı, kuraklığa dayanıklı bitki.',
+        'Bol ışık sever, güneşli pencere önüne uygundur. Toprak iyice kuruduktan sonra sulayın; kışın sulamayı seyreltin.'),
+
+    // Kaktüs ve sukulent
+    draft('madagaskar-kaktusu-pachypodium', 'Madagaskar Kaktüsü (Pachypodium)', 'kaktus-ve-sukulent', true, 'iHN7FPbdDTw',
+        'Dikenli gövdesi ve tepesindeki yapraklarıyla palmiyeyi andıran sukulent.',
+        'Bol ışık ve sıcak ortam ister. Yazın toprak kuruyunca sulayın, kışın sulamayı büyük ölçüde azaltın.\n\nGövdesi dikenlidir ve özsuyu zehirlidir; çocukların ve evcil hayvanların erişemeyeceği bir yerde tutun.'),
+    draft('para-agaci-crassula', 'Para Ağacı (Crassula ovata)', 'kaktus-ve-sukulent', true, 'Q0w0LGkHokE',
+        'Etli, yuvarlak yapraklı, uzun ömürlü sukulent.',
+        'Güneşli ya da çok aydınlık bir yeri sever. Toprak tamamen kuruyunca sulayın; fazla su en büyük düşmanıdır.'),
+    draft('aloe-vera', 'Aloe Vera', 'kaktus-ve-sukulent', true, 'SA3KoWHuMzA',
+        'Jel dolu etli yaprakları olan, bakımı kolay sukulent.',
+        'Bol ışık sever. Toprak tamamen kuruduktan sonra sulayın; kışın ayda bir sulama genellikle yeterlidir.'),
+    draft('kaktus-ve-sukulent-teraryumu', 'Kaktüs ve Sukulent Teraryumu', 'kaktus-ve-sukulent', true, 'Eusirndf_WY',
+        'Cam kap içinde farklı kaktüs ve sukulentlerle hazırlanmış mini bahçe.',
+        'Bol ışıklı bir yerde, doğrudan öğle güneşinden uzak tutun. Ayda bir ya da iki kez toprağı ıslatacak kadar az su verin; cam kapta su birikmemelidir.'),
+    draft('altin-top-kaktus-echinocactus', 'Altın Top Kaktüs (Echinocactus)', 'kaktus-ve-sukulent', true, 'XsS5F4BPABg',
+        'Altın sarısı dikenli, top biçimli kaktüs.',
+        'Tam güneş ister. Yazın toprak kuruyunca sulayın, kışın hemen hiç sulamayın. Yavaş büyür ve uzun ömürlüdür.'),
+    draft('zebra-kaktus-haworthia', 'Zebra Kaktüs (Haworthia)', 'kaktus-ve-sukulent', true, '0ZP-3SmbiLE',
+        'Beyaz çizgili, küçük ve bakımı kolay sukulent.',
+        'Aydınlık ama sert öğle güneşi almayan yerleri sever. Toprak kuruyunca az miktarda sulayın.'),
+
+    // Dış mekân
+    draft('zeytin-fidani', 'Zeytin Fidanı', 'dis-mekan-bitkileri', false, 'vnOVs44jsog',
+        'Ege bahçelerinin simgesi, güneşli alanlar için zeytin fidanı.',
+        `Tam güneş ve iyi drene olan toprak ister. Dikimden sonraki ilk yıl düzenli, sonra seyrek sulama yeterlidir.\n\n${PICKUP_ONLY}`),
+    draft('limon-fidani', 'Limon Fidanı', 'dis-mekan-bitkileri', false, 'cUaXzFXVKkA',
+        'Saksıda ve bahçede yetiştirilebilen, meyve veren limon fidanı.',
+        `Güneşli, rüzgârdan korunaklı bir yer ister. Toprağı düzenli nemli tutun; saksıdaki fidanı kışın dondan koruyun.\n\n${PICKUP_ONLY}`),
+    draft('defne-fidani', 'Defne Fidanı', 'dis-mekan-bitkileri', false, 'UWCfh5VOTug',
+        'Kokulu yaprakları mutfakta kullanılan, çit ve saksı için Akdeniz bitkisi.',
+        `Güneşli ya da yarı gölge yerde yetişir, budamaya iyi yanıt verir. Dikimden sonra düzenli, yerleştikten sonra seyrek sulayın.\n\n${PICKUP_ONLY}`),
+    draft('bambu-cit-bitkisi', 'Bambu Çit Bitkisi', 'dis-mekan-bitkileri', false, 'MshzHqJU1z0',
+        'Hızlı büyüyen, doğal mahremiyet sağlayan çit bitkisi.',
+        `Yarı gölge ve güneşte yetişir. Yayılmaması için köklerin sınırlandırılması önerilir.\n\n${PICKUP_ONLY}`),
+    draft('begonvil-bougainvillea', 'Begonvil (Bougainvillea)', 'dis-mekan-bitkileri', false, 'CzITeOge8Og',
+        'Yaz boyunca canlı renkleriyle duvar ve pergolaları süsleyen sarmaşık.',
+        `Bol güneş ister; ne kadar güneş alırsa o kadar çiçek açar. Toprak kuruyunca sulayın, dona karşı koruyun.\n\n${PICKUP_ONLY}`),
+    draft('lavanta', 'Lavanta', 'dis-mekan-bitkileri', true, 'eLrCA71PDtg',
+        'Mor çiçekli, kokulu, kuraklığa dayanıklı Akdeniz bitkisi.',
+        'Tam güneş ve süzek toprak ister; fazla sudan hoşlanmaz. Çiçeklenmeden sonra budanırsa daha toplu büyür.'),
+    draft('biberiye', 'Biberiye', 'dis-mekan-bitkileri', true, 'v5Px2pav-MM',
+        'Mutfakta da kullanılan, yaprağını dökmeyen aromatik bitki.',
+        'Güneşli yeri ve iyi drene olan toprağı sever. Toprak kuruyunca sulayın; saksıda da balkonda da yetişir.'),
+    draft('ortanca-hydrangea', 'Ortanca (Hydrangea)', 'dis-mekan-bitkileri', true, 'pzFOHIvLxqM',
+        'İri top çiçekleriyle yarı gölge bahçelerin gözdesi.',
+        'Sabah güneşi alıp öğleden sonra gölgede kalan yerleri sever. Toprağı nemli tutun; çiçek rengi toprağın asitliğine göre maviye ya da pembeye döner.'),
+    draft('saksi-gulu', 'Saksı Gülü', 'dis-mekan-bitkileri', true, 'HJHGJUJEFZ8',
+        'Balkon ve küçük bahçeler için bodur, bol çiçekli gül.',
+        'Günde en az 5-6 saat güneş ister. Toprağı nemli tutun; solan çiçekleri kesmek yeni çiçeklenmeyi teşvik eder.'),
+    draft('yasemin', 'Yasemin', 'dis-mekan-bitkileri', true, 'XdzbSNEVrQk',
+        'Beyaz, güzel kokulu çiçekleriyle balkon ve bahçe bitkisi.',
+        'Güneşli ya da yarı gölge yerleri sever. Çiçeklenme döneminde toprağı nemli tutun; sarılarak büyüyen dallarına destek verin.'),
+
+    // Mevsimlik çiçekler
+    draft('siklamen', 'Sıklamen', 'mevsimlik-cicekler', true, 'uyoq-6_3sWQ',
+        'Kışın açan, desenli yapraklı mevsimlik çiçek.',
+        'Serin ve aydınlık ortamı sever; kalorifer yanında çabuk solar. Yumruya su değdirmeden, saksı altlığından sulayın.'),
+    draft('ataturk-cicegi-poinsettia', 'Atatürk Çiçeği (Poinsettia)', 'mevsimlik-cicekler', true, 'PGsBNCeIgtM',
+        'Kırmızı yapraklarıyla kış aylarının renkli saksı bitkisi.',
+        'Aydınlık, cereyansız ve ılık bir yer ister. Toprak yüzeyi kuruyunca sulayın; soğuğa ve fazla suya hassastır. Özsuyu cildi tahriş edebilir.'),
+    draft('kasimpati-krizantem', 'Kasımpatı (Krizantem)', 'mevsimlik-cicekler', true, 'OA6yzSLzuec',
+        'Sonbaharda bol çiçek açan mevsimlik saksı bitkisi.',
+        'Güneşli ya da yarı gölge yerde, toprağı nemli tutarak yetiştirin. Solan çiçekleri temizlemek çiçeklenme süresini uzatır.'),
+    draft('sardunya', 'Sardunya', 'mevsimlik-cicekler', true, 'gtorZXKLxjQ',
+        'Balkonların vazgeçilmezi, ilkbahardan sonbahara çiçek açan bitki.',
+        'Güneşli yeri sever. Toprak yüzeyi kuruyunca sulayın; solan çiçekleri temizlemek çiçeklenmeyi uzatır.'),
+    draft('saksi-karanfili', 'Saksı Karanfili', 'mevsimlik-cicekler', true, 'XO4iKGdbZnA',
+        'Kokulu, canlı renkli çiçekleriyle balkon karanfili.',
+        'Güneşli ve havadar yerleri sever. Toprak kuruyunca sulayın; fazla sudan hoşlanmaz.'),
+    draft('begonya', 'Begonya', 'mevsimlik-cicekler', true, '1YXdbE1P0TM',
+        'Gül biçimli, katmerli çiçekleriyle saksı begonyası.',
+        'Aydınlık ama doğrudan güneş almayan yerleri sever. Toprağı hafif nemli tutun, yapraklarını ıslatmadan sulayın.'),
+
+    // Saksı ve malzeme
+    draft('toprak-saksi-seti', 'Toprak Saksı Seti', 'saksilar', true, 'OlUNA6dteb0',
+        'Farklı boyutlarda pişmiş toprak saksılar.',
+        'Pişmiş toprak saksılar kökün nefes almasını sağlar. Ölçü ve adet seçenekleri için bize ulaşabilirsiniz.'),
+    draft('bahce-bakim-seti', 'Bahçe Bakım Seti', 'bahce-malzemeleri', true, 'dAeQlhD7zRk',
+        'Dikim ve budama için temel bahçe el aletleri.',
+        'Küçük bahçe ve balkon bakımında kullanılan el aletlerinden oluşur.')
 ]);

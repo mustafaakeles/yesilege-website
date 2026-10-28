@@ -415,18 +415,26 @@ async function renderProducts(panel, { editId } = {}) {
     };
     const existing = new Set(products.map(item => item.slug));
     const drafts = PRODUCT_DRAFTS.filter(draft => !existing.has(draft.slug));
+    const draftCard = (draft) => {
+        const use = button('Fiyat gir ve ekle', {}, 'btn btn-primary btn-sm');
+        use.addEventListener('click', () => useDraft(draft, use));
+        return el('article', { className: 'admin-draft' }, [
+            el('img', { attrs: { src: draft.image, alt: draft.name, width: 160, height: 160, loading: 'lazy' } }),
+            el('div', {}, [el('strong', { text: draft.name }), el('p', { className: 'order-item-meta', text: draft.summary })]),
+            use
+        ]);
+    };
+    const draftGroups = DRAFT_CATEGORIES
+        .map(meta => ({ meta, items: drafts.filter(draft => draft.category === meta.slug) }))
+        .filter(group => group.items.length)
+        .map(({ meta, items }) => el('div', { className: 'admin-draft-group' }, [
+            el('h4', { text: `${meta.name} (${items.length})` }),
+            el('div', { className: 'admin-drafts' }, items.map(draftCard))
+        ]));
     const draftSection = drafts.length ? el('section', { className: 'admin-card' }, [
         el('h3', { text: 'Hazır taslaklar' }),
-        el('p', { className: 'field-hint', text: 'Fotoğrafı, adı ve açıklaması hazır ürünler. Seçtiğiniz taslakta yalnızca fiyatı ve stoğu girip kaydedin.' }),
-        el('div', { className: 'admin-drafts' }, drafts.map(draft => {
-            const use = button('Fiyat gir ve ekle', {}, 'btn btn-primary btn-sm');
-            use.addEventListener('click', () => useDraft(draft, use));
-            return el('article', { className: 'admin-draft' }, [
-                el('img', { attrs: { src: draft.image, alt: draft.name, width: 160, height: 160, loading: 'lazy' } }),
-                el('div', {}, [el('strong', { text: draft.name }), el('p', { className: 'order-item-meta', text: draft.summary })]),
-                use
-            ]);
-        }))
+        el('p', { className: 'field-hint', text: 'Fotoğrafı, adı ve açıklaması hazır ürünler. Seçtiğiniz taslakta yalnızca fiyatı ve stoğu girip kaydedin; fotoğrafı sonra kendi çektiğinizle değiştirebilirsiniz.' }),
+        ...draftGroups
     ]) : null;
 
     panel.replaceChildren(

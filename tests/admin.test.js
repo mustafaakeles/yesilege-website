@@ -141,7 +141,10 @@ test('ürün kaydı fiyatı kuruş tam sayı ister ve yalnızca kendi Storage ko
     assert.equal((await call('product-save', { body: { ...product, slug: 'Kötü Ad' } })).res.statusCode, 400);
     assert.equal((await call('product-save', { body: { ...product, images: ['https://kotu.example/x.jpg'] } })).res.statusCode, 400);
     assert.equal((await call('product-save', { body: { ...product, images: ['images/orchid_care_blooming.webp'] }, routes: { 'POST /rest/v1/products': { status: 201, body: [{ id: P1 }] } } })).res.statusCode, 200);
+    assert.equal((await call('product-save', { body: { ...product, images: ['images/urunler/orkide-phalaenopsis.webp'] }, routes: { 'POST /rest/v1/products': { status: 201, body: [{ id: P1 }] } } })).res.statusCode, 200);
     assert.equal((await call('product-save', { body: { ...product, images: ['images/../api/admin.js'] } })).res.statusCode, 400);
+    assert.equal((await call('product-save', { body: { ...product, images: ['images/../x.webp'] } })).res.statusCode, 400);
+    assert.equal((await call('product-save', { body: { ...product, images: ['images/a/b/x.webp'] } })).res.statusCode, 400);
     const ownImage = 'https://p.supabase.co/storage/v1/object/public/products/a/b.webp';
     assert.equal((await call('product-save', { body: { ...product, images: [ownImage] }, routes: { 'POST /rest/v1/products': { status: 201, body: [{ id: P1 }] } } })).res.statusCode, 200);
     const duplicate = await call('product-save', { body: product, routes: { 'POST /rest/v1/products': { status: 409, body: { code: '23505' } } } });

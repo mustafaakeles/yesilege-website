@@ -1490,10 +1490,21 @@ img.is-placeholder {
     gap: 12px;
 }
 
+.admin-draft-group + .admin-draft-group {
+    margin-top: 1.5rem;
+}
+
+.admin-draft-group h4 {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    color: var(--forest-800);
+}
+
+/* Açıklama uzunluğu farklı olsa da düğmeler kart altında hizalı kalır */
 .admin-draft {
     display: grid;
+    grid-template-rows: auto 1fr auto;
     gap: 10px;
-    align-content: start;
     padding: 10px;
     border: 1px solid var(--line);
     border-radius: var(--radius);
