@@ -61,7 +61,7 @@ function sortRows(rows, order) {
     });
 }
 
-export function createFakeState({ onMail = () => {} } = {}) {
+export function createFakeState({ onMail = () => {}, sql = null } = {}) {
     const state = {
         users: new Map(),          // e-posta → kullanıcı
         access: new Map(),         // erişim token'ı → { userId, exp }
@@ -102,10 +102,22 @@ export function createFakeState({ onMail = () => {} } = {}) {
     }
 
     const auth = {
-        'POST /auth/v1/signup'(body) {
+        async 'POST /auth/v1/signup'(body) {
             const email = String(body.email || '').toLowerCase();
             if (state.users.has(email)) return [200, { id: randomUUID(), email }]; // Supabase gibi gizlenmiş yanıt
             const meta = body.data || {};
+            if (sql) {
+                // Gerçek migration tetikleyicisi profili oluşturur ya da kaydı reddeder
+                const user = { id: randomUUID(), email, password: body.password, confirmedAt: null };
+                try {
+                    await sql.db.query('insert into auth.users (id, email, raw_user_meta_data) values ($1, $2, $3::jsonb)', [user.id, email, JSON.stringify(meta)]);
+                } catch {
+                    return [500, { error_code: 'unexpected_failure' }];
+                }
+                state.users.set(email, user);
+                mail(user, 'email');
+                return [200, publicUser(user)];
+            }
             const fullName = String(meta.full_name || '').trim();
             // Migration'daki handle_new_user tetikleyicisinin kuralları
             if (meta.kvkk !== 'true' || fullName.length < 2 || fullName.length > 100) return [500, { error_code: 'unexpected_failure' }];
@@ -136,12 +148,13 @@ export function createFakeState({ onMail = () => {} } = {}) {
             }
             return [400, { error_code: 'unsupported_grant_type' }];
         },
-        'POST /auth/v1/verify'(body) {
+        async 'POST /auth/v1/verify'(body) {
             const otp = state.otps.get(body.token_hash);
             if (!otp || otp.type !== body.type) return [403, { error_code: 'otp_expired' }];
             state.otps.delete(body.token_hash);
             const user = userById(otp.userId);
             if (otp.type === 'email') user.confirmedAt = new Date().toISOString();
+            if (otp.type === 'email' && sql) await sql.db.query('update auth.users set email_confirmed_at = now() where id = $1', [user.id]);
             return [200, issueSession(user)];
         },
         'POST /auth/v1/recover'(body) {
@@ -228,11 +241,16 @@ export function createFakeState({ onMail = () => {} } = {}) {
             if (req.headers.apikey !== FAKE_KEYS.anon) return send(res, 401, { error_code: 'invalid_api_key' });
             const route = auth[key];
             if (!route) return send(res, 404, { error_code: 'not_found' });
-            const [status, payload] = route(body, req, url);
+            const [status, payload] = await route(body, req, url);
             return send(res, status, payload);
         }
         if (url.pathname.startsWith('/rest/v1/')) {
             if (req.headers.apikey !== FAKE_KEYS.service) return send(res, 401, { message: 'Invalid API key' });
+            if (sql) {
+                const path = url.pathname.slice('/rest/v1/'.length);
+                const [status, payload] = path.startsWith('rpc/') ? await sql.rpc(path.slice(4), body) : await sql.rest(req.method, path, url, body);
+                return send(res, status, payload);
+            }
             if (key === 'POST /rest/v1/rpc/rate_limit_hit') return send(res, 200, rateLimitHit(body));
             const [status, payload] = rest(req.method, url.pathname.slice('/rest/v1/'.length), url, body);
             return send(res, status, payload);
@@ -265,9 +283,29 @@ export function seedDemoCatalog(state) {
     );
 }
 
-export async function startFakeSupabase({ port = 0, onMail, demoCatalog = false } = {}) {
-    const { state, handle } = createFakeState({ onMail });
-    if (demoCatalog) seedDemoCatalog(state);
+/** SQL arka uçlu sahte Supabase için örnek katalog, banka bilgisi ve yönetici yok (yalnızca yerel). */
+async function seedDemoCatalogSql(db) {
+    const state = { tables: { categories: [], products: [] } };
+    seedDemoCatalog(state);
+    await db.query(`insert into public.categories (id, slug, name, sort_order, is_active)
+        select id, slug, name, sort_order, is_active from json_populate_recordset(null::public.categories, $1::json)`, [JSON.stringify(state.tables.categories)]);
+    await db.query(`insert into public.products (id, slug, category_id, name, summary, price, compare_at_price, stock, shippable, images, is_active, sort_order)
+        select id, slug, category_id, name, summary, price, compare_at_price, stock, shippable, images, is_active, sort_order
+        from json_populate_recordset(null::public.products, $1::json)`, [JSON.stringify(state.tables.products)]);
+    await db.query(`update public.settings set value = value || '{"bank_name": "Örnek Banka", "account_holder": "Yeşil Ege (örnek)", "iban": "TR00 0000 0000 0000 0000 0000 00"}' where key = 'bank'`);
+}
+
+export async function startFakeSupabase({ port = 0, onMail, demoCatalog = false, sqlBackend = false } = {}) {
+    let sql = null;
+    if (sqlBackend) {
+        const { createDatabase } = await import('./pglite_db.mjs');
+        const { createSqlRest } = await import('./fake_sql_rest.mjs');
+        const db = await createDatabase();
+        sql = { db, ...createSqlRest(db) };
+        if (demoCatalog) await seedDemoCatalogSql(db);
+    }
+    const { state, handle } = createFakeState({ onMail, sql });
+    if (demoCatalog && !sql) seedDemoCatalog(state);
     const server = createServer((req, res) => {
         handle(req, res).catch(() => send(res, 500, { error_code: 'unexpected_failure' }));
     });
@@ -277,6 +315,10 @@ export async function startFakeSupabase({ port = 0, onMail, demoCatalog = false 
         mailbox: state.mailbox,
         users: state.users,
         state,
-        close: () => new Promise(resolve => { server.closeAllConnections?.(); server.close(resolve); })
+        sql,
+        close: async () => {
+            await new Promise(resolve => { server.closeAllConnections?.(); server.close(resolve); });
+            await sql?.db.close();
+        }
     };
 }

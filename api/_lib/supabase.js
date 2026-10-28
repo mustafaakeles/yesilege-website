@@ -47,7 +47,10 @@ export function createSupabase({ url, anonKey, serviceKey, fetchImpl = fetch }) 
             try { data = JSON.parse(text); } catch { data = null; }
         }
         if (!response.ok) {
-            throw new SupabaseError(response.status, data?.error_code || data?.code || data?.error || '');
+            const error = new SupabaseError(response.status, data?.error_code || data?.code || data?.error || '');
+            // Veritabanı fonksiyonlarının "raise exception" ile verdiği iş kuralı kodu (ör. out_of_stock)
+            if (data?.code === 'P0001' && /^[a-z_]{3,40}$/.test(String(data.message || ''))) error.reason = data.message;
+            throw error;
         }
         return data;
     }

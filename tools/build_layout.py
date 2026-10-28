@@ -9,10 +9,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 # style.css / script.js / mascot.* / motion.* / screens.* / doctor.* değiştiğinde artırın: tarayıcı önbelleğindeki eski dosyaları geçersiz kılar
-ASSET_VERSION = "20261028b"
+ASSET_VERSION = "20261028c"
 
 # Navbar hesap bağlantısı: Supabase canlı ortamda kurulup doğrulanınca True yapın (docs/UYELIK_KURULUM.md).
 ACCOUNT_LINK_ENABLED = True
+
+# Mağaza: işletme ürünleri yönetim panelinden girince True yapın. Menüde "Projeler" yerine "Mağaza",
+# sağda sepet simgesi ve footer'da mesafeli satış bağlantıları görünür (docs/superpowers/plans/2026-10-28-eticaret-alt-proje-2-5.md).
+SHOP_LINK_ENABLED = False
 
 SERVICES = [
     ("garden-materials", "Bahçe Malzemeleri"),
@@ -35,9 +39,15 @@ NAV_ITEMS = [
 ]
 
 
+def nav_items():
+    if not SHOP_LINK_ENABLED:
+        return NAV_ITEMS
+    return [("magaza.html", "Mağaza") if href == "index.html#projeler" else (href, label) for href, label in NAV_ITEMS]
+
+
 def nav_html(prefix: str, active: str) -> str:
     items = []
-    for href, label in NAV_ITEMS:
+    for href, label in nav_items():
         current = ' aria-current="page"' if href == active else ''
         if href == "services.html":
             sub = "\n".join(
@@ -55,6 +65,8 @@ def nav_html(prefix: str, active: str) -> str:
     links = "\n".join(items)
     account = (f'                <a href="{prefix}giris.html" class="nav-account" data-account-link aria-label="Giriş yap">'
                '<i class="fas fa-user" aria-hidden="true"></i><span>Giriş</span></a>\n') if ACCOUNT_LINK_ENABLED else ''
+    cart = (f'                <a href="{prefix}sepet.html" class="nav-cart" aria-label="Sepetim">'
+            '<i class="fas fa-shopping-basket" aria-hidden="true"></i><span class="nav-cart-count" data-cart-count hidden>0</span></a>\n') if SHOP_LINK_ENABLED else ''
     return f'''    <nav class="navbar" id="navbar" aria-label="Ana menü">
         <div class="container nav-content">
             <a href="{prefix}index.html" class="logo" aria-label="Yeşil Ege Peyzaj ana sayfa">
@@ -65,7 +77,7 @@ def nav_html(prefix: str, active: str) -> str:
             </ul>
             <div class="nav-actions">
                 <a href="tel:+905350805951" class="nav-phone" aria-label="Telefon: 0535 080 59 51"><i class="fas fa-phone-alt" aria-hidden="true"></i><span>0535 080 59 51</span></a>
-{account}                <a href="{prefix}contact.html#teklif" class="btn btn-primary btn-sm">Teklif Alın</a>
+{cart}{account}                <a href="{prefix}contact.html#teklif" class="btn btn-primary btn-sm">Teklif Alın</a>
                 <button class="hamburger" type="button" aria-label="Menüyü aç/kapat" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
             </div>
         </div>
@@ -79,6 +91,8 @@ def footer_html(prefix: str, with_newsletter: bool) -> str:
                 <p>Mevsimlik bakım ipuçlarımızı ve yeni yazılarımızı blogumuzda bulabilirsiniz.</p>
                 <a href="{prefix}blog.html" class="btn btn-ghost">Blogu keşfedin <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
             </div>''' if with_newsletter else ''
+    legal = (f' · <a href="{prefix}mesafeli-satis-sozlesmesi.html">Mesafeli Satış Sözleşmesi</a>'
+             f' · <a href="{prefix}iade-ve-cayma.html">İade ve Cayma</a>') if SHOP_LINK_ENABLED else ''
     return f'''    <footer>
         <div class="container footer-content">
             <div class="footer-brand">
@@ -114,7 +128,7 @@ def footer_html(prefix: str, with_newsletter: bool) -> str:
             </div>{newsletter}
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Yeşil Ege Peyzaj. Tüm hakları saklıdır. · <a href="{prefix}kvkk.html">KVKK Aydınlatma Metni</a></p>
+            <p>&copy; 2026 Yeşil Ege Peyzaj. Tüm hakları saklıdır. · <a href="{prefix}kvkk.html">KVKK Aydınlatma Metni</a>{legal}</p>
             <div class="codera-signature">
                 Software &amp; Design by <a href="https://www.codera.com.tr" target="_blank" rel="noopener">CODERA</a>
             </div>
@@ -134,9 +148,14 @@ STYLE_BLOCK_RE = re.compile(r'[ \t]*<style>.*?</style>\r?\n?', re.S)
 BLOG_BG_RE = re.compile(r"\.blog-detail-header\s*\{[^}]*?background-image:\s*url\('([^']+)'\)", re.S)
 
 
+SHOP_PAGES = {"urun.html", "sepet.html", "odeme.html"}
+
+
 def active_for(path: Path) -> str:
     if path.parent.name == "blog-yazilari":
         return "blog.html"
+    if path.name in SHOP_PAGES:
+        return "magaza.html"
     return path.name
 
 
@@ -177,7 +196,7 @@ def process(path: Path, check_only: bool = False) -> bool:
     # Betikleri ertele, CSS/JS adreslerine sürüm ekle (önbellek kırma)
     text = re.sub(r'<script src="((?:\.\./)?(?:script|mascot|screens|doctor)\.js)(?:\?v=\w+)?"( defer)?></script>',
                   rf'<script src="\1?v={ASSET_VERSION}" defer></script>', text)
-    text = re.sub(r'<script type="module" src="((?:\.\./)?(?:account|account-shop|shop|checkout|yonetim)\.js)(?:\?v=\w+)?"></script>',
+    text = re.sub(r'<script type="module" src="((?:\.\./)?(?:account|account-shop|shop|cart|yonetim)\.js)(?:\?v=\w+)?"></script>',
                   rf'<script type="module" src="\1?v={ASSET_VERSION}"></script>', text)
     text = re.sub(r'href="((?:\.\./)?(?:style|mascot|motion|screens|doctor|account|shop)\.css)(?:\?v=\w+)?"', rf'href="\1?v={ASSET_VERSION}"', text)
     text = re.sub(r'<script src="((?:\.\./)?motion\.js)(?:\?v=\w+)?"></script>', rf'<script src="\1?v={ASSET_VERSION}"></script>', text)

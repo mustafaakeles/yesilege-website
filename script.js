@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initNavbar();
     initAccountLink();
+    initCartCount();
     initMobileMenu();
     initCounters(prefersReducedMotion);
     initHeroSlider(prefersReducedMotion);
@@ -25,6 +26,29 @@ function initAccountLink() {
         const label = link.querySelector('span');
         if (label) label.textContent = 'Hesabım';
     });
+}
+
+// Sepet simgesindeki adet: tarayıcıdaki sepetten okunur (cart-store.js ile aynı anahtar)
+function initCartCount() {
+    const badges = document.querySelectorAll('[data-cart-count]');
+    if (badges.length === 0) return;
+    const update = () => {
+        let count = 0;
+        try {
+            const lines = JSON.parse(localStorage.getItem('ye_cart_v1') || '[]');
+            if (Array.isArray(lines)) count = lines.reduce((sum, line) => sum + (Math.min(99, Math.max(0, Math.trunc(Number(line?.qty)) || 0))), 0);
+        } catch {
+            count = 0;
+        }
+        badges.forEach(badge => {
+            badge.textContent = count > 99 ? '99+' : String(count);
+            badge.hidden = count === 0;
+            badge.closest('a')?.setAttribute('aria-label', count ? `Sepetim, ${count} ürün` : 'Sepetim');
+        });
+    };
+    update();
+    window.addEventListener('storage', (event) => { if (event.key === 'ye_cart_v1') update(); });
+    window.addEventListener('cart:change', update);
 }
 
 // 1. Navbar: kaydırınca gölge

@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --no-save --package-lock=false playwright@1.56.1
+      - run: npm install --no-save --package-lock=false playwright@1.56.1 @electric-sql/pglite@0.3.15
       - run: npx playwright install --with-deps chromium
       - run: node tools/ui_smoke.mjs
       - run: node tools/auth_e2e.mjs

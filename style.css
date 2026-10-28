@@ -480,6 +480,45 @@ p {
     font-size: 0.85rem;
 }
 
+.nav-cart {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    color: var(--forest-700);
+}
+
+.nav-cart i {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--sage-100);
+    font-size: 0.85rem;
+}
+
+.nav-cart-count {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--clay-600);
+    color: var(--white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+}
+
+.nav-cart-count[hidden] {
+    display: none;
+}
+
 .nav-phone i {
     width: 34px;
     height: 34px;

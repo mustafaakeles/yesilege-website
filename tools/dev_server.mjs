@@ -1,5 +1,6 @@
 // Yerel geliştirme sunucusu: statik dosyalar + api/*.js işleyicileri, vercel.json güvenlik başlıklarıyla.
-// Kullanım: node tools/dev_server.mjs [--fake-supabase [--demo-catalog]]   (PORT, varsayılan 8090)
+// Kullanım: node tools/dev_server.mjs [--fake-supabase [--demo-catalog] [--sql]]   (PORT, varsayılan 8090)
+// --sql: veri katmanı PGlite'ta gerçek migration'larla çalışır (npm install --no-save @electric-sql/pglite@0.3.15).
 // --fake-supabase: gerçek hesap gerekmez; doğrulama bağlantıları konsola yazılır.
 
 import { createServer } from 'node:http';
@@ -83,7 +84,7 @@ async function serveApi(req, res, name, url, env, handlers) {
     await handlers.get(name)(req, res);
 }
 
-export async function startDevServer({ port = 8090, env = process.env, fakeSupabase = false, demoCatalog = false, onMail } = {}) {
+export async function startDevServer({ port = 8090, env = process.env, fakeSupabase = false, demoCatalog = false, sqlBackend = false, onMail } = {}) {
     let fake = null;
     let effectiveEnv = env;
     const handlers = new Map();
@@ -102,6 +103,7 @@ export async function startDevServer({ port = 8090, env = process.env, fakeSupab
     if (fakeSupabase) {
         fake = await startFakeSupabase({
             demoCatalog,
+            sqlBackend,
             onMail: (mail) => onMail?.({ ...mail, link: `${origin}/api/auth?action=confirm&token_hash=${mail.tokenHash}&type=${mail.type}` })
         });
         effectiveEnv = {
@@ -132,6 +134,7 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
         port,
         fakeSupabase: useFake,
         demoCatalog: useFake && process.argv.includes('--demo-catalog'),
+        sqlBackend: useFake && process.argv.includes('--sql'),
         onMail: (mail) => console.log(`\n[sahte e-posta] ${mail.type} → ${mail.email}\n  ${mail.link}\n`)
     });
     console.log(`Geliştirme sunucusu: ${server.url}${useFake ? ' (sahte Supabase)' : ''}`);

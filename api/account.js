@@ -131,6 +131,25 @@ async function deleteRequest(ctx) {
     return ok(ctx.res, { message: 'Talebiniz alındı. Hesabınız en geç 30 gün içinde silinecek ve size bilgi verilecektir.' });
 }
 
+const LEDGER_LIMIT = 100;
+
+async function loyalty(ctx) {
+    const [balance] = await ctx.supabase.db.rpc('loyalty_balance', { p_user: ctx.uid });
+    const [entries, settings] = await Promise.all([
+        ctx.supabase.db.select('loyalty_ledger', `user_id=${eq(ctx.uid)}&select=kind,points,available_at,expires_at,note,created_at&order=id.desc&limit=${LEDGER_LIMIT}`),
+        ctx.supabase.db.select('settings', 'key=eq.loyalty&select=value')
+    ]);
+    const rates = settings[0]?.value || {};
+    return ok(ctx.res, {
+        available: Math.max(0, balance?.available || 0),
+        pending: balance?.pending || 0,
+        rates: { pointsPerUnit: rates.points_per_unit, unitValue: rates.unit_value, maxRatio: rates.max_ratio, activationDays: rates.activation_days, validMonths: rates.valid_months },
+        entries: entries.map(entry => ({
+            kind: entry.kind, points: entry.points, availableAt: entry.available_at, expiresAt: entry.expires_at, note: entry.note || '', createdAt: entry.created_at
+        }))
+    });
+}
+
 const POST = ['POST'];
 const GET = ['GET'];
 export const ACTIONS = Object.freeze({
@@ -140,7 +159,8 @@ export const ACTIONS = Object.freeze({
     addresses: { methods: GET, run: authed(addresses) },
     'address-save': { methods: POST, run: authed(saveAddress) },
     'address-delete': { methods: POST, run: authed(deleteAddress) },
-    'delete-request': { methods: POST, run: authed(deleteRequest) }
+    'delete-request': { methods: POST, run: authed(deleteRequest) },
+    loyalty: { methods: GET, run: authed(loyalty) }
 });
 
 export function createHandler({ sendEmailImpl = sendEmail, ...options } = {}) {

@@ -1,5 +1,5 @@
-// Mağaza akışının gerçek Chromium ile uçtan uca testi (sahte Supabase + örnek katalog).
-// Çalıştırma: npm install --no-save playwright@1.56.1
+// Mağaza akışının gerçek Chromium ile uçtan uca testi (sahte Supabase + gerçek migration'lı PGlite + örnek katalog).
+// Çalıştırma: npm install --no-save playwright@1.56.1 @electric-sql/pglite@0.3.15
 //           npx playwright install chromium
 //           node tools/shop_e2e.mjs
 import assert from 'node:assert/strict';
@@ -16,7 +16,7 @@ const VIEWPORTS = [
 ];
 const PASSWORD = 'e2e-test-sifresi-1';
 
-const server = await startDevServer({ port: 0, fakeSupabase: true, demoCatalog: true });
+const server = await startDevServer({ port: 0, fakeSupabase: true, demoCatalog: true, sqlBackend: true });
 
 /** Sahte Supabase'te doğrulanmış bir kullanıcı açar ve tarayıcıda oturum başlatır. */
 async function signIn(page, email) {
@@ -97,8 +97,63 @@ async function runFlow(browser, viewport) {
     await shot('favoriler');
     step(4, 'oturumsuz favori girişe yönlendirir; favori Hesabım\'da görünür');
 
+    // Sepet: önceki adımda 2 adet Monstera eklendi
+    await page.goto(server.url + '/sepet.html');
+    await page.locator('.cart-line').first().waitFor();
+    assert.equal(await page.locator('.cart-line').count(), 1);
+    // Sepet simgesi yalnızca tools/build_layout.py SHOP_LINK_ENABLED açıkken menüdedir
+    if (await page.locator('[data-cart-count]').count()) assert.equal(await page.locator('[data-cart-count]').first().textContent(), '2');
+    const totalText = () => page.locator('.order-summary-rows dd.is-total').textContent();
+    assert.equal((await totalText()).replace(/\s/g, ''), '₺1.050,00'); // 2 × 450 + 150 kargo
+    await page.check('input[name="cart-delivery"][value="pickup"]');
+    await page.waitForFunction(() => document.querySelector('.order-summary-rows dd.is-total')?.textContent.includes('900'));
+    await page.check('input[name="cart-delivery"][value="cargo"]');
+    await page.waitForFunction(() => document.querySelector('.order-summary-rows dd.is-total')?.textContent.includes('1.050'));
+    await noHorizontalScroll(page, 'sepet');
+    await shot('sepet');
+    step(5, 'sepet sunucu fiyatıyla hesaplanır, teslimat seçimi kargo ücretini değiştirir');
+
+    // Kargo için adres ekle (Hesabım API'si), ardından ödeme
+    const saved = await page.evaluate(async () => {
+        const response = await fetch('/api/account?action=address-save', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: 'Ev', recipientName: 'Mağaza Test', phone: '0532 000 00 00', city: 'İzmir', district: 'Bayındır', neighbourhood: 'Merkez', line: 'Deneme Sokak No: 1', isDefault: true })
+        });
+        return response.status;
+    });
+    assert.equal(saved, 200);
+    await page.goto(server.url + '/odeme.html');
+    await page.locator('.checkout-form').waitFor();
+    await page.locator('input[name="addressId"]').first().waitFor();
+    await noHorizontalScroll(page, 'ödeme');
+    await shot('odeme');
+    await page.click('.checkout-confirm button[type="submit"]');
+    await page.locator('.checkout-confirm .form-feedback', { hasText: 'sözleşmeleri onaylayın' }).waitFor();
+    await page.check('#accept');
+    await page.click('.checkout-confirm button[type="submit"]');
+    await page.locator('.order-confirmation').waitFor();
+    const code = (await page.locator('.order-code strong').textContent()).trim();
+    assert.match(code, /^[A-Z0-9]{8}$/);
+    assert.match(await page.locator('.bank-box').textContent(), /TR00/);
+    assert.equal(await page.evaluate(() => localStorage.getItem('ye_cart_v1')), '[]');
+    await shot('onay');
+    step(6, `sipariş verildi (${code}), havale bilgisi gösterildi, sepet boşaldı`);
+
+    await page.goto(server.url + '/hesabim.html#siparisler');
+    await page.locator('.order-item').first().waitFor();
+    assert.match(await page.locator('.order-item-code').first().textContent(), new RegExp(code));
+    await page.locator('.order-item summary').first().click();
+    page.once('dialog', dialog => dialog.accept());
+    await page.locator('.order-item-body button', { hasText: 'Siparişi iptal et' }).click();
+    await page.locator('.status-pill[data-status="cancelled"]').first().waitFor();
+    await page.click('#tab-puanlar');
+    await page.locator('.points-hero').waitFor();
+    await noHorizontalScroll(page, 'hesabım');
+    await shot('siparisler');
+    step(7, 'Siparişlerim ve iptal, Puanlarım');
+
     assert.deepEqual(problems, []);
-    step(5, 'sayfa hatası ve CSP ihlali yok');
+    step(8, 'sayfa hatası ve CSP ihlali yok');
     await context.close();
 }
 
