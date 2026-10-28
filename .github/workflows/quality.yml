@@ -19,7 +19,7 @@ jobs:
       - run: npm test
       - run: python tools/build_layout.py --check
       - run: npm install --no-save --package-lock=false @electric-sql/pglite@0.3.15
-      - run: node tools/db_test.mjs
+      - run: node tools/run_sql_tests.mjs
   browser-smoke:
     runs-on: ubuntu-24.04
     timeout-minutes: 15

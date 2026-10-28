@@ -1,5 +1,5 @@
 // Bellek içi Postgres (PGlite) üzerinde Supabase'in en küçük taklidi + repodaki tüm migration'lar.
-// tools/db_test.mjs ve SQL destekli sahte Supabase (tools/fake_supabase.mjs) ortak kullanır.
+// tools/run_sql_tests.mjs ve SQL destekli sahte Supabase (tools/fake_supabase.mjs) ortak kullanır.
 // Gereksinim: npm install --no-save --package-lock=false @electric-sql/pglite@0.3.15
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';

@@ -1,7 +1,7 @@
 // Migration'ları ve SQL testlerini bellek içi Postgres'te (PGlite) çalıştırır; Supabase hesabı gerekmez.
 // Supabase'in sağladığı auth şeması, roller ve storage tablosu en küçük hâliyle taklit edilir (tools/pglite_db.mjs).
 // Çalıştırma: npm install --no-save --package-lock=false @electric-sql/pglite@0.3.15
-//            node tools/db_test.mjs
+//            node tools/run_sql_tests.mjs
 import { createDatabase, readSql, sqlFiles } from './pglite_db.mjs';
 
 let db;

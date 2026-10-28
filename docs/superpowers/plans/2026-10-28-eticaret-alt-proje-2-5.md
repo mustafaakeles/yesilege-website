@@ -16,7 +16,7 @@
 | Ödeme | Havale/EFT ve mağazada ödeme. Kart ödemesi kapsam dışı (Alt Proje 6). |
 | Yasal metinler | Mesafeli Satış Sözleşmesi, Ön Bilgilendirme Formu, İade ve Cayma: **TASLAK**; satıcı kimlik bilgileri `[doldurulacak]`. |
 | Yönetici | `profiles.role = 'admin'` + oturumda TOTP (JWT `aal = aal2`). Her işlem `audit_log`'a yazılır. |
-| SQL testleri | `tools/db_test.mjs`: PGlite üzerinde tüm migration'lar + `supabase/tests/*.test.sql`. `npm install --no-save @electric-sql/pglite` gerekir. |
+| SQL testleri | `tools/run_sql_tests.mjs`: PGlite üzerinde tüm migration'lar + `supabase/tests/*.test.sql`. `npm install --no-save @electric-sql/pglite` gerekir. |
 
 ## Adımlar
 
@@ -25,7 +25,7 @@
 3. **Alt Proje 4 — Sadakat:** `0004_loyalty.sql` (loyalty_ledger, FIFO bakiye, teslimde kazanım, iptalde iade), ödeme adımında puan, Hesabım → Puanlarım.
 4. **Alt Proje 5 — Yönetim paneli:** `api/admin.js`, `yonetim.html`; TOTP kaydı/doğrulaması, siparişler, ödeme onayı, durum, cumartesi listesi, ürün/kategori/stok/görsel, puan düzeltme, ayarlar, denetim kaydı.
 5. **Son adım (kullanıcı isteği):** Ürün kartlarında boş yer tutucu kalmasın; `images/` altındaki gerçek fidanlık/ürün fotoğrafları kullanılarak örnek ve taslak ürünlere birebir gerçek görseller yerleştirilir.
-6. Her adım sonunda: `npm test`, `node tools/db_test.mjs`, `python tools/build_layout.py --check`, UI denetimi → commit → main → canlı Supabase'te migration + SQL testi.
+6. Her adım sonunda: `npm test`, `node tools/run_sql_tests.mjs`, `python tools/build_layout.py --check`, UI denetimi → commit → main → canlı Supabase'te migration + SQL testi.
 
 ## Durum (2026-10-28 sabahı)
 
